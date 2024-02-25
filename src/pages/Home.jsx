@@ -110,11 +110,11 @@ function Map() {
       <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
-            width: "300px",
+            width: "30vh",
             maxHeight: "90vh",
             overflowY: "auto",
             flexShrink: 0,
-            marginRight: "10px",
+            marginRight: "1vh",
           }}
         >
           <MarkerSidebar
