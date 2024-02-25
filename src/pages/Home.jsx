@@ -24,7 +24,7 @@ function Map() {
     setSelectedTab(newValue);
   };
 
-  const addTab = (marker, id) => {
+  const addTab = (marker, index, id) => {
     for (const tab of tabs) {
       if (tab.marker) {
         if (marker.lat === tab.marker.lat && marker.lng === tab.marker.lng) {
@@ -36,25 +36,28 @@ function Map() {
 
     const newTabIndex = tabs.length;
     const newTab = {
-      label: `Marker ${id}`,
+      label: `Marker ${id + 1}`,
+      id: id,
       marker,
     };
     setTabs([...tabs, newTab]);
     setSelectedTab(newTabIndex);
   };
 
-  const deleteTab = (tabIndex) => {
+  const deleteTab = (id) => {
+    const tabIndex = tabs.findIndex((tab) => tab.id === id);
     const newTabs = tabs.filter((_, index) => index !== tabIndex);
     setTabs(newTabs);
+
     // Adjust the selected tab if necessary
     if (selectedTab >= tabIndex) {
       setSelectedTab((prev) => Math.max(prev - 1, 0));
     }
   };
 
-  const deleteMarker = (markerToDelete) => {
+  const deleteMarker = (markerToDelete, id) => {
     markerToDelete.marker.remove(); // Remove from Leaflet map
-
+    deleteTab(id);
     setMarkers((prevMarkers) =>
       prevMarkers.filter((marker) => marker.marker !== markerToDelete.marker)
     );
@@ -104,7 +107,13 @@ function Map() {
           />
         </Box>
         <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-          <Tabs value={selectedTab} onChange={handleTabChange}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+          >
             {tabs.map((tab, index) => (
               <Tab
                 key={index}

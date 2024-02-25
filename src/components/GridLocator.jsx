@@ -35,7 +35,7 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
 
       L.control.attribution({ prefix: false }).addTo(mapInstance.current);
 
-      for (const { lat, lng, markerInfo, gridcode, state, county } of markers) {
+      for (const { lat, lng, markerInfo, gridcode, state, county, id } of markers) {
         const newMarker = L.marker([lat, lng]).addTo(mapInstance.current);
         newMarker.bindPopup(markerInfo);
 
@@ -46,7 +46,16 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
 
           return [
             ...filteredMarkers,
-            { lat, lng, marker: newMarker, gridcode, state, county, markerInfo },
+            {
+              lat,
+              lng,
+              marker: newMarker,
+              gridcode,
+              state,
+              county,
+              markerInfo,
+              id,
+            },
           ];
         });
       }
@@ -74,10 +83,23 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
           markerInfo += "<br>County: " + county;
         }
         newMarker.bindPopup(markerInfo).openPopup();
-        setMarkers((prevMarkers) => [
-          ...prevMarkers,
-          { lat, lng, marker: newMarker, gridcode, state, county, markerInfo },
-        ]);
+        setMarkers((prevMarkers) => {
+          console.log("🚀 ~ setMarkers ~ prevMarkers:", prevMarkers);
+
+          return [
+            ...prevMarkers,
+            {
+              lat,
+              lng,
+              marker: newMarker,
+              gridcode,
+              state,
+              county,
+              markerInfo,
+              id: prevMarkers.length > 0 ? prevMarkers[prevMarkers.length - 1].id + 1 : 0,
+            },
+          ];
+        });
         markerList.push({ lat, lng, gridcode, state, county, markerInfo });
       };
 

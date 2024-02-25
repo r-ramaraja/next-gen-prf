@@ -21,10 +21,10 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography component={"span"}>
-                <span style={{ fontWeight: "bold" }}>Marker {index + 1}</span>
+                <span style={{ fontWeight: "bold" }}>Marker {marker.id + 1}</span>
               </Typography>
               <IconButton
-                onClick={() => deleteMarker(marker)}
+                onClick={() => deleteMarker(marker, marker.id)}
                 aria-label="delete"
                 size="small"
                 style={{ marginLeft: "auto" }}
@@ -44,7 +44,7 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
               <IconButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  onAddTab(marker, index + 1);
+                  onAddTab(marker, index + 1, marker.id);
                 }}
                 aria-label="zoom-in"
                 size="small"
