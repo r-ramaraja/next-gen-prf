@@ -8,6 +8,9 @@ import { Tabs, Tab, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import GridLocator from "../components/GridLocator.jsx";
 import Header from "../components/Header";
+import { counties } from "../counties.js";
+import { states } from "../states.js";
+import { grids } from "../grids.js";
 
 function Map() {
   const mapInstance = useRef(null); // Holds the Leaflet map instance
@@ -16,7 +19,6 @@ function Map() {
   const [tabs, setTabs] = React.useState([
     {
       label: "Grid Locator",
-      content: <GridLocator setMarkers={setMarkers} markers={markers} mapInstance={mapInstance} />,
     },
   ]);
 
@@ -80,7 +82,16 @@ function Map() {
 
   const renderSelectedTab = (selectedTab) => {
     if (selectedTab === 0) {
-      return <GridLocator setMarkers={setMarkers} markers={markers} mapInstance={mapInstance} />;
+      return (
+        <GridLocator
+          setMarkers={setMarkers}
+          markers={markers}
+          mapInstance={mapInstance}
+          counties={counties}
+          grids={grids}
+          states={states}
+        />
+      );
     } else {
       return <MarkerDetail marker={tabs[selectedTab].marker} />;
     }
@@ -89,7 +100,7 @@ function Map() {
   return (
     <Box>
       <Header />
-      <Box sx={{ display: "flex", height: "70vh" }}>
+      <Box sx={{ display: "flex", height: "70vh", margin: "10px" }}>
         <Box
           sx={{
             width: "300px",

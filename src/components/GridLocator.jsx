@@ -5,13 +5,10 @@ import React, { useRef, useEffect } from "react";
 import L from "leaflet";
 import * as turf from "@turf/turf";
 import "leaflet-control-geocoder";
-import { grids } from "../grids.js";
-import { counties } from "../counties.js";
-import { states } from "../states.js";
+
 import "./GridLocator.css";
 
-function GridLocator({ setMarkers, markers, mapInstance }) {
-  //const mapInstance = useRef(null); // Holds the Leaflet map instance
+function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states }) {
   const mapRef = useRef(null);
   const markerList = [...markers];
 
@@ -83,23 +80,19 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
           markerInfo += "<br>County: " + county;
         }
         newMarker.bindPopup(markerInfo).openPopup();
-        setMarkers((prevMarkers) => {
-          console.log("🚀 ~ setMarkers ~ prevMarkers:", prevMarkers);
-
-          return [
-            ...prevMarkers,
-            {
-              lat,
-              lng,
-              marker: newMarker,
-              gridcode,
-              state,
-              county,
-              markerInfo,
-              id: prevMarkers.length > 0 ? prevMarkers[prevMarkers.length - 1].id + 1 : 0,
-            },
-          ];
-        });
+        setMarkers((prevMarkers) => [
+          ...prevMarkers,
+          {
+            lat,
+            lng,
+            marker: newMarker,
+            gridcode,
+            state,
+            county,
+            markerInfo,
+            id: prevMarkers.length > 0 ? prevMarkers[prevMarkers.length - 1].id + 1 : 0,
+          },
+        ]);
         markerList.push({ lat, lng, gridcode, state, county, markerInfo });
       };
 
@@ -265,8 +258,6 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
       const geocoder = L.Control.geocoder(geoCoderOptions).addTo(mapInstance.current);
 
       geocoder.on("markgeocode", function (e) {
-        console.log("🚀 ~ e:", e);
-
         var bbox = e.geocode.bbox;
         var { lng, lat } = e.geocode.center;
 
