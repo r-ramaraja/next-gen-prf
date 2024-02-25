@@ -1,0 +1,16 @@
+.label {
+  background-color: white;
+  padding: 2px;
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.county-label {
+  background-color: white;
+  padding: 2px;
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  color: blue;
+}

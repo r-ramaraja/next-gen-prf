@@ -8,8 +8,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import InfoIcon from "@mui/icons-material/Info";
 
-function MarkerList({ markers, deleteMarker, onMarkerSelect }) {
+function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
   return (
     <div style={{ width: "300px", maxHeight: "100vh", overflowY: "auto" }}>
       <Typography variant="h5" style={{ margin: "10px" }}>
@@ -39,6 +40,16 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect }) {
                 size="small"
               >
                 <ZoomInIcon />
+              </IconButton>
+              <IconButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onAddTab(marker, index + 1);
+                }}
+                aria-label="zoom-in"
+                size="small"
+              >
+                <InfoIcon />
               </IconButton>
             </AccordionSummary>
             <AccordionDetails>

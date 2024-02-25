@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-inner-declarations */
 
 import React, { useRef, useEffect } from "react";
@@ -7,29 +8,26 @@ import "leaflet-control-geocoder";
 import { grids } from "../grids.js";
 import { counties } from "../counties.js";
 import { states } from "../states.js";
-import MarkerSidebar from "./MarkerList.jsx";
+import "./GridLocator.css";
 
-function Map() {
+function GridLocator({ setMarkers, markers, mapInstance }) {
+  //const mapInstance = useRef(null); // Holds the Leaflet map instance
   const mapRef = useRef(null);
-  const mapInstance = useRef(null); // Holds the Leaflet map instance
-  const [markers, setMarkers] = React.useState([]);
-
-  const deleteMarker = (markerToDelete) => {
-    markerToDelete.marker.remove(); // Remove from Leaflet map
-
-    setMarkers((prevMarkers) =>
-      prevMarkers.filter((marker) => marker.marker !== markerToDelete.marker)
-    );
-  };
+  const markerList = [...markers];
 
   useEffect(() => {
-    if (mapRef.current) {
+    if (!mapRef || !mapInstance) return;
+
+    // Initial map setup
+    if (!mapRef.current) return; // Guard clause if ref is not attached
+
+    if (mapRef.current && !mapInstance.current) {
       mapInstance.current = L.map(mapRef.current, { attributionControl: false }).setView(
         [39.8333, -94.5833],
         4
       );
 
-      const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
@@ -37,7 +35,35 @@ function Map() {
 
       L.control.attribution({ prefix: false }).addTo(mapInstance.current);
 
+      for (const { lat, lng, markerInfo, gridcode, state, county } of markers) {
+        const newMarker = L.marker([lat, lng]).addTo(mapInstance.current);
+        newMarker.bindPopup(markerInfo);
+
+        setMarkers((prevMarkers) => {
+          const filteredMarkers = prevMarkers.filter(
+            (marker) => marker.lat != lat && marker.lng != lng
+          );
+
+          return [
+            ...filteredMarkers,
+            { lat, lng, marker: newMarker, gridcode, state, county, markerInfo },
+          ];
+        });
+      }
+
       const addMarker = (lat, lng, gridcode, state, county) => {
+        let doesExist = false;
+        for (const marker of markerList) {
+          if (marker.lat === lat && marker.lng === lng) {
+            doesExist = true;
+            break;
+          }
+        }
+
+        if (doesExist) {
+          return;
+        }
+
         const newMarker = L.marker([lat, lng]).addTo(mapInstance.current);
         let markerInfo = "Marker at " + lat.toFixed(3) + ", " + lng.toFixed(3);
 
@@ -55,8 +81,9 @@ function Map() {
 
         setMarkers((prevMarkers) => [
           ...prevMarkers,
-          { lat, lng, marker: newMarker, gridcode, state, county },
+          { lat, lng, marker: newMarker, gridcode, state, county, markerInfo },
         ]);
+        markerList.push({ lat, lng, gridcode, state, county, markerInfo });
       };
 
       function gridOnEachFeature(feature, layer) {
@@ -88,7 +115,7 @@ function Map() {
       }
 
       const cpc_grids = L.geoJSON(grids, {
-        style: function (feature) {
+        style: function () {
           return {
             color: "black",
             weight: 2,
@@ -210,7 +237,7 @@ function Map() {
     }
 
     return () => {
-      // Clean up the map
+      //Clean up the map
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;
@@ -218,31 +245,7 @@ function Map() {
     };
   }, []);
 
-  const focusOnMarker = (lat, lng) => {
-    console.log("🚀 ~ focusOnMarker ~ lat:", lat);
-    console.log("🚀 ~ focusOnMarker ~ mapInstance.current:", mapInstance.current);
-    if (mapInstance.current) {
-      mapInstance.current.setView([lat, lng], 10); // 13 is the zoom level, adjust as needed
-    }
-  };
-
-  return (
-    <div style={{ display: "flex", height: "70vh", width: "100%" }}>
-      <MarkerSidebar
-        markers={markers}
-        deleteMarker={deleteMarker}
-        onMarkerSelect={focusOnMarker}
-        style={{
-          width: "300px",
-          maxHeight: "500px", // set to the height of the map or as needed
-          overflowY: "auto", // enable vertical scrolling
-          flexShrink: 0,
-          marginRight: "10px",
-        }}
-      />
-      <div ref={mapRef} style={{ flex: 1 }} />
-    </div>
-  );
+  return <div ref={mapRef} style={{ height: "70vh", width: "100%" }} />;
 }
 
-export default Map;
+export default GridLocator;
