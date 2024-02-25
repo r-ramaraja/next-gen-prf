@@ -59,14 +59,11 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
             break;
           }
         }
-
         if (doesExist) {
           return;
         }
-
         const newMarker = L.marker([lat, lng]).addTo(mapInstance.current);
         let markerInfo = "Marker at " + lat.toFixed(3) + ", " + lng.toFixed(3);
-
         if (gridcode) {
           markerInfo += "<br>Grid ID: " + gridcode;
         }
@@ -76,9 +73,7 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
         if (county) {
           markerInfo += "<br>County: " + county;
         }
-
         newMarker.bindPopup(markerInfo).openPopup();
-
         setMarkers((prevMarkers) => [
           ...prevMarkers,
           { lat, lng, marker: newMarker, gridcode, state, county, markerInfo },
@@ -125,6 +120,24 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
         onEachFeature: gridOnEachFeature,
       }).addTo(mapInstance.current);
 
+      function updateCpcGridsVisibility() {
+        const zoom = mapInstance.current.getZoom();
+        if (zoom > 10) {
+          if (!mapInstance.current.hasLayer(cpc_grids)) {
+            cpc_grids.addTo(mapInstance.current);
+          }
+        } else {
+          if (mapInstance.current.hasLayer(cpc_grids)) {
+            mapInstance.current.removeLayer(cpc_grids);
+          }
+        }
+      }
+
+      mapInstance.current.on("zoomend", updateCpcGridsVisibility);
+
+      // Initially call the function to set the correct visibility
+      updateCpcGridsVisibility();
+
       function countyOnEachFeature(feature, layer) {
         // Create a label for the feature
         var label = L.marker(layer.getBounds().getCenter(), {
@@ -154,7 +167,7 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
       }
 
       const usa_counties = L.geoJSON(counties, {
-        style: function (feature) {
+        style: function () {
           return {
             color: "blue",
             weight: 2,
@@ -163,6 +176,24 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
         },
         onEachFeature: countyOnEachFeature,
       }).addTo(mapInstance.current);
+
+      function updateCountiesVisibility() {
+        const zoom = mapInstance.current.getZoom();
+        if (zoom > 8) {
+          if (!mapInstance.current.hasLayer(usa_counties)) {
+            usa_counties.addTo(mapInstance.current);
+          }
+        } else {
+          if (mapInstance.current.hasLayer(usa_counties)) {
+            mapInstance.current.removeLayer(usa_counties);
+          }
+        }
+      }
+
+      mapInstance.current.on("zoomend", updateCountiesVisibility);
+
+      // Initially call the function to set the correct visibility
+      updateCountiesVisibility();
 
       mapInstance.current.on("click", function (e) {
         var coord = e.latlng;
@@ -198,14 +229,22 @@ function GridLocator({ setMarkers, markers, mapInstance }) {
         geocoder: L.Control.Geocoder.nominatim({
           geocodingQueryParams: {
             countrycodes: "us",
+            limit: 5,
           },
         }),
+        errorMessage: "Sorry, that address could not be found.",
         showUniqueResult: false,
+        suggestMinLength: 3,
+        suggestTimeout: 250 /* ms */,
+        defaultMarkGeocode: false,
+        placeholder: "Type the location and press enter...",
       };
 
       const geocoder = L.Control.geocoder(geoCoderOptions).addTo(mapInstance.current);
 
       geocoder.on("markgeocode", function (e) {
+        console.log("🚀 ~ e:", e);
+
         var bbox = e.geocode.bbox;
         var { lng, lat } = e.geocode.center;
 
