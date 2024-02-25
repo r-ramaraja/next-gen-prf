@@ -105,13 +105,13 @@ function Map() {
   };
 
   return (
-    <Box>
+    <Box sx={{ height: "100vh", overflowY: "hidden" }}>
       <Header />
-      <Box sx={{ display: "flex", height: "70vh", margin: "10px" }}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
             width: "300px",
-            maxHeight: "70vh",
+            maxHeight: "90vh",
             overflowY: "auto",
             flexShrink: 0,
             marginRight: "10px",
@@ -124,7 +124,14 @@ function Map() {
             onAddTab={addTab}
           />
         </Box>
-        <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "80%",
+          }}
+        >
           <Tabs
             value={selectedTab}
             onChange={handleTabChange}

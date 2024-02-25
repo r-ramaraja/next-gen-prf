@@ -12,7 +12,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
   return (
-    <div style={{ width: "300px", maxHeight: "100vh", overflowY: "auto" }}>
+    <div>
       <Typography variant="h5" style={{ margin: "10px" }}>
         Marker List
       </Typography>

@@ -297,7 +297,7 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
     };
   }, []);
 
-  return <div ref={mapRef} style={{ height: "70vh", width: "100%" }} />;
+  return <div ref={mapRef} style={{ height: "85vh", width: "100%" }} />;
 }
 
 export default GridLocator;
