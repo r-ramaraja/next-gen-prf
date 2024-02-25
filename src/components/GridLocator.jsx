@@ -8,7 +8,7 @@ import "leaflet-control-geocoder";
 
 import "./GridLocator.css";
 
-function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states }) {
+function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states, view }) {
   const mapRef = useRef(null);
   const markerList = [...markers];
 
@@ -20,8 +20,8 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
 
     if (mapRef.current && !mapInstance.current) {
       mapInstance.current = L.map(mapRef.current, { attributionControl: false }).setView(
-        [39.8333, -94.5833],
-        4
+        view.center,
+        view.zoom
       );
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

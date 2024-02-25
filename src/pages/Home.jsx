@@ -16,6 +16,10 @@ function Map() {
   const mapInstance = useRef(null); // Holds the Leaflet map instance
   const [markers, setMarkers] = React.useState([]);
   const [selectedTab, setSelectedTab] = React.useState(0);
+  const [view, setView] = React.useState({
+    center: [39.8333, -94.5833],
+    zoom: 4,
+  });
   const [tabs, setTabs] = React.useState([
     {
       label: "Grid Locator",
@@ -67,8 +71,10 @@ function Map() {
 
   const focusOnMarker = (lat, lng) => {
     if (mapInstance.current) {
-      mapInstance.current.setView([lat, lng], 10); // 13 is the zoom level, adjust as needed
+      mapInstance.current.setView([lat, lng], 10);
     }
+    setSelectedTab(0);
+    setView({ center: [lat, lng], zoom: 10 });
   };
 
   useEffect(() => {
@@ -90,6 +96,7 @@ function Map() {
           counties={counties}
           grids={grids}
           states={states}
+          view={view}
         />
       );
     } else {
