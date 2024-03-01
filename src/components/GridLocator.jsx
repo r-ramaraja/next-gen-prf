@@ -109,7 +109,7 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
         // Function to add or remove the label based on zoom level
         function updateLabel() {
           var zoom = mapInstance.current.getZoom();
-          if (zoom > 10 && mapInstance.current.getBounds().intersects(layer.getBounds())) {
+          if (zoom > 9 && mapInstance.current.getBounds().intersects(layer.getBounds())) {
             // Adjust zoom level as needed
             label.addTo(mapInstance.current);
           } else {
@@ -137,7 +137,7 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
 
       function updateCpcGridsVisibility() {
         const zoom = mapInstance.current.getZoom();
-        if (zoom > 10) {
+        if (zoom > 9) {
           if (!mapInstance.current.hasLayer(cpc_grids)) {
             cpc_grids.addTo(mapInstance.current);
           }
