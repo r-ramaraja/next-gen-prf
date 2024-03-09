@@ -105,7 +105,7 @@ function Map() {
   };
 
   return (
-    <Box sx={{ height: "100vh", overflowY: "hidden" }}>
+    <Box sx={{ height: "100vh" }}>
       <Header />
       <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
