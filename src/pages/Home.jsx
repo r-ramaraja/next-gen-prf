@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import "leaflet-control-geocoder";
 import MarkerSidebar from "../components/MarkerList.jsx";
-import MarkerDetail from "../components/MarkerDetail.jsx";
+import MarkerDetail from "./MarkerDetail.jsx";
 import { Tabs, Tab, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import GridLocator from "../components/GridLocator.jsx";

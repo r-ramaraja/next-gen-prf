@@ -8,7 +8,15 @@ import "leaflet-control-geocoder";
 
 import "./GridLocator.css";
 
-function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states, view }) {
+export default function GridLocator({
+  setMarkers,
+  markers,
+  mapInstance,
+  grids,
+  counties,
+  states,
+  view,
+}) {
   const mapRef = useRef(null);
   const markerList = [...markers];
 
@@ -58,6 +66,11 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
       }
 
       const addMarker = (lat, lng, gridcode, state, county) => {
+        if (!gridcode || !state || !county) {
+          console.warn("Marker outside USA bounds ignored.");
+          return;
+        }
+
         let doesExist = false;
         for (const marker of markerList) {
           if (marker.lat === lat && marker.lng === lng) {
@@ -299,5 +312,3 @@ function GridLocator({ setMarkers, markers, mapInstance, grids, counties, states
 
   return <div ref={mapRef} style={{ height: "85vh", width: "100%" }} />;
 }
-
-export default GridLocator;
