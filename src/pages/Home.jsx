@@ -30,7 +30,7 @@ function Map() {
     setSelectedTab(newValue);
   };
 
-  const addTab = (marker, index, id) => {
+  const addTab = (marker, id) => {
     for (const tab of tabs) {
       if (tab.marker) {
         if (marker.lat === tab.marker.lat && marker.lng === tab.marker.lng) {
@@ -150,7 +150,7 @@ function Map() {
                         size="small"
                         onClick={(event) => {
                           event.stopPropagation(); // Prevent tab selection
-                          deleteTab(index);
+                          deleteTab(tab.id);
                         }}
                       >
                         <CloseIcon fontSize="small" />

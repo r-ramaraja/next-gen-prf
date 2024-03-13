@@ -44,7 +44,7 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
               <IconButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  onAddTab(marker, index + 1, marker.id);
+                  onAddTab(marker, marker.id);
                 }}
                 aria-label="zoom-in"
                 size="small"
