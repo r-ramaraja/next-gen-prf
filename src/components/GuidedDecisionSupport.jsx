@@ -5,7 +5,6 @@ import Step from "@mui/material/Step";
 import { StepLabel } from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import IntendedUse from "./IntendedUse";
 import CoverageLevel from "./CoverageLevel";
 import ProductivityFactor from "./ProductivityFactor";
@@ -14,10 +13,10 @@ import InsurableInterest from "./InsurableInterest";
 import InsuranceYear from "./InsuranceYear";
 import IntervalDistribution from "./IntervalDistribution";
 import dayjs from "dayjs";
-import CalculateIcon from "@mui/icons-material/Calculate";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import DecisionSupport from "./DecisionSupport";
 
 const steps = [
   "Intended Use",
@@ -78,7 +77,7 @@ export default function GuidedDecision({ marker }) {
   const [monthlyErrors, setMonthlyErrors] = useState(
     Array(11).fill({ hasError: false, errorMessage: "" })
   );
-  const [isGuided, setIsGuided] = useState(true);
+  const [isGuided, setIsGuided] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -104,20 +103,6 @@ export default function GuidedDecision({ marker }) {
     setMonthlyErrors(Array(11).fill({ hasError: false, errorMessage: "" }));
   };
 
-  function shouldDisableCalculateButton() {
-    return !(
-      parseInt(acres) &&
-      acresError.hasError === false &&
-      parseInt(interest) &&
-      interestError.hasError === false &&
-      monthlyValues.reduce(
-        (sum, value) => sum + (Number.isNaN(parseInt(value)) ? 0 : parseInt(value)),
-        0
-      ) === 100 &&
-      monthlyErrors.every((error) => !error.hasError)
-    );
-  }
-
   const isStepFailed = (index, button) => {
     if (index === 3) {
       return acresError.hasError;
@@ -136,91 +121,6 @@ export default function GuidedDecision({ marker }) {
       }
       return monthlyErrors.some((error) => error.hasError);
     }
-  };
-
-  const DecisionSupport = ({ guided }) => {
-    console.log(guided);
-    const boxCSS = { p: 1 };
-    if (guided) {
-      boxCSS.marginTop = "15px";
-    }
-    return (
-      <Box sx={boxCSS}>
-        {!guided && (
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <FormControlLabel
-              control={
-                <GuidedModeSwitch
-                  checked={isGuided}
-                  onChange={(event) => {
-                    handleReset();
-                    setIsGuided(event.target.checked);
-                  }}
-                />
-              }
-              label="Guided"
-              labelPlacement="end"
-            />
-          </Box>
-        )}
-
-        <Grid container>
-          <Grid item container direction="column" spacing={2} xs={12} md={6}>
-            <IntendedUse
-              intendedUse={intendedUse}
-              setIntendedUse={setIntendedUse}
-              irrigationPractice={irrigationPractice}
-              setIrrigationPractice={setIrrigationPractice}
-              organicPractice={organicPractice}
-              setOrganicPractice={setOrganicPractice}
-            />
-
-            <CoverageLevel coverageLevel={coverageLevel} setCoverageLevel={setCoverageLevel} />
-
-            <ProductivityFactor
-              productivityFactor={productivityFactor}
-              setProductivityFactor={setProductivityFactor}
-            />
-
-            <Grid container spacing={2} sx={{ marginTop: "10px", marginLeft: "0px" }}>
-              <InsuredAcres
-                acres={acres}
-                setAcres={setAcres}
-                acresError={acresError}
-                setAcresError={setAcresError}
-              />
-              <InsurableInterest
-                interest={interest}
-                setInterest={setInterest}
-                interestError={interestError}
-                setInterestError={setInterestError}
-              />
-
-              <InsuranceYear year={year} setYear={setYear} />
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <IntervalDistribution
-              monthlyValues={monthlyValues}
-              setMonthlyValues={setMonthlyValues}
-              monthlyErrors={monthlyErrors}
-              setMonthlyErrors={setMonthlyErrors}
-            />
-          </Grid>
-        </Grid>
-        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<CalculateIcon />}
-            disabled={shouldDisableCalculateButton()}
-          >
-            Calculate
-          </Button>
-        </Box>
-      </Box>
-    );
   };
 
   function renderStepComponent(index) {
@@ -338,7 +238,37 @@ export default function GuidedDecision({ marker }) {
                   Reset
                 </Button>
               </Box>
-              <DecisionSupport guided />
+              <DecisionSupport
+                guided
+                handleReset={handleReset}
+                setIsGuided={setIsGuided}
+                isGuided={isGuided}
+                GuidedModeSwitch={GuidedModeSwitch}
+                intendedUse={intendedUse}
+                setIntendedUse={setIntendedUse}
+                irrigationPractice={irrigationPractice}
+                setIrrigationPractice={setIrrigationPractice}
+                organicPractice={organicPractice}
+                setOrganicPractice={setOrganicPractice}
+                coverageLevel={coverageLevel}
+                setCoverageLevel={setCoverageLevel}
+                productivityFactor={productivityFactor}
+                setProductivityFactor={setProductivityFactor}
+                acres={acres}
+                setAcres={setAcres}
+                acresError={acresError}
+                setAcresError={setAcresError}
+                interest={interest}
+                setInterest={setInterest}
+                interestError={interestError}
+                setInterestError={setInterestError}
+                year={year}
+                setYear={setYear}
+                monthlyValues={monthlyValues}
+                setMonthlyValues={setMonthlyValues}
+                monthlyErrors={monthlyErrors}
+                setMonthlyErrors={setMonthlyErrors}
+              />
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -380,7 +310,36 @@ export default function GuidedDecision({ marker }) {
           )}
         </Box>
       ) : (
-        <DecisionSupport />
+        <DecisionSupport
+          handleReset={handleReset}
+          setIsGuided={setIsGuided}
+          isGuided={isGuided}
+          GuidedModeSwitch={GuidedModeSwitch}
+          intendedUse={intendedUse}
+          setIntendedUse={setIntendedUse}
+          irrigationPractice={irrigationPractice}
+          setIrrigationPractice={setIrrigationPractice}
+          organicPractice={organicPractice}
+          setOrganicPractice={setOrganicPractice}
+          coverageLevel={coverageLevel}
+          setCoverageLevel={setCoverageLevel}
+          productivityFactor={productivityFactor}
+          setProductivityFactor={setProductivityFactor}
+          acres={acres}
+          setAcres={setAcres}
+          acresError={acresError}
+          setAcresError={setAcresError}
+          interest={interest}
+          setInterest={setInterest}
+          interestError={interestError}
+          setInterestError={setInterestError}
+          year={year}
+          setYear={setYear}
+          monthlyValues={monthlyValues}
+          setMonthlyValues={setMonthlyValues}
+          monthlyErrors={monthlyErrors}
+          setMonthlyErrors={setMonthlyErrors}
+        />
       )}
     </React.Fragment>
   );
