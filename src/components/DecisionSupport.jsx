@@ -15,29 +15,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 export default function DecisionSupport({
   guided,
   handleReset,
-  setIsGuided,
-  isGuided,
   GuidedModeSwitch,
-  intendedUse,
-  setIntendedUse,
-  irrigationPractice,
-  setIrrigationPractice,
-  organicPractice,
-  setOrganicPractice,
+  tabState,
+  setTabState,
+  id,
   coverageLevel,
   setCoverageLevel,
   productivityFactor,
   setProductivityFactor,
-  acres,
-  setAcres,
-  acresError,
-  setAcresError,
-  interest,
-  setInterest,
-  interestError,
-  setInterestError,
-  year,
-  setYear,
   monthlyValues,
   setMonthlyValues,
   monthlyErrors,
@@ -47,6 +32,8 @@ export default function DecisionSupport({
   if (guided) {
     boxCSS.marginTop = "15px";
   }
+
+  const { isGuided, acres, acresError, interest, interestError } = tabState;
 
   function shouldDisableCalculateButton() {
     return !(
@@ -73,7 +60,13 @@ export default function DecisionSupport({
                 checked={isGuided}
                 onChange={(event) => {
                   handleReset();
-                  setIsGuided(event.target.checked);
+                  setTabState(
+                    {
+                      ...tabState,
+                      isGuided: event.target.checked,
+                    },
+                    id
+                  );
                 }}
               />
             }
@@ -85,46 +78,18 @@ export default function DecisionSupport({
 
       <Grid container>
         <Grid item container direction="column" spacing={2} xs={12} md={6}>
-          <IntendedUse
-            intendedUse={intendedUse}
-            setIntendedUse={setIntendedUse}
-            irrigationPractice={irrigationPractice}
-            setIrrigationPractice={setIrrigationPractice}
-            organicPractice={organicPractice}
-            setOrganicPractice={setOrganicPractice}
-          />
-
-          <CoverageLevel coverageLevel={coverageLevel} setCoverageLevel={setCoverageLevel} />
-
-          <ProductivityFactor
-            productivityFactor={productivityFactor}
-            setProductivityFactor={setProductivityFactor}
-          />
+          <IntendedUse tabState={tabState} setTabState={setTabState} id={id} />
+          <CoverageLevel tabState={tabState} setTabState={setTabState} id={id} />
+          <ProductivityFactor tabState={tabState} setTabState={setTabState} id={id} />
 
           <Grid container spacing={2} sx={{ marginTop: "10px", marginLeft: "0px" }}>
-            <InsuredAcres
-              acres={acres}
-              setAcres={setAcres}
-              acresError={acresError}
-              setAcresError={setAcresError}
-            />
-            <InsurableInterest
-              interest={interest}
-              setInterest={setInterest}
-              interestError={interestError}
-              setInterestError={setInterestError}
-            />
-
-            <InsuranceYear year={year} setYear={setYear} />
+            <InsuredAcres tabState={tabState} setTabState={setTabState} id={id} />
+            <InsurableInterest tabState={tabState} setTabState={setTabState} id={id} />
+            <InsuranceYear tabState={tabState} setTabState={setTabState} id={id} />
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <IntervalDistribution
-            monthlyValues={monthlyValues}
-            setMonthlyValues={setMonthlyValues}
-            monthlyErrors={monthlyErrors}
-            setMonthlyErrors={setMonthlyErrors}
-          />
+          <IntervalDistribution tabState={tabState} setTabState={setTabState} id={id} />
         </Grid>
       </Grid>
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}>

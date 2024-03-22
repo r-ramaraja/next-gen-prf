@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Grid, Typography, InputAdornment } from "@mui/material";
 
-export default function IntervalDistribution({
-  monthlyValues,
-  setMonthlyValues,
-  monthlyErrors,
-  setMonthlyErrors,
-  standalone,
-}) {
+export default function IntervalDistribution({ id, tabState, setTabState }) {
   const monthRanges = [
     "Jan-Feb",
     "Feb-Mar",
@@ -21,6 +15,15 @@ export default function IntervalDistribution({
     "Oct-Nov",
     "Nov-Dec",
   ];
+
+  const [localMonthlyValues, setLocalMonthlyValues] = useState(tabState.monthlyValues);
+  const [localMonthlyErrors, setLocalMonthlyErrors] = useState(tabState.monthlyErrors);
+
+  // Synchronize local state with global state when the component mounts or the global state changes
+  useEffect(() => {
+    setLocalMonthlyValues(tabState.monthlyValues);
+    setLocalMonthlyErrors(tabState.monthlyErrors);
+  }, [tabState.monthlyValues, tabState.monthlyErrors]);
 
   function isInvalidNumber(newValues, value, max, symbol = "%") {
     if (value.includes(".")) {
@@ -44,28 +47,40 @@ export default function IntervalDistribution({
   }
 
   const handleMonthlyValueChange = (index, event) => {
-    const newValues = [...monthlyValues];
-    const newErrors = [...monthlyErrors];
+    const newValues = [...localMonthlyValues];
+    const newErrors = [...localMonthlyErrors];
+
     const value = event.target.value;
 
     newValues[index] = value;
     newErrors[index] = isInvalidNumber(newValues, value, 60);
-    setMonthlyValues(newValues);
-    setMonthlyErrors(newErrors);
+    setLocalMonthlyValues(newValues);
+    setLocalMonthlyErrors(newErrors);
+  };
+
+  const handleBlur = () => {
+    setTabState(
+      {
+        ...tabState,
+        monthlyValues: localMonthlyValues,
+        monthlyErrors: localMonthlyErrors,
+      },
+      id
+    );
   };
 
   function checkIfIntervalDistributionIsDisabled(index) {
     if (index === 0) {
-      return monthlyValues[index + 1] && monthlyValues[index + 1] != 0;
+      return localMonthlyValues[index + 1] && localMonthlyValues[index + 1] != 0;
     }
 
     if (index === 10) {
-      return monthlyValues[index - 1] && monthlyValues[index - 1] != 0;
+      return localMonthlyValues[index - 1] && localMonthlyValues[index - 1] != 0;
     }
 
     return (
-      (monthlyValues[index + 1] && monthlyValues[index + 1] != 0) ||
-      (monthlyValues[index - 1] && monthlyValues[index - 1] != 0)
+      (localMonthlyValues[index + 1] && localMonthlyValues[index + 1] != 0) ||
+      (localMonthlyValues[index - 1] && localMonthlyValues[index - 1] != 0)
     );
   }
 
@@ -80,10 +95,11 @@ export default function IntervalDistribution({
             <TextField
               key={`intervalDistribution${label}${index}`}
               label={label}
-              value={checkIfIntervalDistributionIsDisabled(index) ? 0 : monthlyValues[index]}
+              value={checkIfIntervalDistributionIsDisabled(index) ? 0 : localMonthlyValues[index]}
               disabled={checkIfIntervalDistributionIsDisabled(index)}
               style={{ width: "150px" }}
               onChange={(e) => handleMonthlyValueChange(index, e)}
+              onBlur={handleBlur}
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
                 inputProps: {
@@ -100,8 +116,8 @@ export default function IntervalDistribution({
               InputLabelProps={{
                 shrink: true,
               }}
-              error={monthlyErrors[index].hasError}
-              helperText={monthlyErrors[index].errorMessage}
+              error={localMonthlyErrors[index].hasError}
+              helperText={localMonthlyErrors[index].errorMessage}
             />
           </Grid>
         ))}

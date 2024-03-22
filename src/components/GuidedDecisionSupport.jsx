@@ -61,54 +61,67 @@ const GuidedModeSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function GuidedDecision({ marker }) {
-  const [activeStep, setActiveStep] = useState(0);
-  const [intendedUse, setIntendedUse] = useState("grazing");
-  const [irrigationPractice, setIrrigationPractice] = useState("irrigated");
-  const [organicPractice, setOrganicPractice] = useState("non-organic");
+export default function GuidedDecision({ marker, tabState, setTabState }) {
   const [coverageLevel, setCoverageLevel] = useState(90);
   const [productivityFactor, setProductivityFactor] = useState(100);
-  const [acres, setAcres] = useState(100);
-  const [acresError, setAcresError] = useState({ hasError: false, errorMessage: "" });
-  const [interest, setInterest] = useState(100);
-  const [interestError, setInterestError] = useState({ hasError: false, errorMessage: "" });
-  const [year, setYear] = useState(dayjs().subtract(1, "year"));
-  const [monthlyValues, setMonthlyValues] = useState(Array(11).fill(""));
+  const values = Array(11).fill("");
+  values[0] = 50;
+  values[5] = 50;
+  const [monthlyValues, setMonthlyValues] = useState(values);
   const [monthlyErrors, setMonthlyErrors] = useState(
     Array(11).fill({ hasError: false, errorMessage: "" })
   );
-  const [isGuided, setIsGuided] = useState(false);
+
+  const { activeStep, isGuided } = tabState;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setTabState(
+      {
+        ...tabState,
+        activeStep: activeStep + 1,
+      },
+      marker.id
+    );
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setTabState(
+      {
+        ...tabState,
+        activeStep: activeStep - 1,
+      },
+      marker.id
+    );
   };
 
   const handleReset = () => {
-    setActiveStep(0);
-    setIntendedUse("grazing");
-    setIrrigationPractice("irrigated");
-    setOrganicPractice("non-organic");
-    setCoverageLevel(90);
-    setProductivityFactor(100);
-    setAcres(100);
-    setAcresError({ hasError: false, errorMessage: "" });
-    setInterest(100);
-    setInterestError({ hasError: false, errorMessage: "" });
-    setYear(dayjs().subtract(1, "year"));
-    setMonthlyValues(Array(11).fill(""));
-    setMonthlyErrors(Array(11).fill({ hasError: false, errorMessage: "" }));
+    setTabState(
+      {
+        ...tabState,
+        activeStep: 0,
+        intendedUse: "grazing",
+        irrigationPractice: "irrigated",
+        organicPractice: "non-organic",
+        coverageLevel: 90,
+        productivityFactor: 100,
+        acres: 100,
+        acresError: { hasError: false, message: "" },
+        interest: 100,
+        interestError: { hasError: false, message: "" },
+        year: dayjs().subtract(1, "year"),
+        monthlyValues: values,
+        monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
+      },
+      marker.id
+    );
   };
 
   const isStepFailed = (index, button) => {
     if (index === 3) {
-      return acresError.hasError;
+      return tabState.acresError.hasError;
     }
     if (index === 4) {
-      return interestError.hasError;
+      return tabState.interestError.hasError;
     }
     if (index === 6) {
       if (button) {
@@ -129,62 +142,30 @@ export default function GuidedDecision({ marker }) {
 
     switch (index) {
       case 0:
-        component = (
-          <IntendedUse
-            intendedUse={intendedUse}
-            setIntendedUse={setIntendedUse}
-            irrigationPractice={irrigationPractice}
-            setIrrigationPractice={setIrrigationPractice}
-            organicPractice={organicPractice}
-            setOrganicPractice={setOrganicPractice}
-          />
-        );
+        component = <IntendedUse tabState={tabState} setTabState={setTabState} id={marker.id} />;
         break;
       case 1:
-        component = (
-          <CoverageLevel coverageLevel={coverageLevel} setCoverageLevel={setCoverageLevel} />
-        );
+        component = <CoverageLevel tabState={tabState} setTabState={setTabState} id={marker.id} />;
         break;
       case 2:
         component = (
-          <ProductivityFactor
-            productivityFactor={productivityFactor}
-            setProductivityFactor={setProductivityFactor}
-          />
+          <ProductivityFactor tabState={tabState} setTabState={setTabState} id={marker.id} />
         );
         break;
       case 3:
-        component = (
-          <InsuredAcres
-            acres={acres}
-            setAcres={setAcres}
-            acresError={acresError}
-            setAcresError={setAcresError}
-          />
-        );
+        component = <InsuredAcres tabState={tabState} setTabState={setTabState} id={marker.id} />;
         break;
       case 4:
         component = (
-          <InsurableInterest
-            interest={interest}
-            setInterest={setInterest}
-            interestError={interestError}
-            setInterestError={setInterestError}
-          />
+          <InsurableInterest tabState={tabState} setTabState={setTabState} id={marker.id} />
         );
         break;
       case 5:
-        component = <InsuranceYear year={year} setYear={setYear} />;
+        component = <InsuranceYear tabState={tabState} setTabState={setTabState} id={marker.id} />;
         break;
       case 6:
         component = (
-          <IntervalDistribution
-            monthlyValues={monthlyValues}
-            setMonthlyValues={setMonthlyValues}
-            monthlyErrors={monthlyErrors}
-            setMonthlyErrors={setMonthlyErrors}
-            standalone
-          />
+          <IntervalDistribution tabState={tabState} setTabState={setTabState} id={marker.id} />
         );
         break;
     }
@@ -227,7 +208,13 @@ export default function GuidedDecision({ marker }) {
                       checked={isGuided}
                       onChange={(event) => {
                         handleReset();
-                        setIsGuided(event.target.checked);
+                        setTabState(
+                          {
+                            ...tabState,
+                            isGuided: event.target.checked,
+                          },
+                          marker.id
+                        );
                       }}
                     />
                   }
@@ -241,29 +228,14 @@ export default function GuidedDecision({ marker }) {
               <DecisionSupport
                 guided
                 handleReset={handleReset}
-                setIsGuided={setIsGuided}
-                isGuided={isGuided}
                 GuidedModeSwitch={GuidedModeSwitch}
-                intendedUse={intendedUse}
-                setIntendedUse={setIntendedUse}
-                irrigationPractice={irrigationPractice}
-                setIrrigationPractice={setIrrigationPractice}
-                organicPractice={organicPractice}
-                setOrganicPractice={setOrganicPractice}
+                tabState={tabState}
+                setTabState={setTabState}
+                id={marker.id}
                 coverageLevel={coverageLevel}
                 setCoverageLevel={setCoverageLevel}
                 productivityFactor={productivityFactor}
                 setProductivityFactor={setProductivityFactor}
-                acres={acres}
-                setAcres={setAcres}
-                acresError={acresError}
-                setAcresError={setAcresError}
-                interest={interest}
-                setInterest={setInterest}
-                interestError={interestError}
-                setInterestError={setInterestError}
-                year={year}
-                setYear={setYear}
                 monthlyValues={monthlyValues}
                 setMonthlyValues={setMonthlyValues}
                 monthlyErrors={monthlyErrors}
@@ -290,7 +262,13 @@ export default function GuidedDecision({ marker }) {
                       checked={isGuided}
                       onChange={(event) => {
                         handleReset();
-                        setIsGuided(event.target.checked);
+                        setTabState(
+                          {
+                            ...tabState,
+                            isGuided: event.target.checked,
+                          },
+                          marker.id
+                        );
                       }}
                     />
                   }
@@ -312,29 +290,14 @@ export default function GuidedDecision({ marker }) {
       ) : (
         <DecisionSupport
           handleReset={handleReset}
-          setIsGuided={setIsGuided}
-          isGuided={isGuided}
           GuidedModeSwitch={GuidedModeSwitch}
-          intendedUse={intendedUse}
-          setIntendedUse={setIntendedUse}
-          irrigationPractice={irrigationPractice}
-          setIrrigationPractice={setIrrigationPractice}
-          organicPractice={organicPractice}
-          setOrganicPractice={setOrganicPractice}
+          tabState={tabState}
+          setTabState={setTabState}
+          id={marker.id}
           coverageLevel={coverageLevel}
           setCoverageLevel={setCoverageLevel}
           productivityFactor={productivityFactor}
           setProductivityFactor={setProductivityFactor}
-          acres={acres}
-          setAcres={setAcres}
-          acresError={acresError}
-          setAcresError={setAcresError}
-          interest={interest}
-          setInterest={setInterest}
-          interestError={interestError}
-          setInterestError={setInterestError}
-          year={year}
-          setYear={setYear}
           monthlyValues={monthlyValues}
           setMonthlyValues={setMonthlyValues}
           monthlyErrors={monthlyErrors}

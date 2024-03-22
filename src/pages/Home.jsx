@@ -1,6 +1,6 @@
 /* eslint-disable no-inner-declarations */
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "leaflet-control-geocoder";
 import MarkerSidebar from "../components/MarkerList.jsx";
 import MarkerDetail from "./MarkerDetail.jsx";
@@ -11,9 +11,11 @@ import Header from "../components/Header";
 import { counties } from "../counties.js";
 import { states } from "../states.js";
 import { grids } from "../grids.js";
+import dayjs from "dayjs";
 
 function Map() {
   const mapInstance = useRef(null); // Holds the Leaflet map instance
+  const [tabStates, setTabStates] = useState({});
   const [markers, setMarkers] = React.useState([]);
   const [selectedTab, setSelectedTab] = React.useState(0);
   const [view, setView] = React.useState({
@@ -46,14 +48,43 @@ function Map() {
       id: id,
       marker,
     };
+
+    const values = Array(11).fill("");
+    values[0] = 50;
+    values[5] = 50;
     setTabs([...tabs, newTab]);
     setSelectedTab(newTabIndex);
+    setTabStates({
+      ...tabStates,
+      [id]: {
+        markerDetailTabId: 0,
+        activeStep: 0,
+        intendedUse: "grazing",
+        irrigationPractice: "irrigated",
+        organicPractice: "non-organic",
+        coverageLevel: 90,
+        productivityFactor: 100,
+        acres: 100,
+        acresError: { hasError: false, message: "" },
+        interest: 100,
+        interestError: { hasError: false, message: "" },
+        year: dayjs().subtract(1, "year"),
+        monthlyValues: values,
+        monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
+        isGuided: false,
+      },
+    });
   };
 
   const deleteTab = (id) => {
     const tabIndex = tabs.findIndex((tab) => tab.id === id);
     const newTabs = tabs.filter((_, index) => index !== tabIndex);
     setTabs(newTabs);
+    setTabStates((prev) => {
+      const newState = { ...prev };
+      delete newState[tabIndex];
+      return newState;
+    });
 
     // Adjust the selected tab if necessary
     if (selectedTab >= tabIndex) {
@@ -100,7 +131,13 @@ function Map() {
         />
       );
     } else {
-      return <MarkerDetail marker={tabs[selectedTab].marker} />;
+      return (
+        <MarkerDetail
+          marker={tabs[selectedTab].marker}
+          tabState={tabStates[tabs[selectedTab].id]}
+          setTabState={(newState, id) => setTabStates({ ...tabStates, [id]: newState })}
+        />
+      );
     }
   };
 

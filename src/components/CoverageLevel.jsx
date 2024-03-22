@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import { Box, Slider, Typography, Grid } from "@mui/material";
 
-export default function CoverageLevel({ coverageLevel, setCoverageLevel }) {
+export default function CoverageLevel({ tabState, setTabState, id }) {
+  const [localCoverageLevel, setLocalCoverageLevel] = useState(tabState.coverageLevel);
+
+  const handleSliderChange = (event, newValue) => {
+    setLocalCoverageLevel(newValue);
+  };
+
+  const handleCommitChange = (event, newValue) => {
+    setTabState({ ...tabState, coverageLevel: newValue }, id);
+  };
+
   return (
     <React.Fragment>
       <Typography gutterBottom sx={{ margin: "10px" }}>
@@ -9,9 +19,10 @@ export default function CoverageLevel({ coverageLevel, setCoverageLevel }) {
       </Typography>
       <Slider
         sx={{ width: "50vh", marginLeft: "25px" }}
-        value={coverageLevel}
+        value={localCoverageLevel}
+        onChange={handleSliderChange}
+        onChangeCommitted={handleCommitChange}
         step={5}
-        onChange={(event, newValue) => setCoverageLevel(newValue)}
         min={70}
         max={90}
         marks={[

@@ -6,11 +6,17 @@ import Box from "@mui/material/Box";
 import GuidedDecisionSupport from "../components/GuidedDecisionSupport";
 import Overview from "../components/Overview";
 
-function MarkerDetail({ marker }) {
-  const [value, setValue] = React.useState(0);
+function MarkerDetail({ marker, tabState, setTabState }) {
+  const { markerDetailTabId } = tabState;
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabState(
+      {
+        ...tabState,
+        markerDetailTabId: newValue,
+      },
+      marker.id
+    );
   };
 
   function TabPanel(props) {
@@ -35,7 +41,7 @@ function MarkerDetail({ marker }) {
       <Tabs
         orientation="vertical"
         variant="scrollable"
-        value={value}
+        value={markerDetailTabId}
         onChange={handleChange}
         sx={{ borderRight: 1, borderColor: "divider", width: "10%" }}
       >
@@ -44,20 +50,20 @@ function MarkerDetail({ marker }) {
         <Tab label="Precipitation" />
         <Tab label="Summary of Business" />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={markerDetailTabId} index={0}>
         <Overview marker={marker} />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={markerDetailTabId} index={1}>
         <Box sx={{ p: 1 }}>
-          <GuidedDecisionSupport marker={marker} />
+          <GuidedDecisionSupport marker={marker} tabState={tabState} setTabState={setTabState} />
         </Box>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={markerDetailTabId} index={2}>
         <Box sx={{ p: 1 }}>
           <Typography>Coming soon...</Typography>
         </Box>
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={markerDetailTabId} index={3}>
         <Box sx={{ p: 1 }}>
           <Typography>Coming soon...</Typography>
         </Box>

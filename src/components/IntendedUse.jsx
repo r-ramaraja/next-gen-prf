@@ -1,14 +1,8 @@
 import React from "react";
 import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
 
-export default function IntendedUse({
-  intendedUse,
-  setIntendedUse,
-  irrigationPractice,
-  setIrrigationPractice,
-  organicPractice,
-  setOrganicPractice,
-}) {
+export default function IntendedUse({ tabState, setTabState, id }) {
+  const { intendedUse, irrigationPractice, organicPractice } = tabState;
   return (
     <Grid container item spacing={2}>
       <Grid item>
@@ -17,7 +11,15 @@ export default function IntendedUse({
           <Select
             value={intendedUse}
             label="Intended Use"
-            onChange={(event) => setIntendedUse(event.target.value)}
+            onChange={(event) =>
+              setTabState(
+                {
+                  ...tabState,
+                  intendedUse: event.target.value,
+                },
+                id
+              )
+            }
           >
             <MenuItem value="grazing">Grazing</MenuItem>
             <MenuItem value="haying">Haying</MenuItem>
@@ -32,7 +34,15 @@ export default function IntendedUse({
             <Select
               value={irrigationPractice}
               label="Irrigation Practice"
-              onChange={(event) => setIrrigationPractice(event.target.value)}
+              onChange={(event) =>
+                setTabState(
+                  {
+                    ...tabState,
+                    irrigationPractice: event.target.value,
+                  },
+                  id
+                )
+              }
             >
               <MenuItem value="irrigated">Irrigated</MenuItem>
               <MenuItem value="non-irrigated">Non-Irrigated</MenuItem>
@@ -48,7 +58,15 @@ export default function IntendedUse({
             <Select
               value={organicPractice}
               label="Organic Practice"
-              onChange={(event) => setOrganicPractice(event.target.value)}
+              onChange={(event) =>
+                setTabState(
+                  {
+                    ...tabState,
+                    organicPractice: event.target.value,
+                  },
+                  id
+                )
+              }
             >
               <MenuItem value="non-organic">Not Organic</MenuItem>
               <MenuItem value="certified">Certified</MenuItem>

@@ -5,17 +5,32 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 
-export default function InsuranceYear({ year, setYear }) {
+export default function InsuranceYear({ id, tabState, setTabState }) {
+  const { year } = tabState;
+
   const handleYearChange = (event) => {
     if (event && event.$y) {
-      setYear(dayjs().year(event.$y));
+      setTabState(
+        {
+          ...tabState,
+          year: dayjs().year(event.$y),
+        },
+        id
+      );
     } else {
-      setYear(event);
+      setTabState(
+        {
+          ...tabState,
+          year: event,
+        },
+        id
+      );
     }
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+        key={"insuranceYear" + id}
         label={"Year"}
         views={["year"]}
         minDate={dayjs().year("2007")}
