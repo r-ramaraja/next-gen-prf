@@ -86,7 +86,7 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
 
   return (
     <React.Fragment>
-      <Typography gutterBottom sx={{ marginBottom: "15px" }}>
+      <Typography gutterBottom sx={{ marginBottom: "1rem" }}>
         Interval Distribution (max per interval 60%)
       </Typography>
       <Grid container spacing={2}>

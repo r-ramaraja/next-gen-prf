@@ -172,8 +172,8 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
     return (
       <React.Fragment>
-        <Typography sx={{ mt: 2, mb: 1, margin: "20px" }}>{description}</Typography>
-        {component}
+        <Typography sx={{ mt: 2, mb: 1, margin: "1rem" }}>{description}</Typography>
+        <div style={{ margin: "1rem" }}>{component}</div>
       </React.Fragment>
     );
   }

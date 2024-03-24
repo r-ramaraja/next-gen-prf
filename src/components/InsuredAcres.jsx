@@ -66,7 +66,7 @@ export default function InsuredAcres({ id, tabState, setTabState }) {
       InputLabelProps={{
         shrink: true,
       }}
-      style={{ width: "150px", margin: "10px" }}
+      style={{ width: "150px" }}
       error={localAcresError.hasError}
       helperText={localAcresError.errorMessage}
     />

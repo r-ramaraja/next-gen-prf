@@ -50,7 +50,7 @@ export default function InsuranceYear({ id, tabState, setTabState }) {
             <Popper {...popperProps} style={{ ...style, position: "fixed" }} />
           ),
         }}
-        sx={{ margin: "10px", width: "150px" }}
+        sx={{ width: "150px" }}
       />
     </LocalizationProvider>
   );

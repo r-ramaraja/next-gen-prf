@@ -37,13 +37,20 @@ function MarkerDetail({ marker, tabState, setTabState }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", marginTop: "10px" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        marginTop: "1rem",
+      }}
+    >
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={markerDetailTabId}
         onChange={handleChange}
-        sx={{ borderRight: 1, borderColor: "divider", width: "10%" }}
+        sx={{ borderRight: 1, borderColor: "divider", minWidth: "min-content" }}
       >
         <Tab label="Overview" />
         <Tab label="Decision Support" />

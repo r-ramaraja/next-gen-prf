@@ -6,7 +6,7 @@ import "./App.css";
 
 function App() {
   return (
-    <Box sx={{ overflowX: "hidden", margin: 0 }}>
+    <Box sx={{ margin: 0 }}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

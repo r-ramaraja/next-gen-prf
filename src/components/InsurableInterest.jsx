@@ -49,6 +49,7 @@ export default function InsurableInterest({ id, tabState, setTabState }) {
       value={localInterest}
       onChange={handleInterestChange}
       onBlur={handleBlur}
+      margin="normal"
       InputProps={{
         endAdornment: <InputAdornment position="end">%</InputAdornment>,
         inputProps: {
@@ -65,7 +66,7 @@ export default function InsurableInterest({ id, tabState, setTabState }) {
       InputLabelProps={{
         shrink: true,
       }}
-      style={{ width: "150px", margin: "10px" }}
+      style={{ width: "150px" }}
       error={localInterestError.hasError}
       helperText={localInterestError.errorMessage}
     />
