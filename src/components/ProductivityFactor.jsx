@@ -16,11 +16,9 @@ export default function ProductivityFactor({ tabState, setTabState, id }) {
 
   return (
     <React.Fragment>
-      <Typography gutterBottom sx={{ margin: "10px" }}>
-        Productivity Factor: {localProductivityFactor}%
-      </Typography>
+      <Typography gutterBottom>Productivity Factor: {localProductivityFactor}%</Typography>
       <Slider
-        sx={{ width: "50vh", marginLeft: "10px" }}
+        sx={{ marginLeft: "2rem", marginRight: "2rem", width: "80%" }}
         value={localProductivityFactor}
         onChange={handleSliderChange}
         onChangeCommitted={handleCommitChange}

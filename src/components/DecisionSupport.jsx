@@ -30,7 +30,7 @@ export default function DecisionSupport({
 }) {
   const boxCSS = { p: 1 };
   if (guided) {
-    boxCSS.marginTop = "15px";
+    boxCSS.marginTop = "1rem";
   }
 
   const { isGuided, acres, acresError, interest, interestError } = tabState;
@@ -55,6 +55,7 @@ export default function DecisionSupport({
         <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
           <Box sx={{ flex: "1 1 auto" }} />
           <FormControlLabel
+            sx={{ marginRight: 0 }}
             control={
               <GuidedModeSwitch
                 checked={isGuided}
@@ -77,22 +78,33 @@ export default function DecisionSupport({
       )}
 
       <Grid container>
-        <Grid item container direction="column" spacing={2} xs={12} md={6}>
+        <Grid item container direction="column" spacing={2} xl={6}>
           <IntendedUse tabState={tabState} setTabState={setTabState} id={id} />
-          <CoverageLevel tabState={tabState} setTabState={setTabState} id={id} />
-          <ProductivityFactor tabState={tabState} setTabState={setTabState} id={id} />
 
-          <Grid container spacing={2} sx={{ marginTop: "10px", marginLeft: "0px" }}>
-            <InsuredAcres tabState={tabState} setTabState={setTabState} id={id} />
-            <InsurableInterest tabState={tabState} setTabState={setTabState} id={id} />
-            <InsuranceYear tabState={tabState} setTabState={setTabState} id={id} />
+          <Grid item>
+            <CoverageLevel tabState={tabState} setTabState={setTabState} id={id} />
+          </Grid>
+          <Grid item>
+            <ProductivityFactor tabState={tabState} setTabState={setTabState} id={id} />
+          </Grid>
+
+          <Grid container gap={2} sx={{ margin: "1rem" }}>
+            <Grid item>
+              <InsuredAcres tabState={tabState} setTabState={setTabState} id={id} />
+            </Grid>
+            <Grid item>
+              <InsurableInterest tabState={tabState} setTabState={setTabState} id={id} />
+            </Grid>
+            <Grid item>
+              <InsuranceYear tabState={tabState} setTabState={setTabState} id={id} />
+            </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xl={6}>
           <IntervalDistribution tabState={tabState} setTabState={setTabState} id={id} />
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
         <Button
           variant="contained"
           color="primary"

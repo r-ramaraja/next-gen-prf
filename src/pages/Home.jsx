@@ -142,16 +142,23 @@ function Map() {
   };
 
   return (
-    <Box sx={{ height: "100vh" }}>
+    <Box sx={{ display: "flex", flexFlow: "column", height: "100vh" }}>
       <Header />
-      <Box sx={{ display: "flex", height: "100vh" }}>
+      <Box
+        sx={{
+          flex: "1",
+          display: "flex",
+          flexFlow: "row wrap",
+          gap: "1rem",
+          margin: "0 1rem 1rem 1rem",
+        }}
+      >
         <Box
+          id="sidebar"
           sx={{
-            width: "30vh",
             maxHeight: "90vh",
             overflowY: "auto",
-            flexShrink: 0,
-            marginRight: "1vh",
+            minWidth: "275px",
           }}
         >
           <MarkerSidebar
@@ -163,10 +170,10 @@ function Map() {
         </Box>
         <Box
           sx={{
-            flexGrow: 1,
+            flex: "1",
             display: "flex",
             flexDirection: "column",
-            maxWidth: "80%",
+            height: "100%",
           }}
         >
           <Tabs

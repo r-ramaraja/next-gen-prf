@@ -13,7 +13,7 @@ import InfoIcon from "@mui/icons-material/Info";
 function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
   return (
     <div>
-      <Typography variant="h5" style={{ margin: "1vh" }}>
+      <Typography variant="h5" style={{ marginTop: "1rem" }}>
         Marker List
       </Typography>
       {markers.length > 0 ? (
@@ -80,7 +80,7 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
           </Accordion>
         ))
       ) : (
-        <Typography style={{ margin: "1vh" }}>No markers selected.</Typography>
+        <Typography style={{ marginTop: "1rem" }}>No markers selected.</Typography>
       )}
     </div>
   );

@@ -14,11 +14,9 @@ export default function CoverageLevel({ tabState, setTabState, id }) {
 
   return (
     <React.Fragment>
-      <Typography gutterBottom sx={{ margin: "10px" }}>
-        Coverage Level
-      </Typography>
+      <Typography gutterBottom>Coverage Level</Typography>
       <Slider
-        sx={{ width: "50vh", marginLeft: "25px" }}
+        sx={{ marginLeft: "2rem", marginRight: "2rem", width: "80%" }}
         value={localCoverageLevel}
         onChange={handleSliderChange}
         onChangeCommitted={handleCommitChange}

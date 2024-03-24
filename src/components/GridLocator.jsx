@@ -310,5 +310,5 @@ export default function GridLocator({
     };
   }, []);
 
-  return <div ref={mapRef} style={{ height: "85vh", width: "100%" }} />;
+  return <div ref={mapRef} style={{ height: "100%", width: "100%" }} />;
 }
