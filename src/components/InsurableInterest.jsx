@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Grid, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment } from "@mui/material";
 
 export default function InsurableInterest({ id, tabState, setTabState }) {
   const [localInterest, setLocalInterest] = useState(tabState.interest);
   const [localInterestError, setLocalInterestError] = useState(tabState.interestError);
 
-  // Synchronize local state with global state when the component mounts or the global state changes
   useEffect(() => {
     setLocalInterest(tabState.interest);
     setLocalInterestError(tabState.interestError);

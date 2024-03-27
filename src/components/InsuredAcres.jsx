@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Grid } from "@mui/material";
-import { tab } from "@testing-library/user-event/dist/tab";
+import { TextField } from "@mui/material";
 
 export default function InsuredAcres({ id, tabState, setTabState }) {
   const [localAcres, setLocalAcres] = useState(tabState.acres);
@@ -12,7 +11,7 @@ export default function InsuredAcres({ id, tabState, setTabState }) {
     setLocalAcresError(tabState.acresError);
   }, [tabState.acres, tabState.acresError]);
 
-  function isInvalidNumber(value, max, symbol = "%") {
+  function isInvalidNumber(value, max) {
     if (value && value.includes(".")) {
       return { hasError: true, errorMessage: "No Decimals" };
     }
@@ -30,7 +29,7 @@ export default function InsuredAcres({ id, tabState, setTabState }) {
 
   const handleAcresChange = (event) => {
     setLocalAcres(event.target.value);
-    setLocalAcresError(isInvalidNumber(event.target.value, 200000, ""));
+    setLocalAcresError(isInvalidNumber(event.target.value, 200000));
   };
 
   const handleBlur = () => {
