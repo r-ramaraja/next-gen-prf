@@ -19,19 +19,22 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
   const [localMonthlyValues, setLocalMonthlyValues] = useState(tabState.monthlyValues);
   const [localMonthlyErrors, setLocalMonthlyErrors] = useState(tabState.monthlyErrors);
 
-  // Synchronize local state with global state when the component mounts or the global state changes
   useEffect(() => {
     setLocalMonthlyValues(tabState.monthlyValues);
     setLocalMonthlyErrors(tabState.monthlyErrors);
   }, [tabState.monthlyValues, tabState.monthlyErrors]);
 
-  function isInvalidNumber(newValues, value, max, symbol = "%") {
+  function isInvalidNumber(newValues, value, max) {
+    if (!value) {
+      return { hasError: false, errorMessage: "" };
+    }
+
     if (value.includes(".")) {
       return { hasError: true, errorMessage: "No Decimals" };
     }
 
     if (parseInt(value, 10) > max) {
-      return { hasError: true, errorMessage: `Max ${max}${symbol}` };
+      return { hasError: true, errorMessage: `Max ${max}%` };
     }
 
     if (
@@ -48,12 +51,11 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
 
   const handleMonthlyValueChange = (index, event) => {
     const newValues = [...localMonthlyValues];
-    const newErrors = [...localMonthlyErrors];
 
     const value = event.target.value;
 
     newValues[index] = value;
-    newErrors[index] = isInvalidNumber(newValues, value, 60);
+    const newErrors = newValues.map((elem) => isInvalidNumber(newValues, elem.toString(), 60));
     setLocalMonthlyValues(newValues);
     setLocalMonthlyErrors(newErrors);
   };
