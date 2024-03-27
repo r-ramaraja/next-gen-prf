@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import InfoIcon from "@mui/icons-material/Info";
+import { Tooltip } from "@mui/material";
 
 function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
   return (
@@ -22,34 +23,40 @@ function MarkerList({ markers, deleteMarker, onMarkerSelect, onAddTab }) {
               <Typography component={"span"}>
                 <span style={{ fontWeight: "bold" }}>Marker {marker.id + 1}</span>
               </Typography>
-              <IconButton
-                onClick={() => deleteMarker(marker, marker.id)}
-                aria-label="delete"
-                size="small"
-                style={{ marginLeft: "auto" }}
-              >
-                <DeleteIcon fontSize="inherit" />
-              </IconButton>
-              <IconButton
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onMarkerSelect(marker.lat, marker.lng);
-                }}
-                aria-label="zoom-in"
-                size="small"
-              >
-                <ZoomInIcon />
-              </IconButton>
-              <IconButton
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onAddTab(marker, marker.id);
-                }}
-                aria-label="zoom-in"
-                size="small"
-              >
-                <InfoIcon />
-              </IconButton>
+              <Tooltip title="Delete" placement="top">
+                <IconButton
+                  onClick={() => deleteMarker(marker, marker.id)}
+                  aria-label="delete"
+                  size="small"
+                  style={{ marginLeft: "auto" }}
+                >
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Zoom" placement="top">
+                <IconButton
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onMarkerSelect(marker.lat, marker.lng);
+                  }}
+                  aria-label="zoom-in"
+                  size="small"
+                >
+                  <ZoomInIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Info" placement="top">
+                <IconButton
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onAddTab(marker, marker.id);
+                  }}
+                  aria-label="zoom-in"
+                  size="small"
+                >
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
             </AccordionSummary>
             <AccordionDetails>
               <Typography component={"span"}>
