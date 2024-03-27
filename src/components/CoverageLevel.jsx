@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Slider, Typography } from "@mui/material";
 
-export default function CoverageLevel({ tabState, setTabState, id }) {
+export default function CoverageLevel({ tabState, setTabState, id, isGuided }) {
   const [localCoverageLevel, setLocalCoverageLevel] = useState(tabState.coverageLevel);
 
   const handleSliderChange = (event, newValue) => {
@@ -16,7 +16,7 @@ export default function CoverageLevel({ tabState, setTabState, id }) {
     <React.Fragment>
       <Typography gutterBottom>Coverage Level</Typography>
       <Slider
-        sx={{ marginLeft: "1rem", marginRight: "1rem", width: "80%" }}
+        sx={{ marginLeft: "1rem", marginRight: "1rem", width: isGuided ? "40%" : "70%" }}
         value={localCoverageLevel}
         onChange={handleSliderChange}
         onChangeCommitted={handleCommitChange}
