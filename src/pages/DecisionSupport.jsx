@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 import axios from "axios";
 import IntendedUse from "../components/IntendedUse";
 import CoverageLevel from "../components/CoverageLevel";
@@ -12,8 +13,8 @@ import InsuranceYear from "../components/InsuranceYear";
 import IntervalDistribution from "../components/IntervalDistribution";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import FormControlLabel from "@mui/material/FormControlLabel";
-// import DecisionSupportViz from "../components/DecisionSupportViz";
-import DecisionSupportTableViz from "../components/DecisionSupportTableViz";
+import CircularProgress from "@mui/material/CircularProgress";
+import DecisionSupportResults from "../components/DecisionSupportResults";
 import { baseURL, intervalCodes } from "../constants";
 
 export default function DecisionSupport({
@@ -139,7 +140,7 @@ export default function DecisionSupport({
           <IntervalDistribution tabState={tabState} setTabState={setTabState} id={id} />
         </Grid>
       </Grid>
-      {!visualizationData && (
+      {!visualizationData && !loading && (
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
           <Button
             variant="contained"
@@ -151,12 +152,16 @@ export default function DecisionSupport({
             Calculate
           </Button>
 
-          {loading && <p>Loading...</p>}
           {error && <p>Error loading data</p>}
         </Box>
       )}
+      {loading && (
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: "10rem" }}>
+          <CircularProgress variant="indeterminate" size={60} thickness={4} />
+        </Box>
+      )}
       {/* <DecisionSupportViz visualizationData={visualizationData} /> */}
-      {visualizationData && <DecisionSupportTableViz visualizationData={visualizationData} />}
+      {visualizationData && <DecisionSupportResults visualizationData={visualizationData} />}
     </Box>
   );
 }

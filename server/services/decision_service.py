@@ -108,7 +108,7 @@ def compute_decision(data):
             subsidy_level = float(result[1])
             subsidy[interval] = subsidy_level
             premium_rates[interval] = round(premium_rate, 2)
-            premium_subsidy[interval] = round(subsidy_level * premium_rate)
+
             premium[interval] = round(
                 (
                     dollar_protection
@@ -118,6 +118,7 @@ def compute_decision(data):
                     * insurable_interest
                 )
             )
+            premium_subsidy[interval] = round(subsidy_level * premium[interval])
 
         actual_premium = {}
         for interval, premia in premium.items():
