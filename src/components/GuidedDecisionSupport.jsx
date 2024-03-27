@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -17,6 +17,7 @@ import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DecisionSupport from "../pages/DecisionSupport";
+import GuidedDecisionSupportIntro from "./GuidedDecisionSupportIntro";
 
 const steps = [
   "Intended Use",
@@ -62,17 +63,23 @@ const GuidedModeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function GuidedDecision({ marker, tabState, setTabState }) {
-  const [coverageLevel, setCoverageLevel] = useState(90);
-  const [productivityFactor, setProductivityFactor] = useState(100);
-  const values = Array(11).fill("");
-  values[0] = 50;
-  values[5] = 50;
-  const [monthlyValues, setMonthlyValues] = useState(values);
-  const [monthlyErrors, setMonthlyErrors] = useState(
-    Array(11).fill({ hasError: false, errorMessage: "" })
-  );
+  const [seenGuidedIntro, setSeenGuidedIntro] = useState(false);
+  const { monthlyValues, monthlyErrors, activeStep, isGuided } = tabState;
 
-  const { activeStep, isGuided } = tabState;
+  useEffect(() => {
+    const storedData = localStorage.getItem("seenGuidedIntro");
+    if (storedData) {
+      setSeenGuidedIntro(JSON.parse(storedData).seenGuidedIntro);
+    }
+  }, []);
+
+  const handleChecked = (event) => {
+    setSeenGuidedIntro(event.target.checked);
+    localStorage.setItem(
+      "seenGuidedIntro",
+      JSON.stringify({ seenGuidedIntro: event.target.checked })
+    );
+  };
 
   const handleNext = () => {
     setTabState(
@@ -95,6 +102,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
   };
 
   const handleReset = () => {
+    const values = Array(11).fill("");
+    values[0] = 50;
+    values[2] = 50;
     setTabState(
       {
         ...tabState,
@@ -116,7 +126,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
     );
   };
 
-  const isStepFailed = (index, button) => {
+  const isStepFailed = (index) => {
     if (index === 3) {
       return tabState.acresError.hasError;
     }
@@ -124,19 +134,13 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
       return tabState.interestError.hasError;
     }
     if (index === 6) {
-      if (button) {
-        return (
-          monthlyValues.reduce(
-            (sum, value) => sum + (Number.isNaN(parseInt(value)) ? 0 : parseInt(value)),
-            0
-          ) !== 100 &&
-          monthlyValues.reduce(
-            (sum, value) => sum + (Number.isNaN(parseInt(value)) && parseInt(value) > 0 ? 0 : 1),
-            0
-          ) < 2
-        );
-      }
-      return monthlyErrors.some((error) => error.hasError);
+      return (
+        monthlyErrors.some((error) => error.hasError) ||
+        monthlyValues.reduce(
+          (sum, value) => sum + (Number.isNaN(parseInt(value)) && parseInt(value) > 0 ? 0 : 1),
+          0
+        ) < 2
+      );
     }
   };
 
@@ -149,11 +153,18 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         component = <IntendedUse tabState={tabState} setTabState={setTabState} id={marker.id} />;
         break;
       case 1:
-        component = <CoverageLevel tabState={tabState} setTabState={setTabState} id={marker.id} />;
+        component = (
+          <CoverageLevel tabState={tabState} setTabState={setTabState} id={marker.id} isGuided />
+        );
         break;
       case 2:
         component = (
-          <ProductivityFactor tabState={tabState} setTabState={setTabState} id={marker.id} />
+          <ProductivityFactor
+            tabState={tabState}
+            setTabState={setTabState}
+            id={marker.id}
+            isGuided
+          />
         );
         break;
       case 3:
@@ -184,6 +195,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
   return (
     <React.Fragment>
+      {!seenGuidedIntro && <GuidedDecisionSupportIntro handleChecked={handleChecked} />}
       {isGuided ? (
         <Box sx={{ width: "100%" }}>
           <Stepper activeStep={activeStep} alternativeLabel>
@@ -276,7 +288,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={isStepFailed(activeStep, true)}
+                  disabled={isStepFailed(activeStep)}
                   onClick={handleNext}
                 >
                   {activeStep === steps.length - 1 ? "Finish" : "Next"}
