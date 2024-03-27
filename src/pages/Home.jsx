@@ -1,5 +1,3 @@
-/* eslint-disable no-inner-declarations */
-
 import React, { useRef, useEffect, useState } from "react";
 import "leaflet-control-geocoder";
 import MarkerSidebar from "../components/MarkerList.jsx";
@@ -51,7 +49,7 @@ function Map() {
 
     const values = Array(11).fill("");
     values[0] = 50;
-    values[5] = 50;
+    values[2] = 50;
     setTabs([...tabs, newTab]);
     setSelectedTab(newTabIndex);
     setTabStates({

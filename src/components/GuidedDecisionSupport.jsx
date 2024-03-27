@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import DecisionSupport from "./DecisionSupport";
+import DecisionSupport from "../pages/DecisionSupport";
 
 const steps = [
   "Intended Use",
@@ -129,7 +129,11 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
           monthlyValues.reduce(
             (sum, value) => sum + (Number.isNaN(parseInt(value)) ? 0 : parseInt(value)),
             0
-          ) !== 100
+          ) !== 100 &&
+          monthlyValues.reduce(
+            (sum, value) => sum + (Number.isNaN(parseInt(value)) && parseInt(value) > 0 ? 0 : 1),
+            0
+          ) < 2
         );
       }
       return monthlyErrors.some((error) => error.hasError);
@@ -231,15 +235,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
                 GuidedModeSwitch={GuidedModeSwitch}
                 tabState={tabState}
                 setTabState={setTabState}
-                id={marker.id}
-                coverageLevel={coverageLevel}
-                setCoverageLevel={setCoverageLevel}
-                productivityFactor={productivityFactor}
-                setProductivityFactor={setProductivityFactor}
+                marker={marker}
                 monthlyValues={monthlyValues}
-                setMonthlyValues={setMonthlyValues}
                 monthlyErrors={monthlyErrors}
-                setMonthlyErrors={setMonthlyErrors}
               />
             </React.Fragment>
           ) : (
@@ -293,15 +291,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
           GuidedModeSwitch={GuidedModeSwitch}
           tabState={tabState}
           setTabState={setTabState}
-          id={marker.id}
-          coverageLevel={coverageLevel}
-          setCoverageLevel={setCoverageLevel}
-          productivityFactor={productivityFactor}
-          setProductivityFactor={setProductivityFactor}
+          marker={marker}
           monthlyValues={monthlyValues}
-          setMonthlyValues={setMonthlyValues}
           monthlyErrors={monthlyErrors}
-          setMonthlyErrors={setMonthlyErrors}
         />
       )}
     </React.Fragment>

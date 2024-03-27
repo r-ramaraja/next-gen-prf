@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-inner-declarations */
-
 import React, { useRef, useEffect } from "react";
 import L from "leaflet";
 import * as turf from "@turf/turf";
@@ -109,7 +106,7 @@ export default function GridLocator({
         markerList.push({ lat, lng, gridcode, state, county, markerInfo });
       };
 
-      function gridOnEachFeature(feature, layer) {
+      const gridOnEachFeature = (feature, layer) => {
         // Create a label for the feature
         var label = L.marker(layer.getBounds().getCenter(), {
           icon: L.divIcon({
@@ -135,7 +132,7 @@ export default function GridLocator({
 
         // Initially update the label
         updateLabel();
-      }
+      };
 
       const cpc_grids = L.geoJSON(grids, {
         style: function () {
@@ -148,7 +145,7 @@ export default function GridLocator({
         onEachFeature: gridOnEachFeature,
       }).addTo(mapInstance.current);
 
-      function updateCpcGridsVisibility() {
+      const updateCpcGridsVisibility = () => {
         const zoom = mapInstance.current.getZoom();
         if (zoom > 9) {
           if (!mapInstance.current.hasLayer(cpc_grids)) {
@@ -159,14 +156,14 @@ export default function GridLocator({
             mapInstance.current.removeLayer(cpc_grids);
           }
         }
-      }
+      };
 
       mapInstance.current.on("zoomend", updateCpcGridsVisibility);
 
       // Initially call the function to set the correct visibility
       updateCpcGridsVisibility();
 
-      function countyOnEachFeature(feature, layer) {
+      const countyOnEachFeature = (feature, layer) => {
         // Create a label for the feature
         var label = L.marker(layer.getBounds().getCenter(), {
           icon: L.divIcon({
@@ -192,7 +189,7 @@ export default function GridLocator({
 
         // Initially update the label
         updateLabel();
-      }
+      };
 
       const usa_counties = L.geoJSON(counties, {
         style: function () {
@@ -205,7 +202,7 @@ export default function GridLocator({
         onEachFeature: countyOnEachFeature,
       }).addTo(mapInstance.current);
 
-      function updateCountiesVisibility() {
+      const updateCountiesVisibility = () => {
         const zoom = mapInstance.current.getZoom();
         if (zoom > 8) {
           if (!mapInstance.current.hasLayer(usa_counties)) {
@@ -216,7 +213,7 @@ export default function GridLocator({
             mapInstance.current.removeLayer(usa_counties);
           }
         }
-      }
+      };
 
       mapInstance.current.on("zoomend", updateCountiesVisibility);
 

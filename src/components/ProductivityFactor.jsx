@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Slider, Typography } from "@mui/material";
 
 export default function ProductivityFactor({ tabState, setTabState, id }) {
@@ -18,7 +18,7 @@ export default function ProductivityFactor({ tabState, setTabState, id }) {
     <React.Fragment>
       <Typography gutterBottom>Productivity Factor: {localProductivityFactor}%</Typography>
       <Slider
-        sx={{ marginLeft: "2rem", marginRight: "2rem", width: "80%" }}
+        sx={{ marginLeft: "1rem", marginRight: "1rem", width: "80%" }}
         value={localProductivityFactor}
         onChange={handleSliderChange}
         onChangeCommitted={handleCommitChange}

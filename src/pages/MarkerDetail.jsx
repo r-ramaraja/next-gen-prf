@@ -1,10 +1,9 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { Tab, Tabs } from "@mui/material";
 import Box from "@mui/material/Box";
 import GuidedDecisionSupport from "../components/GuidedDecisionSupport";
-import Overview from "../components/Overview";
+import Overview from "./Overview";
 
 function MarkerDetail({ marker, tabState, setTabState }) {
   const { markerDetailTabId } = tabState;

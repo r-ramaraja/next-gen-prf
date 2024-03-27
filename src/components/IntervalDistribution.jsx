@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Grid, Typography, InputAdornment } from "@mui/material";
+import { TextField, Grid, Typography, InputAdornment } from "@mui/material";
 
 export default function IntervalDistribution({ id, tabState, setTabState }) {
   const monthRanges = [
@@ -96,7 +96,7 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
               key={`intervalDistribution${label}${index}`}
               label={label}
               value={checkIfIntervalDistributionIsDisabled(index) ? 0 : localMonthlyValues[index]}
-              disabled={checkIfIntervalDistributionIsDisabled(index)}
+              disabled={!!checkIfIntervalDistributionIsDisabled(index)}
               style={{ width: "150px" }}
               onChange={(e) => handleMonthlyValueChange(index, e)}
               onBlur={handleBlur}

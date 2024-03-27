@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import IntendedUse from "./IntendedUse";
-import CoverageLevel from "./CoverageLevel";
-import ProductivityFactor from "./ProductivityFactor";
-import InsuredAcres from "./InsuredAcres";
-import InsurableInterest from "./InsurableInterest";
-import InsuranceYear from "./InsuranceYear";
-import IntervalDistribution from "./IntervalDistribution";
+import axios from "axios";
+import IntendedUse from "../components/IntendedUse";
+import CoverageLevel from "../components/CoverageLevel";
+import ProductivityFactor from "../components/ProductivityFactor";
+import InsuredAcres from "../components/InsuredAcres";
+import InsurableInterest from "../components/InsurableInterest";
+import InsuranceYear from "../components/InsuranceYear";
+import IntervalDistribution from "../components/IntervalDistribution";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import FormControlLabel from "@mui/material/FormControlLabel";
+// import DecisionSupportViz from "../components/DecisionSupportViz";
+import DecisionSupportTableViz from "../components/DecisionSupportTableViz";
+import { baseURL, intervalCodes } from "../constants";
 
 export default function DecisionSupport({
   guided,
@@ -18,16 +22,47 @@ export default function DecisionSupport({
   GuidedModeSwitch,
   tabState,
   setTabState,
-  id,
-  coverageLevel,
-  setCoverageLevel,
-  productivityFactor,
-  setProductivityFactor,
+  marker,
   monthlyValues,
-  setMonthlyValues,
   monthlyErrors,
-  setMonthlyErrors,
 }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [visualizationData, setVisualizationData] = useState(null);
+  const { id, state, county, gridcode } = marker;
+
+  const handleCalculateClick = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const requestBody = {
+        state,
+        county,
+        grid_id: gridcode,
+        intended_use: tabState.intendedUse,
+        coverage_level: tabState.coverageLevel,
+        productivity_factor: tabState.productivityFactor / 100,
+        insured_acres: tabState.acres,
+        insurable_interest: tabState.interest / 100,
+        year: tabState.year.format("YYYY"),
+        interval_distribution: tabState.monthlyValues.reduce((acc, curr, index) => {
+          if (parseInt(curr) > 0) {
+            acc[intervalCodes[index]] = parseInt(curr) / 100;
+          }
+          return acc;
+        }, {}),
+      };
+
+      const response = await axios.post(`${baseURL}/calculate`, requestBody);
+      setVisualizationData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      setError(error);
+      setLoading(false);
+    }
+  };
+
   const boxCSS = { p: 1 };
   if (guided) {
     boxCSS.marginTop = "1rem";
@@ -50,9 +85,9 @@ export default function DecisionSupport({
   }
 
   return (
-    <Box sx={boxCSS}>
+    <Box>
       {!guided && (
-        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box sx={{ flex: "1 1 auto" }} />
           <FormControlLabel
             sx={{ marginRight: 0 }}
@@ -104,16 +139,24 @@ export default function DecisionSupport({
           <IntervalDistribution tabState={tabState} setTabState={setTabState} id={id} />
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<CalculateIcon />}
-          disabled={shouldDisableCalculateButton()}
-        >
-          Calculate
-        </Button>
-      </Box>
+      {!visualizationData && (
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<CalculateIcon />}
+            disabled={shouldDisableCalculateButton()}
+            onClick={handleCalculateClick}
+          >
+            Calculate
+          </Button>
+
+          {loading && <p>Loading...</p>}
+          {error && <p>Error loading data</p>}
+        </Box>
+      )}
+      {/* <DecisionSupportViz visualizationData={visualizationData} /> */}
+      {visualizationData && <DecisionSupportTableViz visualizationData={visualizationData} />}
     </Box>
   );
 }
