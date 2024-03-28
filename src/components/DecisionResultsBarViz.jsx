@@ -52,11 +52,11 @@ export default function DecisionResultsBarViz({ visualizationData }) {
           <YAxis />
           <Tooltip formatter={currencyFormatter} />
           <Legend />
-          <Bar
+          {/* <Bar
             dataKey="protection"
             fill="#4c9f70" // A shade of green
             activeBar={<Rectangle fill="#76c1a0" stroke="#2e6e47" />}
-          />
+          /> */}
           <Bar
             dataKey="premium"
             fill="#4d85bd" // A shade of blue
