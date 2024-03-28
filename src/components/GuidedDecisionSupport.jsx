@@ -121,6 +121,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         year: dayjs().subtract(1, "year"),
         monthlyValues: values,
         monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
+        intervalDistributionMode: "custom",
       },
       marker.id
     );
@@ -195,7 +196,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
   return (
     <React.Fragment>
-      {!seenGuidedIntro && <GuidedDecisionSupportIntro handleChecked={handleChecked} />}
+      {!seenGuidedIntro && isGuided && activeStep === 0 && (
+        <GuidedDecisionSupportIntro handleChecked={handleChecked} />
+      )}
       {isGuided ? (
         <Box sx={{ width: "100%" }}>
           <Stepper activeStep={activeStep} alternativeLabel>
