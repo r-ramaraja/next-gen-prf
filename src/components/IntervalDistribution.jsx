@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Grid, Typography, InputAdornment } from "@mui/material";
+import {
+  TextField,
+  Grid,
+  Typography,
+  InputAdornment,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
 
 export default function IntervalDistribution({ id, tabState, setTabState }) {
   const monthRanges = [
@@ -18,11 +27,15 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
 
   const [localMonthlyValues, setLocalMonthlyValues] = useState(tabState.monthlyValues);
   const [localMonthlyErrors, setLocalMonthlyErrors] = useState(tabState.monthlyErrors);
+  const [localIntervalDistributionMode, setLocalIntervalDistributionMode] = useState(
+    tabState.intervalDistributionMode
+  );
 
   useEffect(() => {
     setLocalMonthlyValues(tabState.monthlyValues);
     setLocalMonthlyErrors(tabState.monthlyErrors);
-  }, [tabState.monthlyValues, tabState.monthlyErrors]);
+    setLocalIntervalDistributionMode(tabState.intervalDistributionMode);
+  }, [tabState.monthlyValues, tabState.monthlyErrors, tabState.intervalDistributionMode]);
 
   function isInvalidNumber(newValues, value, max) {
     if (!value) {
@@ -60,7 +73,7 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
     setLocalMonthlyErrors(newErrors);
   };
 
-  const handleBlur = () => {
+  const syncParentState = () => {
     setTabState(
       {
         ...tabState,
@@ -86,22 +99,89 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
     );
   }
 
+  const handleModeBlur = () => {
+    setTabState(
+      {
+        ...tabState,
+        monthlyValues: localMonthlyValues,
+        monthlyErrors: localMonthlyErrors,
+        intervalDistributionMode: localIntervalDistributionMode,
+      },
+      id
+    );
+  };
+
+  const handleModeChange = (event) => {
+    if (event.target.value === "spring") {
+      setLocalMonthlyValues([0, 0, 0, 50, 0, 50, 0, 0, 0, 0, 0]);
+      setLocalMonthlyErrors(Array(11).fill({ hasError: false, errorMessage: "" }));
+      setLocalIntervalDistributionMode(event.target.value);
+    }
+
+    if (event.target.value === "fall") {
+      setLocalMonthlyValues([0, 0, 0, 0, 0, 0, 0, 50, 0, 50, 0]);
+      setLocalMonthlyErrors(Array(11).fill({ hasError: false, errorMessage: "" }));
+      setLocalIntervalDistributionMode(event.target.value);
+    }
+
+    if (event.target.value === "custom") {
+      setLocalMonthlyValues([50, 0, 50, 0, "", "", "", "", "", "", ""]);
+      setLocalMonthlyErrors(Array(11).fill({ hasError: false, errorMessage: "" }));
+      setLocalIntervalDistributionMode(event.target.value);
+    }
+  };
+
+  const getIntervalDistributionValue = (index) => {
+    if (localIntervalDistributionMode !== "custom") {
+      return localMonthlyValues[index];
+    }
+
+    if (checkIfIntervalDistributionIsDisabled(index)) {
+      return 0;
+    } else {
+      return localMonthlyValues[index];
+    }
+  };
+
   return (
     <React.Fragment>
-      <Typography gutterBottom sx={{ marginBottom: "1rem" }}>
-        Interval Distribution (max per interval 60%)
-      </Typography>
+      <Grid container spacing={2}>
+        <Grid item>
+          <Typography gutterBottom sx={{ marginBottom: "1rem" }}>
+            Interval Distribution (max per interval 60%)
+          </Typography>
+        </Grid>
+        <Grid item>
+          <FormControl sx={{ marginBottom: "1rem", marginLeft: "0.5rem" }} size="small">
+            <InputLabel id="demo-simple-select-label">Mode</InputLabel>
+            <Select
+              value={localIntervalDistributionMode}
+              label="Mode"
+              onChange={handleModeChange}
+              onBlur={handleModeBlur}
+            >
+              <MenuItem value={"custom"}>Custom</MenuItem>
+              <MenuItem value={"spring"}>Spring</MenuItem>
+              <MenuItem value={"fall"}>Fall</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       <Grid container spacing={2}>
         {monthRanges.map((label, index) => (
           <Grid item key={label}>
             <TextField
               key={`intervalDistribution${label}${index}`}
               label={label}
-              value={checkIfIntervalDistributionIsDisabled(index) ? 0 : localMonthlyValues[index]}
-              disabled={!!checkIfIntervalDistributionIsDisabled(index)}
+              value={getIntervalDistributionValue(index)}
+              disabled={
+                localIntervalDistributionMode === "custom"
+                  ? !!checkIfIntervalDistributionIsDisabled(index)
+                  : true
+              }
               style={{ width: "150px" }}
               onChange={(e) => handleMonthlyValueChange(index, e)}
-              onBlur={handleBlur}
+              onBlur={syncParentState}
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
                 inputProps: {
