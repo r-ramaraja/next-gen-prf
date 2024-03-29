@@ -11,6 +11,8 @@ db_password = os.getenv("DATABASE_PASSWORD")
 db_name = os.getenv("DATABASE_NAME")
 db_port = os.getenv("DATABASE_PORT")
 
+print(f"Connecting to the database {db_name} on {db_host}:{db_port} as {db_username}")
+
 
 class Database:
     _instance = None
