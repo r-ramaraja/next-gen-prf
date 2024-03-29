@@ -88,6 +88,45 @@ cur.execute(
 """
 )
 
+cur.execute(
+    """
+    CREATE TABLE BusinessData (
+            StateID INT NOT NULL,
+            CountyID INT NOT NULL,
+            Year INT NOT NULL,
+            CoverageLevel DECIMAL(10, 2) NOT NULL,
+            IntendedUse VARCHAR(255) NOT NULL,
+            PracticeCode INT NOT NULL,
+            NetReportingAmount INT NOT NULL,
+            LiabilityAmount DECIMAL(10, 2) NOT NULL,
+            TotalPremiumAmount DECIMAL(10, 2) NOT NULL,
+            SubsidyAmount DECIMAL(10, 2) NOT NULL,
+            IndemnityAmount DECIMAL(10, 2) NOT NULL,
+            LossRatio DECIMAL(10, 2) NOT NULL,
+            PRIMARY KEY (StateID, CountyID, Year, CoverageLevel, PracticeCode, IntendedUse),
+            FOREIGN KEY (StateID, CountyID) REFERENCES County(StateID, CountyID)
+    );
+"""
+)
+
+cur.execute(
+    """
+    CREATE TABLE PolicyData (
+        StateID INT NOT NULL,
+        CountyID INT NOT NULL,
+        Year INT NOT NULL,
+        CommodityCode INT NOT NULL,
+        CoverageLevel DECIMAL(10, 2) NOT NULL,
+        PolicySold INT NOT NULL,
+        PolicyIndemnified INT NOT NULL,
+        UnitsEarning INT NOT NULL,
+        UnitsIndemnified INT NOT NULL,
+        PRIMARY KEY (StateID, CountyID, Year, CoverageLevel, CommodityCode),
+        FOREIGN KEY (StateID, CountyID) REFERENCES County(StateID, CountyID)
+    );
+"""
+)
+
 # Commit changes and close the connection
 conn.commit()
 cur.close()
