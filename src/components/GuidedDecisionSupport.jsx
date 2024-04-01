@@ -4,7 +4,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import { StepLabel } from "@mui/material";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import IntendedUse from "./IntendedUse";
 import CoverageLevel from "./CoverageLevel";
 import ProductivityFactor from "./ProductivityFactor";
@@ -146,7 +145,6 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
   };
 
   function renderStepComponent(index) {
-    const description = `<Explain about "${steps[index]}" along with examples.>`;
     let component = <p></p>;
 
     switch (index) {

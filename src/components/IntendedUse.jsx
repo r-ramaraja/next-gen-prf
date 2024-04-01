@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem, Grid, Typography } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
 
 export default function IntendedUse({ tabState, setTabState, id, isGuided }) {
   const { intendedUse, irrigationPractice, organicPractice } = tabState;
