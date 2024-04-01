@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 
 export default function IntervalDistribution({ id, tabState, setTabState, isGuided }) {
-  console.log("🚀 ~ IntervalDistribution ~ isGuided:", isGuided);
   const monthRanges = [
     "Jan-Feb",
     "Feb-Mar",

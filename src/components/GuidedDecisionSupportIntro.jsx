@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -13,11 +13,20 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-export default function GuidedDecisionSupportIntro({ handleChecked }) {
+export default function GuidedDecisionSupportIntro({ handleChecked, tabState, setTabState, id }) {
   const [open, setOpen] = React.useState(true);
+
   const handleClose = () => {
     setOpen(false);
+    setTabState(
+      {
+        ...tabState,
+        seenGuidedIntro: true,
+      },
+      id
+    );
   };
+
   return (
     <React.Fragment>
       <Dialog open={open} onClose={handleClose}>

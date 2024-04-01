@@ -71,6 +71,7 @@ function Map() {
         monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
         isGuided: false,
         intervalDistributionMode: "custom",
+        seenGuidedIntro: false,
       },
     });
   };

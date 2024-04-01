@@ -62,25 +62,25 @@ const GuidedModeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function GuidedDecision({ marker, tabState, setTabState }) {
-  const [seenGuidedIntro, setSeenGuidedIntro] = useState(false);
-  const { monthlyValues, monthlyErrors, activeStep, isGuided } = tabState;
+  const [hideGuidedIntro, setHideGuidedIntro] = useState(false);
+  const { monthlyValues, monthlyErrors, activeStep, isGuided, seenGuidedIntro } = tabState;
 
   useEffect(() => {
-    const storedData = localStorage.getItem("seenGuidedIntro");
+    const storedData = localStorage.getItem("hideGuidedIntro");
     if (storedData) {
-      setSeenGuidedIntro(JSON.parse(storedData).seenGuidedIntro);
+      setHideGuidedIntro(JSON.parse(storedData).hideGuidedIntro);
     }
   }, []);
 
   const handleChecked = (event) => {
-    setSeenGuidedIntro(event.target.checked);
+    setHideGuidedIntro(event.target.checked);
     localStorage.setItem(
-      "seenGuidedIntro",
-      JSON.stringify({ seenGuidedIntro: event.target.checked })
+      "hideGuidedIntro",
+      JSON.stringify({ hideGuidedIntro: event.target.checked })
     );
   };
 
-  const handleNext = () => {
+  const handleNext = (e) => {
     setTabState(
       {
         ...tabState,
@@ -121,6 +121,8 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         monthlyValues: values,
         monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
         intervalDistributionMode: "custom",
+        seenGuidedIntro: false,
+        isGuided: !tabState.isGuided,
       },
       marker.id
     );
@@ -209,8 +211,13 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
   return (
     <React.Fragment>
-      {!seenGuidedIntro && isGuided && activeStep === 0 && (
-        <GuidedDecisionSupportIntro handleChecked={handleChecked} />
+      {!hideGuidedIntro && !seenGuidedIntro && isGuided && activeStep === 0 && (
+        <GuidedDecisionSupportIntro
+          handleChecked={handleChecked}
+          tabState={tabState}
+          setTabState={setTabState}
+          id={marker.id}
+        />
       )}
       {isGuided ? (
         <Box sx={{ width: "100%" }}>
@@ -235,21 +242,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Box sx={{ flex: "1 1 auto" }} />
                 <FormControlLabel
-                  control={
-                    <GuidedModeSwitch
-                      checked={isGuided}
-                      onChange={(event) => {
-                        handleReset();
-                        setTabState(
-                          {
-                            ...tabState,
-                            isGuided: event.target.checked,
-                          },
-                          marker.id
-                        );
-                      }}
-                    />
-                  }
+                  control={<GuidedModeSwitch checked={isGuided} onChange={handleReset} />}
                   label="Guided"
                   labelPlacement="end"
                 />

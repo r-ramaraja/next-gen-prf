@@ -91,21 +91,7 @@ export default function DecisionSupport({
           <Box sx={{ flex: "1 1 auto" }} />
           <FormControlLabel
             sx={{ marginRight: 0 }}
-            control={
-              <GuidedModeSwitch
-                checked={isGuided}
-                onChange={(event) => {
-                  handleReset();
-                  setTabState(
-                    {
-                      ...tabState,
-                      isGuided: event.target.checked,
-                    },
-                    id
-                  );
-                }}
-              />
-            }
+            control={<GuidedModeSwitch checked={isGuided} onChange={handleReset} />}
             label="Guided"
             labelPlacement="end"
           />
