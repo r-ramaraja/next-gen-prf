@@ -190,7 +190,12 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         break;
       case 6:
         component = (
-          <IntervalDistribution tabState={tabState} setTabState={setTabState} id={marker.id} />
+          <IntervalDistribution
+            tabState={tabState}
+            setTabState={setTabState}
+            id={marker.id}
+            isGuided
+          />
         );
         break;
     }
