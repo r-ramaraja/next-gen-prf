@@ -151,7 +151,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
     switch (index) {
       case 0:
-        component = <IntendedUse tabState={tabState} setTabState={setTabState} id={marker.id} />;
+        component = (
+          <IntendedUse tabState={tabState} setTabState={setTabState} id={marker.id} isGuided />
+        );
         break;
       case 1:
         component = (
@@ -188,7 +190,6 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
     return (
       <React.Fragment>
-        <Typography sx={{ mt: 2, mb: 1, margin: "1rem" }}>{description}</Typography>
         <div style={{ margin: "1rem" }}>{component}</div>
       </React.Fragment>
     );
