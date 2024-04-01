@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { TextField } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 
-export default function InsuredAcres({ id, tabState, setTabState }) {
+export default function InsuredAcres({ id, tabState, setTabState, isGuided }) {
   const [localAcres, setLocalAcres] = useState(tabState.acres);
   const [localAcresError, setLocalAcresError] = useState(tabState.acresError);
 
-  // Synchronize local state with global state when the component mounts or the global state changes
   useEffect(() => {
     setLocalAcres(tabState.acres);
     setLocalAcresError(tabState.acresError);
@@ -44,30 +43,58 @@ export default function InsuredAcres({ id, tabState, setTabState }) {
   };
 
   return (
-    <TextField
-      label="Acres"
-      value={localAcres}
-      onChange={handleAcresChange}
-      onBlur={handleBlur}
-      margin="normal"
-      InputProps={{
-        inputProps: {
-          min: 0,
-          max: 200000,
-          onKeyDown: (event) => {
-            if (event.key === "-") {
-              event.preventDefault();
-            }
+    <Box>
+      <TextField
+        label="Acres"
+        value={localAcres}
+        onChange={handleAcresChange}
+        onBlur={handleBlur}
+        margin="normal"
+        InputProps={{
+          inputProps: {
+            min: 0,
+            max: 200000,
+            onKeyDown: (event) => {
+              if (event.key === "-") {
+                event.preventDefault();
+              }
+            },
           },
-        },
-      }}
-      type="number"
-      InputLabelProps={{
-        shrink: true,
-      }}
-      style={{ width: "150px" }}
-      error={localAcresError.hasError}
-      helperText={localAcresError.errorMessage}
-    />
+        }}
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        style={{ width: "150px" }}
+        error={localAcresError.hasError}
+        helperText={localAcresError.errorMessage}
+      />
+      {isGuided && (
+        <Box>
+          <p>
+            <strong>What are insured acres?</strong>
+          </p>
+          <p>
+            Insured acres denote the total acreage of the policyholder&apos;s land covered under the
+            insurance policy. It represents the land area against which protection is provided.
+            Depending on their coverage needs and risk management strategy, the policyholder can
+            include all or a portion of the land they own or manage.
+            <br />
+            Accurate reporting of insured acres is crucial for effective risk management and
+            adequate coverage. Underreporting can lead to insufficient coverage, while overreporting
+            can increase costs without corresponding benefits.
+          </p>
+          <p>
+            <strong>How does it impact the policy?</strong>
+          </p>
+          <p>
+            The number of insured acres directly impacts the total premium cost, as premiums are
+            typically calculated per acre. It also affects the potential indemnity payments, as
+            these payments are generally based on the extent of loss multiplied by the number of
+            insured acres.
+          </p>
+        </Box>
+      )}
+    </Box>
   );
 }

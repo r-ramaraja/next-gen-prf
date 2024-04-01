@@ -39,9 +39,9 @@ export default function ProductivityFactor({ tabState, setTabState, id, isGuided
             particularly useful in diverse regions where productivity can vary significantly within
             the same county or area.
             <br />
-            Policyholders can typically choose a <em>productivity factor</em> between 60% to 150% in
-            increments of 1%. If a policyholder selects a <em>productivity factor</em> greater than
-            100%, they are indicating that their land is more productive than the average in their
+            Policyholders can typically choose a <em>productivity factor</em> between 60% and 150%
+            in increments of 1%. If a policyholder selects a <em>productivity factor</em> greater
+            than 100%, they indicate that their land is more productive than the average in their
             county. Conversely, selecting a factor less than 100% suggests lower productivity.
           </p>
           <p>
@@ -55,7 +55,7 @@ export default function ProductivityFactor({ tabState, setTabState, id, isGuided
             insurance policy provides per acre. This value serves as the foundation for determining
             potential premium rates and indemnity payments.
             <br />
-            Hence, the choice of<em> productivity factor</em> further influences the premiums rates
+            Hence, the choice of<em> productivity factor</em> further influences the premium rates
             and the indemnity payments.
           </p>
         </Box>

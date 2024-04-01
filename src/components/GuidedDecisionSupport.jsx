@@ -169,7 +169,9 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         );
         break;
       case 3:
-        component = <InsuredAcres tabState={tabState} setTabState={setTabState} id={marker.id} />;
+        component = (
+          <InsuredAcres tabState={tabState} setTabState={setTabState} id={marker.id} isGuided />
+        );
         break;
       case 4:
         component = (
