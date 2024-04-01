@@ -80,7 +80,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
     );
   };
 
-  const handleNext = (e) => {
+  const handleNext = () => {
     setTabState(
       {
         ...tabState,
@@ -100,7 +100,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
     );
   };
 
-  const handleReset = () => {
+  const handleReset = (event) => {
     const values = Array(11).fill("");
     values[0] = 50;
     values[2] = 50;
@@ -122,7 +122,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
         intervalDistributionMode: "custom",
         seenGuidedIntro: false,
-        isGuided: !tabState.isGuided,
+        isGuided: event.target.innerText === "RESET" ? tabState.isGuided : !tabState.isGuided,
       },
       marker.id
     );
@@ -276,21 +276,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
                 </Button>
                 <Box sx={{ flex: "1 1 auto" }} />
                 <FormControlLabel
-                  control={
-                    <GuidedModeSwitch
-                      checked={isGuided}
-                      onChange={(event) => {
-                        handleReset();
-                        setTabState(
-                          {
-                            ...tabState,
-                            isGuided: event.target.checked,
-                          },
-                          marker.id
-                        );
-                      }}
-                    />
-                  }
+                  control={<GuidedModeSwitch checked={isGuided} onChange={handleReset} />}
                   label="Guided"
                   labelPlacement="end"
                 />
