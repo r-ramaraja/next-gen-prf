@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from "recharts";
 import { Box } from "@mui/material";
-import Download from "./Download";
+import Download from "../../Download";
 
 function currencyFormatter(value) {
   return value.toLocaleString("en-US", {
@@ -133,7 +133,7 @@ export default function DecisionSupportPieViz({ visualizationData }) {
   }
 
   return (
-    <Box style={{ height: 300, marginTop: "4rem" }}>
+    <Box style={{ height: 300, marginTop: "8rem" }}>
       <Download />
       <ResponsiveContainer>
         <PieChart width={500} height={500}>

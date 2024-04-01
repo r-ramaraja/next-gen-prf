@@ -1,6 +1,11 @@
 import json
 from flask import request, Blueprint
-from services.decision_service import compute_decision
+from services.decision_service import (
+    compute_decision,
+    fetch_intended_use_data,
+    fetch_historical_trend,
+)
+from decimal_encoder import DecimalEncoder
 
 
 def construct_decision_blueprint():
@@ -14,5 +19,17 @@ def construct_decision_blueprint():
             return json.dumps(result)
         else:
             return "Error", 500
+
+    @blueprint.route("/viz/usage", methods=["POST"])
+    def get_intended_use_data():
+        data = request.json
+        result = fetch_intended_use_data(data)
+        return json.dumps(result, cls=DecimalEncoder)
+
+    @blueprint.route("/trend", methods=["POST"])
+    def get_historical_trend():
+        data = request.json
+        result = fetch_historical_trend(data)
+        return json.dumps(result, cls=DecimalEncoder)
 
     return blueprint

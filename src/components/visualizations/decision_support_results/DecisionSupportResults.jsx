@@ -3,8 +3,11 @@ import { Grid, Box, Typography, Divider } from "@mui/material";
 import DecisionSupportTableViz from "./DecisionSupportTableViz";
 import DecisionResultsBarViz from "./DecisionResultsBarViz";
 import DecisionSupportPieViz from "./DecisionSupportPieViz";
+import HistoricalTrend from "./HistoricalTrend";
 
-export default function DecisionSupportResults({ visualizationData }) {
+export default function DecisionSupportResults({ visualizationData, year }) {
+  const yearString = year.format("YYYY");
+  const currentYearData = visualizationData[yearString];
   return (
     <React.Fragment>
       <Divider aria-hidden="true" sx={{ margin: "0.5rem" }} />
@@ -13,24 +16,27 @@ export default function DecisionSupportResults({ visualizationData }) {
           <Grid item>
             <Typography>
               <span style={{ fontWeight: "bold" }}>County Base Value:</span>{" "}
-              {visualizationData.county_base.toLocaleString("en-US", {
+              {currentYearData.county_base.toLocaleString("en-US", {
                 style: "currency",
                 currency: "USD",
               })}
             </Typography>
             <Typography>
               <span style={{ fontWeight: "bold" }}>Subsidy Level:</span>{" "}
-              {`${visualizationData.subsidy}%`}
+              {`${currentYearData.subsidy}%`}
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <DecisionSupportTableViz visualizationData={visualizationData} />
+            <DecisionSupportTableViz visualizationData={currentYearData} />
+          </Grid>
+          <Grid item xs={12}>
+            <HistoricalTrend visualizationData={visualizationData} />
           </Grid>
           <Grid item xs={6}>
-            <DecisionResultsBarViz visualizationData={visualizationData} />
+            <DecisionResultsBarViz visualizationData={currentYearData} />
           </Grid>
           <Grid item xs={6}>
-            <DecisionSupportPieViz visualizationData={visualizationData} />
+            <DecisionSupportPieViz visualizationData={currentYearData} />
           </Grid>
         </Grid>
       </Box>

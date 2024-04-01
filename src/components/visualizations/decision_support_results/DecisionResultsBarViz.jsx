@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Box } from "@mui/material";
-import Download from "./Download";
+import Download from "../../Download";
 
 function currencyFormatter(value) {
   return value.toLocaleString("en-US", {
@@ -33,7 +33,7 @@ export default function DecisionResultsBarViz({ visualizationData }) {
     });
   }
   return (
-    <Box sx={{ height: 300, marginTop: "4rem" }}>
+    <Box sx={{ height: 300, marginTop: "8rem" }}>
       <Download />
       <ResponsiveContainer>
         <BarChart

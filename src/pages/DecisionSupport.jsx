@@ -14,7 +14,7 @@ import IntervalDistribution from "../components/IntervalDistribution";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CircularProgress from "@mui/material/CircularProgress";
-import DecisionSupportResults from "../components/DecisionSupportResults";
+import DecisionSupportResults from "../components/visualizations/decision_support_results/DecisionSupportResults";
 import { baseURL, intervalCodes } from "../constants";
 
 export default function DecisionSupport({
@@ -54,7 +54,7 @@ export default function DecisionSupport({
         }, {}),
       };
 
-      const response = await axios.post(`${baseURL}/calculate`, requestBody);
+      const response = await axios.post(`${baseURL}/trend`, requestBody);
       setVisualizationData(response.data);
       setLoading(false);
     } catch (error) {
@@ -101,7 +101,7 @@ export default function DecisionSupport({
 
       <Grid container>
         <Grid item container direction="column" spacing={2} xl={6}>
-          <IntendedUse tabState={tabState} setTabState={setTabState} id={id} />
+          <IntendedUse tabState={tabState} setTabState={setTabState} marker={marker} />
 
           <Grid item>
             <CoverageLevel tabState={tabState} setTabState={setTabState} id={id} />
@@ -147,7 +147,9 @@ export default function DecisionSupport({
         </Box>
       )}
       {/* <DecisionSupportViz visualizationData={visualizationData} /> */}
-      {visualizationData && <DecisionSupportResults visualizationData={visualizationData} />}
+      {visualizationData && (
+        <DecisionSupportResults visualizationData={visualizationData} year={tabState.year} />
+      )}
     </Box>
   );
 }

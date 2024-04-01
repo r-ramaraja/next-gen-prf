@@ -176,3 +176,52 @@ def compute_decision(data):
         traceback.print_exc()
     finally:
         cur.close()
+
+
+def fetch_intended_use_data(data):
+    db = get_db()
+
+    state_name = data["state"]
+    county_name = data["county"]
+
+    try:
+        cur = db.cursor()
+
+        query = """
+        SELECT Year, IntendedUse, NetReportingAmount, TotalPremiumAmount, SubsidyAmount, IndemnityAmount
+        FROM BusinessData bd
+        JOIN County c ON bd.CountyID = c.CountyID
+        JOIN State s ON c.StateID = s.StateID
+        WHERE s.StateName = %s AND c.CountyName = %s
+        """
+
+        params = [state_name, county_name]
+
+        cur.execute(
+            query,
+            tuple(params),
+        )
+
+        result = cur.fetchall()
+
+        if len(result) > 0:
+            return result
+        else:
+            return []
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+        traceback.print_exc()
+    finally:
+        cur.close()
+
+
+def fetch_historical_trend(data):
+    response = {}
+    for year in range(2007, int(data["year"]) + 1):
+        year_data = data.copy()
+        year_data["year"] = year
+        result = compute_decision(year_data)
+        response[year] = result
+
+    return response
