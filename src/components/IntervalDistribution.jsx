@@ -153,10 +153,10 @@ export default function IntervalDistribution({ id, tabState, setTabState }) {
         </Grid>
         <Grid item>
           <FormControl sx={{ marginBottom: "1rem", marginLeft: "0.5rem" }} size="small">
-            <InputLabel id="demo-simple-select-label">Mode</InputLabel>
+            <InputLabel id="demo-simple-select-label">Season</InputLabel>
             <Select
               value={localIntervalDistributionMode}
-              label="Mode"
+              label="Season"
               onChange={handleModeChange}
               onBlur={handleModeBlur}
             >

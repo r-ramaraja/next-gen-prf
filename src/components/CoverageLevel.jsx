@@ -57,10 +57,11 @@ export default function CoverageLevel({ tabState, setTabState, id, isGuided }) {
             potential loss will be covered by the insurance policy. It essentially sets the
             threshold for when insurance payments will be triggered. <em>Coverage levels</em> are
             typically offered in a range of percentages, allowing the policyholder to choose based
-            on their risk tolerance and financial capacity. The program offers coverage levels
+            on their risk tolerance and financial capacity. The program offers{" "}
+            <em>coverage levels</em>
             ranging from 70% to 90% in increments of 5%.
             <br />
-            Selecting the appropriate coverage level is a fundamental decision point for
+            Selecting the appropriate <em>coverage level</em> is a fundamental decision point for
             policyholders, significantly influencing both the cost of the insurance and the level of
             risk protection it provides. Policyholders must balance the cost of the premium against
             the potential financial protection the policy provides, considering factors like risk
