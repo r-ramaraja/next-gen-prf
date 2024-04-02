@@ -6,6 +6,7 @@ import DecisionSupportPieViz from "./DecisionSupportPieViz";
 import HistoricalTrend from "./HistoricalTrend";
 import CashFlow from "./CashFlow";
 import CashFlowTrend from "./CashFlowTrend";
+import PolicyProtectionPie from "./PolicyProtectionPie";
 
 export default function DecisionSupportResults({ visualizationData, year }) {
   const yearString = year.format("YYYY");
@@ -45,6 +46,9 @@ export default function DecisionSupportResults({ visualizationData, year }) {
           </Grid>
           <Grid item xs={6}>
             <DecisionSupportPieViz visualizationData={currentYearData} />
+          </Grid>
+          <Grid item xs={6}>
+            <PolicyProtectionPie visualizationData={currentYearData} />
           </Grid>
         </Grid>
       </Box>
