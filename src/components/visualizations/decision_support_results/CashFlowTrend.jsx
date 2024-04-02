@@ -15,15 +15,7 @@ import {
 import { Box, Typography } from "@mui/material";
 import Download from "../../Download";
 import _ from "lodash";
-
-function currencyFormatter(value) {
-  return value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-}
+import { currencyFormatter } from "../../../constants";
 
 export default function CashFlow({ visualizationData }) {
   const [start, setStart] = useState(0);

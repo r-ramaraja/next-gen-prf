@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 import { Box } from "@mui/material";
 import Download from "../../Download";
-
-function currencyFormatter(value) {
-  return value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-}
+import { currencyFormatter } from "../../../constants";
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;

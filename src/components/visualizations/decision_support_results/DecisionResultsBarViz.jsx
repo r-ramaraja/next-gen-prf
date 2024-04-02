@@ -12,15 +12,7 @@ import {
 } from "recharts";
 import { Box } from "@mui/material";
 import Download from "../../Download";
-
-function currencyFormatter(value) {
-  return value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-}
+import { currencyFormatter } from "../../../constants";
 
 export default function DecisionResultsBarViz({ visualizationData }) {
   const data = [];
