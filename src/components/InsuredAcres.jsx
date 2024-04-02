@@ -32,14 +32,16 @@ export default function InsuredAcres({ id, tabState, setTabState, isGuided }) {
   };
 
   const handleBlur = () => {
-    setTabState(
-      {
-        ...tabState,
-        acres: localAcres,
-        acresError: localAcresError,
-      },
-      id
-    );
+    if (localAcres !== tabState.acres) {
+      setTabState(
+        {
+          ...tabState,
+          acres: localAcres,
+          acresError: localAcresError,
+        },
+        id
+      );
+    }
   };
 
   return (

@@ -27,14 +27,16 @@ export default function InsurableInterest({ id, tabState, setTabState, isGuided 
   }
 
   const handleBlur = () => {
-    setTabState(
-      {
-        ...tabState,
-        interest: localInterest,
-        interestError: localInterestError,
-      },
-      id
-    );
+    if (localInterest !== tabState.interest) {
+      setTabState(
+        {
+          ...tabState,
+          interest: localInterest,
+          interestError: localInterestError,
+        },
+        id
+      );
+    }
   };
 
   const handleInterestChange = (event) => {

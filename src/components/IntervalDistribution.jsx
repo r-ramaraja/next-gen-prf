@@ -10,6 +10,7 @@ import {
   MenuItem,
   Box,
 } from "@mui/material";
+import _ from "lodash";
 
 export default function IntervalDistribution({ id, tabState, setTabState, isGuided }) {
   const monthRanges = [
@@ -75,14 +76,16 @@ export default function IntervalDistribution({ id, tabState, setTabState, isGuid
   };
 
   const syncParentState = () => {
-    setTabState(
-      {
-        ...tabState,
-        monthlyValues: localMonthlyValues,
-        monthlyErrors: localMonthlyErrors,
-      },
-      id
-    );
+    if (!_.isEqual(localMonthlyValues, tabState.monthlyValues)) {
+      setTabState(
+        {
+          ...tabState,
+          monthlyValues: localMonthlyValues,
+          monthlyErrors: localMonthlyErrors,
+        },
+        id
+      );
+    }
   };
 
   function checkIfIntervalDistributionIsDisabled(index) {
@@ -101,15 +104,17 @@ export default function IntervalDistribution({ id, tabState, setTabState, isGuid
   }
 
   const handleModeBlur = () => {
-    setTabState(
-      {
-        ...tabState,
-        monthlyValues: localMonthlyValues,
-        monthlyErrors: localMonthlyErrors,
-        intervalDistributionMode: localIntervalDistributionMode,
-      },
-      id
-    );
+    if (localIntervalDistributionMode !== tabState.intervalDistributionMode) {
+      setTabState(
+        {
+          ...tabState,
+          monthlyValues: localMonthlyValues,
+          monthlyErrors: localMonthlyErrors,
+          intervalDistributionMode: localIntervalDistributionMode,
+        },
+        id
+      );
+    }
   };
 
   const handleModeChange = (event) => {
