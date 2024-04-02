@@ -1,8 +1,11 @@
 import React from "react";
 import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
+import IntendedUseViz from "./visualizations/intended_use_step/IntendedUseViz";
 
-export default function IntendedUse({ tabState, setTabState, id, isGuided }) {
+export default function IntendedUse({ tabState, setTabState, marker, isGuided }) {
   const { intendedUse, irrigationPractice, organicPractice } = tabState;
+  const { id } = marker;
+
   return (
     <Grid container item spacing={2}>
       <Grid item>
@@ -182,6 +185,11 @@ export default function IntendedUse({ tabState, setTabState, id, isGuided }) {
             <em>non-organic</em> acreages, which utilize conventional farming practices, are
             associated with lower county base values in comparison.
           </p>
+        </Grid>
+      )}
+      {isGuided && (
+        <Grid item>
+          <IntendedUseViz marker={marker} />
         </Grid>
       )}
     </Grid>

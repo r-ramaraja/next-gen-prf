@@ -152,7 +152,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
     switch (index) {
       case 0:
         component = (
-          <IntendedUse tabState={tabState} setTabState={setTabState} id={marker.id} isGuided />
+          <IntendedUse tabState={tabState} setTabState={setTabState} marker={marker} isGuided />
         );
         break;
       case 1:

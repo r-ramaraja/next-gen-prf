@@ -188,11 +188,25 @@ def fetch_intended_use_data(data):
         cur = db.cursor()
 
         query = """
-        SELECT Year, IntendedUse, NetReportingAmount, TotalPremiumAmount, SubsidyAmount, IndemnityAmount
-        FROM BusinessData bd
-        JOIN County c ON bd.CountyID = c.CountyID
-        JOIN State s ON c.StateID = s.StateID
-        WHERE s.StateName = %s AND c.CountyName = %s
+        SELECT 
+            bd.Year, 
+            bd.IntendedUse,
+            SUM(bd.IndemnityAmount) AS TotalIndemnityAmount, 
+            SUM(bd.TotalPremiumAmount) AS TotalPremiumAmount, 
+            SUM(bd.SubsidyAmount) AS TotalSubsidyAmount, 
+            SUM(bd.NetReportingAmount) AS TotalNetReportingAmount
+        FROM 
+            BusinessData bd
+        JOIN 
+            County c ON bd.CountyID = c.CountyID
+        JOIN 
+            State s ON c.StateID = s.StateID
+        WHERE 
+            s.StateName = %s AND 
+            c.CountyName = %s AND
+            (bd.IntendedUse = 'haying' OR bd.IntendedUse = 'grazing')
+        GROUP BY 
+            bd.Year, bd.IntendedUse;
         """
 
         params = [state_name, county_name]
@@ -205,7 +219,21 @@ def fetch_intended_use_data(data):
         result = cur.fetchall()
 
         if len(result) > 0:
-            return result
+            response = {"grazing": {}, "haying": {}}
+            for item in result:
+                year = item[0]
+                intended_use = item[1]
+                sum_indemnity = item[2]
+                sum_premium = item[3]
+                subsidy_amount = item[4]
+                acres = item[5]
+                response[intended_use][year] = {
+                    "sum_indemnity": sum_indemnity,
+                    "sum_actual_premium": sum_premium - subsidy_amount,
+                    "acres": acres,
+                }
+
+            return response
         else:
             return []
 
