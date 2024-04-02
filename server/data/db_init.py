@@ -61,13 +61,16 @@ cur.execute(
 cur.execute(
     """
     CREATE TABLE RainfallData (
+        StateID INT NOT NULL,
+        CountyID INT NOT NULL,
         GridID INT NOT NULL,
         Year INT NOT NULL,
         Interval INT NOT NULL,
         Index DECIMAL NOT NULL,
         TotalRainfall DECIMAL,
         HistoricalAverageRainfall DECIMAL,
-        PRIMARY KEY (GridID, Year, Interval)
+        PRIMARY KEY (GridID, Year, Interval),
+        FOREIGN KEY (StateID, CountyID) REFERENCES County(StateID, CountyID)
     );
 """
 )
