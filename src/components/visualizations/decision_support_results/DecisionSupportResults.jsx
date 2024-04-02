@@ -4,6 +4,8 @@ import DecisionSupportTableViz from "./DecisionSupportTableViz";
 import DecisionResultsBarViz from "./DecisionResultsBarViz";
 import DecisionSupportPieViz from "./DecisionSupportPieViz";
 import HistoricalTrend from "./HistoricalTrend";
+import CashFlow from "./CashFlow";
+import CashFlowTrend from "./CashFlowTrend";
 
 export default function DecisionSupportResults({ visualizationData, year }) {
   const yearString = year.format("YYYY");
@@ -31,6 +33,12 @@ export default function DecisionSupportResults({ visualizationData, year }) {
           </Grid>
           <Grid item xs={12}>
             <HistoricalTrend visualizationData={visualizationData} />
+          </Grid>
+          <Grid item xs={12}>
+            <CashFlowTrend visualizationData={visualizationData} />
+          </Grid>
+          <Grid item xs={6}>
+            <CashFlow visualizationData={currentYearData} />
           </Grid>
           <Grid item xs={6}>
             <DecisionResultsBarViz visualizationData={currentYearData} />

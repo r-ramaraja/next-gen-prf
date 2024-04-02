@@ -133,7 +133,7 @@ export default function DecisionSupportPieViz({ visualizationData }) {
   }
 
   return (
-    <Box style={{ height: 300, marginTop: "8rem" }}>
+    <Box style={{ height: 300, marginTop: "4rem" }}>
       <Download />
       <ResponsiveContainer>
         <PieChart width={500} height={500}>

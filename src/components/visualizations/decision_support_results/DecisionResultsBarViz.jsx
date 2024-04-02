@@ -59,12 +59,12 @@ export default function DecisionResultsBarViz({ visualizationData }) {
           /> */}
           <Bar
             dataKey="premium"
-            fill="#4d85bd" // A shade of blue
+            fill="#4d85bd"
             activeBar={<Rectangle fill="#7aaed6" stroke="#2c5d8f" />}
           />
           <Bar
             dataKey="indemnity"
-            fill="#e57373" // A shade of red
+            fill="#e57373"
             activeBar={<Rectangle fill="#ef9a9a" stroke="#af4448" />}
           />
         </BarChart>
