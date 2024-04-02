@@ -25,7 +25,7 @@ export default function Header() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
+        {/* <IconButton
           size="large"
           edge="start"
           color="inherit"
@@ -73,7 +73,7 @@ export default function Header() {
               </List>
             </Box>
           </Drawer>
-        </IconButton>
+        </IconButton> */}
         <Typography
           variant="h6"
           component={Link}

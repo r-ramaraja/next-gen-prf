@@ -69,7 +69,7 @@ function Map() {
         year: dayjs().subtract(1, "year"),
         monthlyValues: values,
         monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
-        isGuided: false,
+        isGuided: true,
         intervalDistributionMode: "custom",
         seenGuidedIntro: false,
       },
