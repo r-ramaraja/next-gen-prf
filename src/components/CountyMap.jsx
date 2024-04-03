@@ -35,7 +35,7 @@ export default function CountyMap({ marker }) {
   const projection = geoAlbers().scale(6000).center([0, 38]).rotate([78, 0, 0]);
   return (
     <Box>
-      {error && <p>Error loading data</p>}
+      {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width="60%" height={"15rem"} />}
       {geoJSON && (
         <ComposableMap

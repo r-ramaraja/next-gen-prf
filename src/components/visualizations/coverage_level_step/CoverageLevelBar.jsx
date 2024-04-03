@@ -74,11 +74,9 @@ export default function CoverageLevelBar({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, width: "70rem", marginTop: "1rem" }}>
+          <Box sx={{ height: 300, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <BarChart
-                width={500}
-                height={300}
                 data={data}
                 margin={{
                   top: 5,
@@ -92,7 +90,8 @@ export default function CoverageLevelBar({ visualizationData }) {
                 <YAxis />
                 <Tooltip
                   formatter={(value, name, props) => {
-                    return props.dataKey === "indemnity" || props.dataKey === "premium"
+                    return props.dataKey.split("-")[1] === "indemnity" ||
+                      props.dataKey.split("-")[1] === "premium"
                       ? currencyFormatter(value)
                       : value;
                   }}

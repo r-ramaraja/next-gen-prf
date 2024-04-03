@@ -25,7 +25,7 @@ function capitalizeFirstLetter(string) {
 }
 
 export default function CountyBaseTable({ marker }) {
-  const [countyBaseData, setCountyBaseData] = useState(null);
+  const [countyBaseData, setCountyBaseData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -53,9 +53,9 @@ export default function CountyBaseTable({ marker }) {
 
   return (
     <Box>
-      {error && <p>Error loading data</p>}
+      {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
-      {countyBaseData && (
+      {countyBaseData.length > 0 ? (
         <TableContainer component={Paper}>
           <Table size="small">
             <TableHead>
@@ -89,6 +89,8 @@ export default function CountyBaseTable({ marker }) {
             </TableBody>
           </Table>
         </TableContainer>
+      ) : (
+        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
     </Box>
   );

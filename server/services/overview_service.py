@@ -29,7 +29,6 @@ def fetch_county_base(data):
         )
         result = cur.fetchall()
 
-        # Return response as a list of dictionaries
         response = []
         for row in result:
             response.append(
@@ -55,11 +54,8 @@ def fetch_state_county_geojson(data):
     state_name = data["state"]
 
     try:
-        # Read JSON file and return as JSON response
         with open(f"data/geojsons/{state_name.lower()}.json") as f:
-            response = json.load(f)
-            return response
-
+            return json.load(f)
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
         traceback.print_exc()

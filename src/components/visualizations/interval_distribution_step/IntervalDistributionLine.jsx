@@ -114,11 +114,9 @@ export default function IntervalDistributionLine({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, width: "70rem", marginTop: "1rem" }}>
+          <Box sx={{ height: 300, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <LineChart
-                width={500}
-                height={300}
                 data={data}
                 margin={{
                   top: 5,

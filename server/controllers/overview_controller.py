@@ -8,11 +8,7 @@ def construct_overview_blueprint():
 
     @blueprint.route("/countybase", methods=["POST"])
     def get_county_base():
-        result = fetch_county_base(request.json)
-        if result:
-            return json.dumps(result)
-        else:
-            return "Error", 500
+        return fetch_county_base(request.json)
 
     @blueprint.route("/geojson", methods=["POST"])
     def get_state_county_geojson():

@@ -34,9 +34,13 @@ export default function CoverageLevelViz({ marker }) {
 
   return (
     <Box>
-      {error && <p>Error loading data</p>}
+      {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
-      {visualizationData && <CoverageLevelBar visualizationData={visualizationData} />}
+      {visualizationData && Object.keys(visualizationData).length > 0 ? (
+        <CoverageLevelBar visualizationData={visualizationData} />
+      ) : (
+        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
+      )}
     </Box>
   );
 }

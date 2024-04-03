@@ -218,7 +218,7 @@ def fetch_intended_use_data(data):
 
         result = cur.fetchall()
 
-        response = {"grazing": {}, "haying": {}}
+        response = {}
         for item in result:
             year = item[0]
             intended_use = item[1]
@@ -226,7 +226,7 @@ def fetch_intended_use_data(data):
             sum_premium = item[3]
             subsidy_amount = item[4]
             acres = item[5]
-            response[intended_use][year] = {
+            response.setdefault(intended_use, {})[year] = {
                 "sum_indemnity": sum_indemnity,
                 "sum_actual_premium": sum_premium - subsidy_amount,
                 "acres": acres,

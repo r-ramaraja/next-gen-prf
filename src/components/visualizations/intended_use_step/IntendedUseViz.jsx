@@ -35,9 +35,9 @@ export default function IntendedUseViz({ marker }) {
 
   return (
     <Box>
-      {error && <p>Error loading data</p>}
+      {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
-      {visualizationData && (
+      {visualizationData && Object.keys(visualizationData).length > 0 ? (
         <Grid container>
           <Grid item xs={12}>
             <CountyBaseTable marker={marker} />
@@ -46,6 +46,8 @@ export default function IntendedUseViz({ marker }) {
             <IndemnitiesBar visualizationData={visualizationData} />
           </Grid>
         </Grid>
+      ) : (
+        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
     </Box>
   );
