@@ -9,8 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import Download from "../components/Download";
-import { baseURL } from "../constants";
+import Download from "../../Download";
+import { baseURL } from "../../../constants";
 import Skeleton from "@mui/material/Skeleton";
 
 const StyledTableHeader = styled(TableCell)(({ theme }) => ({

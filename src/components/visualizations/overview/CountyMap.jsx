@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { geoAlbers } from "d3-geo";
-import { baseURL } from "../constants";
+import { baseURL } from "../../../constants";
 import { Box, Skeleton } from "@mui/material";
 
 export default function CountyMap({ marker }) {

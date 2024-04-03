@@ -2,8 +2,8 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
-import CountyBaseTable from "../components/CountyBaseTable";
-import CountyMap from "../components/CountyMap";
+import CountyBaseTable from "../components/visualizations/overview/CountyBaseTable";
+import CountyMap from "../components/visualizations/overview/CountyMap";
 
 export default function Overview({ marker }) {
   return (

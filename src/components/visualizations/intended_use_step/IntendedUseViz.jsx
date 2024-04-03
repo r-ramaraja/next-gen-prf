@@ -3,7 +3,7 @@ import IndemnitiesBar from "./IndemnitiesBar";
 import axios from "axios";
 import { baseURL } from "../../../constants";
 import { Box, Grid, Skeleton } from "@mui/material";
-import CountyBaseTable from "../../CountyBaseTable";
+import CountyBaseTable from "../overview/CountyBaseTable";
 
 export default function IntendedUseViz({ marker }) {
   const { county, state } = marker;
