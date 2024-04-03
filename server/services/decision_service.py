@@ -139,7 +139,7 @@ def compute_decision(data):
             )
             result = cur.fetchone()
             final_index = float(result[0])
-            index[interval] = round(final_index, 2)
+            index[interval] = final_index
             pcf = ((coverage_level / 100) - final_index) / (coverage_level / 100)
             if pcf > 0:
                 indemnity[interval] = round(pcf * policy_protection[interval])

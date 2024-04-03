@@ -53,8 +53,8 @@ function MarkerDetail({ marker, tabState, setTabState }) {
       >
         <Tab label="Overview" />
         <Tab label="Decision Support" />
-        <Tab label="Precipitation" />
-        <Tab label="Summary of Business" />
+        {/* <Tab label="Precipitation" />
+        <Tab label="Summary of Business" /> */}
       </Tabs>
       <TabPanel value={markerDetailTabId} index={0}>
         <Overview marker={marker} />
@@ -64,7 +64,7 @@ function MarkerDetail({ marker, tabState, setTabState }) {
           <GuidedDecisionSupport marker={marker} tabState={tabState} setTabState={setTabState} />
         </Box>
       </TabPanel>
-      <TabPanel value={markerDetailTabId} index={2}>
+      {/* <TabPanel value={markerDetailTabId} index={2}>
         <Box sx={{ p: 1 }}>
           <Typography>Coming soon...</Typography>
         </Box>
@@ -73,7 +73,7 @@ function MarkerDetail({ marker, tabState, setTabState }) {
         <Box sx={{ p: 1 }}>
           <Typography>Coming soon...</Typography>
         </Box>
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 }

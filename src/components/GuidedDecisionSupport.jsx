@@ -211,14 +211,14 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
 
   return (
     <React.Fragment>
-      {!hideGuidedIntro && !seenGuidedIntro && isGuided && activeStep === 0 && (
+      {/* {!hideGuidedIntro && !seenGuidedIntro && isGuided && activeStep === 0 && (
         <GuidedDecisionSupportIntro
           handleChecked={handleChecked}
           tabState={tabState}
           setTabState={setTabState}
           id={marker.id}
         />
-      )}
+      )} */}
       {isGuided ? (
         <Box sx={{ width: "100%" }}>
           <Stepper activeStep={activeStep} alternativeLabel>

@@ -8,10 +8,17 @@ import CashFlow from "./CashFlow";
 import CashFlowTrend from "./CashFlowTrend";
 import PolicyProtectionPie from "./PolicyProtectionPie";
 
-export default function DecisionSupportResults({ visualizationData, year }) {
+export default function DecisionSupportResults({ visualizationData, tabState }) {
+  const { year, coverageLevel, productivityFactor } = tabState;
   const yearString = year.format("YYYY");
   const currentYearData = visualizationData[yearString];
   if (!currentYearData) return <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>;
+
+  const countyBaseValue = currentYearData.county_base;
+  const subsidyValue = currentYearData.subsidy;
+  const dollarAmountProtection =
+    countyBaseValue * (coverageLevel / 100) * (productivityFactor / 100);
+
   return (
     <React.Fragment>
       <Divider aria-hidden="true" sx={{ margin: "0.5rem" }} />
@@ -20,18 +27,24 @@ export default function DecisionSupportResults({ visualizationData, year }) {
           <Grid item>
             <Typography>
               <span style={{ fontWeight: "bold" }}>County Base Value:</span>{" "}
-              {currentYearData.county_base.toLocaleString("en-US", {
+              {countyBaseValue.toLocaleString("en-US", {
                 style: "currency",
                 currency: "USD",
               })}
             </Typography>
             <Typography>
-              <span style={{ fontWeight: "bold" }}>Subsidy Level:</span>{" "}
-              {`${currentYearData.subsidy}%`}
+              <span style={{ fontWeight: "bold" }}>Dollar Amount Protection:</span>{" "}
+              {dollarAmountProtection.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })}
+            </Typography>
+            <Typography>
+              <span style={{ fontWeight: "bold" }}>Subsidy Level:</span> {`${subsidyValue}%`}
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <DecisionSupportTableViz visualizationData={currentYearData} />
+            <DecisionSupportTableViz visualizationData={currentYearData} tabState={tabState} />
           </Grid>
           <Grid item xs={12}>
             <HistoricalTrend visualizationData={visualizationData} />

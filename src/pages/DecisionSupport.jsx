@@ -136,10 +136,9 @@ export default function DecisionSupport({
           >
             Calculate
           </Button>
-
-          {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
         </Box>
       )}
+      {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && (
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: "10rem" }}>
           <CircularProgress variant="indeterminate" size={60} thickness={4} />
@@ -147,7 +146,7 @@ export default function DecisionSupport({
       )}
       {/* <DecisionSupportViz visualizationData={visualizationData} /> */}
       {visualizationData && (
-        <DecisionSupportResults visualizationData={visualizationData} year={tabState.year} />
+        <DecisionSupportResults visualizationData={visualizationData} tabState={tabState} />
       )}
     </Box>
   );
