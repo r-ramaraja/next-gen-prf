@@ -11,6 +11,7 @@ import PolicyProtectionPie from "./PolicyProtectionPie";
 export default function DecisionSupportResults({ visualizationData, year }) {
   const yearString = year.format("YYYY");
   const currentYearData = visualizationData[yearString];
+  if (!currentYearData) return <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>;
   return (
     <React.Fragment>
       <Divider aria-hidden="true" sx={{ margin: "0.5rem" }} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import IntervalDistributionLine from "./IntervalDistributionLine";
 import axios from "axios";
 import { baseURL } from "../../../constants";
+import { Box, Skeleton } from "@mui/material";
 
 export default function IntervalDistributionViz({ marker }) {
   const { county, state } = marker;
@@ -31,5 +32,11 @@ export default function IntervalDistributionViz({ marker }) {
     fetchData();
   }, []);
 
-  return <IntervalDistributionLine visualizationData={visualizationData} />;
+  return (
+    <Box>
+      {error && <p>Error loading data</p>}
+      {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
+      {visualizationData && <IntervalDistributionLine visualizationData={visualizationData} />}
+    </Box>
+  );
 }

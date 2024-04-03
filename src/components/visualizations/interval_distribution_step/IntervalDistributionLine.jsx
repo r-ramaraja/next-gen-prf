@@ -33,8 +33,6 @@ const MenuProps = {
 };
 
 export default function IntervalDistributionLine({ visualizationData }) {
-  if (!visualizationData) return <></>;
-
   const [metric, setMetric] = useState("index");
   const [intervals, setIntervals] = useState(monthRanges);
 

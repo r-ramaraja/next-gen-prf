@@ -218,24 +218,21 @@ def fetch_intended_use_data(data):
 
         result = cur.fetchall()
 
-        if len(result) > 0:
-            response = {"grazing": {}, "haying": {}}
-            for item in result:
-                year = item[0]
-                intended_use = item[1]
-                sum_indemnity = item[2]
-                sum_premium = item[3]
-                subsidy_amount = item[4]
-                acres = item[5]
-                response[intended_use][year] = {
-                    "sum_indemnity": sum_indemnity,
-                    "sum_actual_premium": sum_premium - subsidy_amount,
-                    "acres": acres,
-                }
+        response = {"grazing": {}, "haying": {}}
+        for item in result:
+            year = item[0]
+            intended_use = item[1]
+            sum_indemnity = item[2]
+            sum_premium = item[3]
+            subsidy_amount = item[4]
+            acres = item[5]
+            response[intended_use][year] = {
+                "sum_indemnity": sum_indemnity,
+                "sum_actual_premium": sum_premium - subsidy_amount,
+                "acres": acres,
+            }
 
-            return response
-        else:
-            return []
+        return response
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
@@ -386,16 +383,13 @@ def fetch_insured_acres_data(data):
 
         result = cur.fetchall()
 
-        if len(result) > 0:
-            response = {}
-            for item in result:
-                year = item[0]
-                acres = item[1]
-                response[year] = acres
+        response = {}
+        for item in result:
+            year = item[0]
+            acres = item[1]
+            response[year] = acres
 
-            return response
-        else:
-            return []
+        return response
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
@@ -440,22 +434,19 @@ def fetch_interval_data(data):
 
         result = cur.fetchall()
 
-        if len(result) > 0:
-            response = {}
-            for item in result:
-                year = item[0]
-                interval = interval_codes[int(item[1])]
-                index = item[2]
-                total_rainfall = item[3]
+        response = {}
+        for item in result:
+            year = item[0]
+            interval = interval_codes[int(item[1])]
+            index = item[2]
+            total_rainfall = item[3]
 
-                response.setdefault(year, {})[interval] = {
-                    "index": index,
-                    "total_rainfall": total_rainfall,
-                }
+            response.setdefault(year, {})[interval] = {
+                "index": index,
+                "total_rainfall": total_rainfall,
+            }
 
-            return response
-        else:
-            return []
+        return response
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")

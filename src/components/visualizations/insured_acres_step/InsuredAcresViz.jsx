@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import InsuredAcresLine from "./InsuredAcresLine";
 import axios from "axios";
 import { baseURL } from "../../../constants";
-import { Box, Grid } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 
 export default function InsuredAcresViz({ marker }) {
   const { county, state } = marker;
@@ -32,5 +32,11 @@ export default function InsuredAcresViz({ marker }) {
     fetchData();
   }, []);
 
-  return <InsuredAcresLine visualizationData={visualizationData} />;
+  return (
+    <Box>
+      {error && <p>Error loading data</p>}
+      {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
+      {visualizationData && <InsuredAcresLine visualizationData={visualizationData} />}
+    </Box>
+  );
 }

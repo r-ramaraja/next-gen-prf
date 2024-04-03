@@ -17,8 +17,6 @@ import Select from "@mui/material/Select";
 import { currencyFormatter } from "../../../constants";
 
 export default function IndemnitiesBar({ visualizationData }) {
-  if (!visualizationData) return <></>;
-
   const [metric, setMetric] = useState("indemnity");
   const [grazingKey, setGrazingKey] = useState("grazing_indemnity");
   const [hayingKey, setHayingKey] = useState("haying_indemnity");
@@ -38,17 +36,21 @@ export default function IndemnitiesBar({ visualizationData }) {
   };
 
   const data = [];
-  const grazing = visualizationData["grazing"];
-  const haying = visualizationData["haying"];
-  for (const year in grazing) {
+  const grazing = visualizationData["grazing"] ?? {};
+
+  const haying = visualizationData["haying"] ?? {};
+
+  const yearSet = new Set([...Object.keys(haying), ...Object.keys(grazing)]);
+
+  for (const year of yearSet) {
     data.push({
       year,
-      grazing_indemnity: grazing[year]["sum_indemnity"],
-      grazing_actual_premium: grazing[year]["sum_actual_premium"],
-      grazing_acres: grazing[year]["acres"],
-      haying_indemnity: haying[year]["sum_indemnity"],
-      haying_actual_premium: haying[year]["sum_actual_premium"],
-      haying_acres: haying[year]["acres"],
+      grazing_indemnity: grazing[year] ? grazing[year]["sum_indemnity"] : 0,
+      grazing_actual_premium: grazing[year] ? grazing[year]["sum_actual_premium"] : 0,
+      grazing_acres: grazing[year] ? grazing[year]["acres"] : 0,
+      haying_indemnity: haying[year] ? haying[year]["sum_indemnity"] : 0,
+      haying_actual_premium: haying[year] ? haying[year]["sum_actual_premium"] : 0,
+      haying_acres: haying[year] ? haying[year]["acres"] : 0,
     });
   }
 

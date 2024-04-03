@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import IndemnitiesBar from "./IndemnitiesBar";
 import axios from "axios";
 import { baseURL } from "../../../constants";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Skeleton } from "@mui/material";
 import CountyBaseTable from "../../CountyBaseTable";
 
 export default function IntendedUseViz({ marker }) {
@@ -35,14 +35,18 @@ export default function IntendedUseViz({ marker }) {
 
   return (
     <Box>
-      <Grid container>
-        <Grid item xs={12}>
-          <CountyBaseTable marker={marker} />
+      {error && <p>Error loading data</p>}
+      {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
+      {visualizationData && (
+        <Grid container>
+          <Grid item xs={12}>
+            <CountyBaseTable marker={marker} />
+          </Grid>
+          <Grid item xs={12}>
+            <IndemnitiesBar visualizationData={visualizationData} />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <IndemnitiesBar visualizationData={visualizationData} />
-        </Grid>
-      </Grid>
+      )}
     </Box>
   );
 }

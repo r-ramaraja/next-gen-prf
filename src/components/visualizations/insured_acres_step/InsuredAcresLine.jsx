@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -8,19 +8,10 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Brush,
 } from "recharts";
 import { Box, Grid } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { currencyFormatter } from "../../../constants";
 
 export default function InsuredAcresLine({ visualizationData }) {
-  console.log("🚀 ~ InsuredAcresLine ~ visualizationData:", visualizationData);
-  if (!visualizationData) return <></>;
-
   const data = [];
   for (const [year, acres] of Object.entries(visualizationData)) {
     data.push({ year, acres });
