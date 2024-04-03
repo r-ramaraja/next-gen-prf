@@ -17,7 +17,7 @@ import Select from "@mui/material/Select";
 import { currencyFormatter } from "../../../constants";
 
 export default function CoverageLevelBar({ visualizationData }) {
-  const colours = ["#00BFFF", "#FF6347", "#3CB371", "#FFD700", "#7B68EE", "#FF7F50"];
+  const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4D96FF", "#9D7BFF", "#FF926B"];
 
   const [metric, setMetric] = useState("indemnity");
 
