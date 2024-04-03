@@ -11,22 +11,11 @@ import {
   Box,
 } from "@mui/material";
 import _ from "lodash";
+import { monthRanges } from "../constants";
+import IntervalDistributionViz from "./visualizations/interval_distribution_step/IntervalDistributionViz";
 
-export default function IntervalDistribution({ id, tabState, setTabState, isGuided }) {
-  const monthRanges = [
-    "Jan-Feb",
-    "Feb-Mar",
-    "Mar-Apr",
-    "Apr-May",
-    "May-Jun",
-    "Jun-Jul",
-    "Jul-Aug",
-    "Aug-Sep",
-    "Sep-Oct",
-    "Oct-Nov",
-    "Nov-Dec",
-  ];
-
+export default function IntervalDistribution({ marker, tabState, setTabState, isGuided }) {
+  const { id } = marker;
   const [localMonthlyValues, setLocalMonthlyValues] = useState(tabState.monthlyValues);
   const [localMonthlyErrors, setLocalMonthlyErrors] = useState(tabState.monthlyErrors);
   const [localIntervalDistributionMode, setLocalIntervalDistributionMode] = useState(
@@ -262,6 +251,7 @@ export default function IntervalDistribution({ id, tabState, setTabState, isGuid
           </p>
         </Box>
       )}
+      {isGuided && <IntervalDistributionViz marker={marker} />}
     </Box>
   );
 }

@@ -104,7 +104,7 @@ export default function DecisionSupport({
           <IntendedUse tabState={tabState} setTabState={setTabState} marker={marker} />
 
           <Grid item>
-            <CoverageLevel tabState={tabState} setTabState={setTabState} id={id} />
+            <CoverageLevel tabState={tabState} setTabState={setTabState} marker={marker} />
           </Grid>
           <Grid item>
             <ProductivityFactor tabState={tabState} setTabState={setTabState} id={id} />
@@ -112,7 +112,7 @@ export default function DecisionSupport({
 
           <Grid container gap={2} sx={{ margin: "1rem" }}>
             <Grid item>
-              <InsuredAcres tabState={tabState} setTabState={setTabState} id={id} />
+              <InsuredAcres tabState={tabState} setTabState={setTabState} marker={marker} />
             </Grid>
             <Grid item>
               <InsurableInterest tabState={tabState} setTabState={setTabState} id={id} />
@@ -123,7 +123,7 @@ export default function DecisionSupport({
           </Grid>
         </Grid>
         <Grid item xl={6}>
-          <IntervalDistribution tabState={tabState} setTabState={setTabState} id={id} />
+          <IntervalDistribution tabState={tabState} setTabState={setTabState} marker={marker} />
         </Grid>
       </Grid>
       {!visualizationData && !loading && (

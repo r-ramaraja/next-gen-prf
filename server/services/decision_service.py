@@ -404,6 +404,66 @@ def fetch_insured_acres_data(data):
         cur.close()
 
 
+def fetch_interval_data(data):
+    db = get_db()
+
+    state_name = data["state"]
+    county_name = data["county"]
+
+    try:
+        cur = db.cursor()
+
+        query = """
+       SELECT 
+            rd.Year,
+            rd.Interval,
+            rd.Index,
+            rd.TotalRainfall
+        FROM 
+            RainfallData rd
+        JOIN 
+            County c ON rd.CountyID = c.CountyID
+        JOIN 
+            State s ON c.StateID = s.StateID
+        WHERE 
+            s.StateName = %s AND 
+            c.CountyName = %s AND
+            rd.Year >= 2007;
+        """
+
+        params = [state_name, county_name]
+
+        cur.execute(
+            query,
+            tuple(params),
+        )
+
+        result = cur.fetchall()
+
+        if len(result) > 0:
+            response = {}
+            for item in result:
+                year = item[0]
+                interval = interval_codes[int(item[1])]
+                index = item[2]
+                total_rainfall = item[3]
+
+                response.setdefault(year, {})[interval] = {
+                    "index": index,
+                    "total_rainfall": total_rainfall,
+                }
+
+            return response
+        else:
+            return []
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+        traceback.print_exc()
+    finally:
+        cur.close()
+
+
 def fetch_historical_trend(data):
     response = {}
     for year in range(2007, int(data["year"]) + 1):
