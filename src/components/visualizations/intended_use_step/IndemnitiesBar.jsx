@@ -55,7 +55,7 @@ export default function IndemnitiesBar({ visualizationData }) {
   return (
     <Box>
       <Grid container>
-        <Grid item sx={{ marginLeft: "1.5rem" }}>
+        <Grid item sx={{ marginLeft: "1.5rem", marginTop: "2rem" }}>
           <FormControl fullWidth size="small">
             <InputLabel>Metric</InputLabel>
             <Select value={metric} label="metric" onChange={handleChange}>

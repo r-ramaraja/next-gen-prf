@@ -3,6 +3,7 @@ import IndemnitiesBar from "./IndemnitiesBar";
 import axios from "axios";
 import { baseURL } from "../../../constants";
 import { Box, Grid } from "@mui/material";
+import CountyBaseTable from "../../CountyBaseTable";
 
 export default function IntendedUseViz({ marker }) {
   const { county, state } = marker;
@@ -32,5 +33,16 @@ export default function IntendedUseViz({ marker }) {
     fetchData();
   }, []);
 
-  return <IndemnitiesBar visualizationData={visualizationData} />;
+  return (
+    <Box>
+      <Grid container>
+        <Grid item xs={12}>
+          <CountyBaseTable marker={marker} />
+        </Grid>
+        <Grid item xs={12}>
+          <IndemnitiesBar visualizationData={visualizationData} />
+        </Grid>
+      </Grid>
+    </Box>
+  );
 }
