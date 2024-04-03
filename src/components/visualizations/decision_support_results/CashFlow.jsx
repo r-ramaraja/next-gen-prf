@@ -17,7 +17,6 @@ import Download from "../../Download";
 import { currencyFormatter } from "../../../constants";
 
 export default function CashFlow({ visualizationData }) {
-  console.log("🚀 ~ CashFlow ~ visualizationData:", visualizationData);
   const data = [];
   for (const interval in visualizationData.intervals) {
     data.push({

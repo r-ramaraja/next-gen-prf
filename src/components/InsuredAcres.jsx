@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Box } from "@mui/material";
+import InsuredAcresViz from "./visualizations/insured_acres_step/InsuredAcresViz";
 
-export default function InsuredAcres({ id, tabState, setTabState, isGuided }) {
+export default function InsuredAcres({ marker, tabState, setTabState, isGuided }) {
   const [localAcres, setLocalAcres] = useState(tabState.acres);
   const [localAcresError, setLocalAcresError] = useState(tabState.acresError);
-
+  const { id } = marker;
   useEffect(() => {
     setLocalAcres(tabState.acres);
     setLocalAcresError(tabState.acresError);
@@ -98,6 +99,7 @@ export default function InsuredAcres({ id, tabState, setTabState, isGuided }) {
           </p>
         </Box>
       )}
+      {isGuided && <InsuredAcresViz marker={marker} />}
     </Box>
   );
 }

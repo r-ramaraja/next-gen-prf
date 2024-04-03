@@ -351,6 +351,59 @@ def fetch_coverage_level_data(data):
         cur.close()
 
 
+def fetch_insured_acres_data(data):
+    db = get_db()
+
+    state_name = data["state"]
+    county_name = data["county"]
+
+    try:
+        cur = db.cursor()
+
+        query = """
+        SELECT 
+            bd.Year,
+            SUM(bd.NetReportingAmount) AS TotalNetReportingAmount
+        FROM 
+            BusinessData bd
+        JOIN 
+            County c ON bd.CountyID = c.CountyID
+        JOIN 
+            State s ON c.StateID = s.StateID
+        WHERE 
+            s.StateName = %s AND 
+            c.CountyName = %s
+        GROUP BY 
+            bd.Year
+        """
+
+        params = [state_name, county_name]
+
+        cur.execute(
+            query,
+            tuple(params),
+        )
+
+        result = cur.fetchall()
+
+        if len(result) > 0:
+            response = {}
+            for item in result:
+                year = item[0]
+                acres = item[1]
+                response[year] = acres
+
+            return response
+        else:
+            return []
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+        traceback.print_exc()
+    finally:
+        cur.close()
+
+
 def fetch_historical_trend(data):
     response = {}
     for year in range(2007, int(data["year"]) + 1):
