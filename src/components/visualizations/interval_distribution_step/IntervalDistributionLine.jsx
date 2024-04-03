@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
   Brush,
+  ReferenceLine,
 } from "recharts";
 import { Box, Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -131,6 +132,8 @@ export default function IntervalDistributionLine({ visualizationData }) {
                 <Tooltip />
                 <Legend />
                 <Brush dataKey="year" height={30} x={70} />
+                <ReferenceLine y={0.9} label="0.90" stroke="black" strokeWidth={2} />
+                <ReferenceLine y={0.7} label="0.70" stroke="black" strokeWidth={2} />
                 {intervals.map((interval, index) => (
                   <Line
                     key={`${intervalMap[interval]}-${metric}-${index}`}
