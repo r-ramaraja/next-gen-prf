@@ -157,7 +157,7 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
         break;
       case 1:
         component = (
-          <CoverageLevel tabState={tabState} setTabState={setTabState} id={marker.id} isGuided />
+          <CoverageLevel tabState={tabState} setTabState={setTabState} marker={marker} isGuided />
         );
         break;
       case 2:

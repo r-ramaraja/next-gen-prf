@@ -4,6 +4,7 @@ from services.decision_service import (
     compute_decision,
     fetch_intended_use_data,
     fetch_historical_trend,
+    fetch_coverage_level_data,
 )
 from decimal_encoder import DecimalEncoder
 
@@ -24,6 +25,12 @@ def construct_decision_blueprint():
     def get_intended_use_data():
         data = request.json
         result = fetch_intended_use_data(data)
+        return json.dumps(result, cls=DecimalEncoder)
+
+    @blueprint.route("/viz/coverage", methods=["POST"])
+    def get_coverage_level_data():
+        data = request.json
+        result = fetch_coverage_level_data(data)
         return json.dumps(result, cls=DecimalEncoder)
 
     @blueprint.route("/trend", methods=["POST"])

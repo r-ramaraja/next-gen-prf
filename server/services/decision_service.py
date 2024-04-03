@@ -244,6 +244,113 @@ def fetch_intended_use_data(data):
         cur.close()
 
 
+def fetch_coverage_level_data(data):
+    db = get_db()
+
+    state_name = data["state"]
+    county_name = data["county"]
+
+    try:
+        cur = db.cursor()
+
+        query = """
+        SELECT 
+            bd.Year, 
+            bd.CoverageLevel,
+            SUM(bd.IndemnityAmount) AS TotalIndemnityAmount, 
+            SUM(bd.TotalPremiumAmount) AS TotalPremiumAmount, 
+            SUM(bd.SubsidyAmount) AS TotalSubsidyAmount, 
+            SUM(bd.NetReportingAmount) AS TotalNetReportingAmount
+        FROM 
+            BusinessData bd
+        JOIN 
+            County c ON bd.CountyID = c.CountyID
+        JOIN 
+            State s ON c.StateID = s.StateID
+        WHERE 
+            s.StateName = %s AND 
+            c.CountyName = %s AND
+            bd.CoverageLevel != 0.0
+        GROUP BY 
+            bd.Year, bd.CoverageLevel;
+        """
+
+        params = [state_name, county_name]
+
+        cur.execute(
+            query,
+            tuple(params),
+        )
+
+        result = cur.fetchall()
+
+        response = {}
+        for item in result:
+            year = item[0]
+            coverage_level = float(item[1])
+            sum_indemnity = item[2]
+            sum_premium = item[3]
+            subsidy_amount = item[4]
+            acres = item[5]
+
+            response.setdefault(coverage_level, {}).setdefault(year, {}).update(
+                {
+                    "sum_indemnity": sum_indemnity,
+                    "sum_actual_premium": sum_premium - subsidy_amount,
+                    "acres": acres,
+                }
+            )
+
+        query = """
+        SELECT 
+            pd.Year, 
+            pd.CoverageLevel,
+            SUM(pd.PolicySold) AS TotalPoliciesSold, 
+            SUM(pd.PolicyIndemnified) AS TotalPoliciesIndemnified
+        FROM 
+            PolicyData pd
+        JOIN 
+            County c ON pd.CountyID = c.CountyID
+        JOIN 
+            State s ON c.StateID = s.StateID
+        WHERE 
+            s.StateName = %s AND 
+            c.CountyName = %s
+        GROUP BY 
+            pd.Year, pd.CoverageLevel;
+        """
+
+        params = [state_name, county_name]
+
+        cur.execute(
+            query,
+            tuple(params),
+        )
+
+        result = cur.fetchall()
+
+        for item in result:
+            year = item[0]
+            coverage_level = float(item[1])
+            sum_policy_sold = item[2]
+            sum_policy_indemnified = item[3]
+
+            response.setdefault(coverage_level, {}).setdefault(year, {}).update(
+                {
+                    "sum_policy_sold": sum_policy_sold,
+                    "sum_policy_indemnified": sum_policy_indemnified,
+                }
+            )
+
+        return response
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error: {error}")
+        traceback.print_exc()
+    finally:
+        cur.close()
+
+
 def fetch_historical_trend(data):
     response = {}
     for year in range(2007, int(data["year"]) + 1):

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Slider, Typography, Box } from "@mui/material";
+import CoverageLevelViz from "./visualizations/coverage_level_step/CoverageLevelViz";
 
-export default function CoverageLevel({ tabState, setTabState, id, isGuided }) {
+export default function CoverageLevel({ tabState, setTabState, marker, isGuided }) {
   const [localCoverageLevel, setLocalCoverageLevel] = useState(tabState.coverageLevel);
+  const { id } = marker;
 
   const handleSliderChange = (event, newValue) => {
     setLocalCoverageLevel(newValue);
@@ -83,6 +85,7 @@ export default function CoverageLevel({ tabState, setTabState, id, isGuided }) {
           </p>
         </Box>
       )}
+      {isGuided && <CoverageLevelViz marker={marker} />}
     </React.Fragment>
   );
 }
