@@ -69,7 +69,7 @@ cur.execute(
         Index DECIMAL NOT NULL,
         TotalRainfall DECIMAL,
         HistoricalAverageRainfall DECIMAL,
-        PRIMARY KEY (GridID, Year, Interval),
+        PRIMARY KEY (StateID, CountyID, GridID, Year, Interval),
         FOREIGN KEY (StateID, CountyID) REFERENCES County(StateID, CountyID)
     );
 """
