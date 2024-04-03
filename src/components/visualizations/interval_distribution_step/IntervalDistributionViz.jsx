@@ -39,7 +39,7 @@ export default function IntervalDistributionViz({ marker }) {
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
         <IntervalDistributionLine visualizationData={visualizationData} />
       ) : (
-        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
+        !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
     </Box>
   );

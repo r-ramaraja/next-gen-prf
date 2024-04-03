@@ -47,7 +47,7 @@ export default function IntendedUseViz({ marker }) {
           </Grid>
         </Grid>
       ) : (
-        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
+        !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
     </Box>
   );

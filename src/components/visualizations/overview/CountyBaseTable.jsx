@@ -90,7 +90,7 @@ export default function CountyBaseTable({ marker }) {
           </Table>
         </TableContainer>
       ) : (
-        <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
+        !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
     </Box>
   );
