@@ -29,31 +29,37 @@ export default function ProductivityFactor({ tabState, setTabState, id, isGuided
       {isGuided && (
         <Box>
           <p>
-            <strong>What is productivity factor?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
             <em>Productivity factor</em>, expressed as a percentage, represents the relative
-            productivity of the insured&apos;s acreage in comparison to the county average. The main
-            purpose of the <em>productivity factor</em> is to align the insurance coverage more
-            closely with the actual productivity and value of the insured&apos;s acreage. This is
-            particularly useful in diverse regions where productivity can vary significantly within
-            the same county or area.
+            productivity of the insured&apos;s acreage in comparison to the county average.
             <br />
-            Policyholders can typically choose a <em>productivity factor</em> between 60% and 150%
-            in increments of 1%. If a policyholder selects a <em>productivity factor</em> greater
-            than 100%, they indicate that their land is more productive than the average in their
-            county. Conversely, selecting a factor less than 100% suggests lower productivity.
+            This is particularly useful in diverse regions where productivity can vary significantly
+            within the same county or area.
+            <br />
           </p>
           <p>
-            <strong>How does it impact the policy?</strong>
+            Policyholders can typically choose a <em>productivity factor</em> between 60% and 150%
+            in increments of 1%.
+            <br />
+            If a policyholder selects a <em>productivity factor</em> greater than 100%, they
+            indicate that their land is more productive than the average in their county.
+            <br />
+            Conversely, selecting a factor less than 100% suggests lower productivity.
+          </p>
+          <p>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Impact</strong>
+            </span>
           </p>
           <p>
             The choice of <em>productivity factor</em> directly influences the{" "}
-            <em>dollar amount protection</em> value (
-            <em>County Base Value * Coverage Level * Productivity Factor</em>).
-            <em> Dollar amount protection</em> represents the monetary value of coverage that the
-            insurance policy provides per acre. This value serves as the foundation for determining
-            potential premium rates and indemnity payments.
+            <em>dollar amount protection</em> value, which represents the monetary value of coverage
+            that the insurance policy provides per acre. This value serves as the foundation for
+            determining potential premium rates and indemnity payments.
             <br />
             Hence, the choice of<em> productivity factor</em> further influences the premium rates
             and the indemnity payments.

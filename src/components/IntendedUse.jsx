@@ -82,109 +82,113 @@ export default function IntendedUse({ tabState, setTabState, marker, isGuided })
       {isGuided && (
         <Grid item>
           <p>
-            <strong>What is intended use?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
-            <em>Intended use</em> refers to the specified purpose for which the insured acreage is
-            used. The <em>intended use </em>must be reported and insured as either <em>haying</em>{" "}
-            or <em>grazing</em>, as chosen by the insured. It is crucial to note that the same
-            acreage cannot be reported or insured with both <em>haying</em> and <em>grazing</em> as
-            the <em>intended use</em> in the same crop year.
+            <em>Intended use</em> refers to the purpose for which the insured acreage is reported
+            and insured. The two eligible options are <em>haying</em> or <em>grazing</em>.
+          </p>
+          <p>
+            The same acreage <strong>cannot</strong> be reported or insured with both{" "}
+            <em>haying</em> and <em>grazing</em> as the <em>intended use</em> in the same crop year.
+          </p>
+          {intendedUse === "haying" && (
+            <React.Fragment>
+              <p>
+                Selecting <em>haying</em> as the intended use requires specifying the type of
+                irrigation practice used.
+              </p>
+
+              <p>
+                <strong>Irrigation Practice:</strong>
+                <br />
+                <em>Irrigation practice</em> refers to how water is supplied to crops and has two
+                main categories:
+              </p>
+              <ol>
+                <li>
+                  <strong>Irrigated</strong>: Acreage receives water through artificial means, e.g.,
+                  sprinklers or drip systems.
+                </li>
+                <li>
+                  <strong>Non-irrigated</strong>: Reliant solely on natural rainfall.
+                </li>
+              </ol>
+              {irrigationPractice === "non-irrigated" && (
+                <React.Fragment>
+                  <p>
+                    Selecting the <em>non-irrigated option</em> requires specifying the type of{" "}
+                    <em>organic practice</em> used.
+                  </p>
+                  <p>
+                    <strong>Organic Practice:</strong>
+                    <br />
+                    <em>Organic Practice</em> refers to specific agricultural practices for
+                    cultivating crops that are in line with organic farming standards.The options
+                    are:
+                  </p>
+                  <ol>
+                    <li>
+                      <strong>Non-Organic</strong>: This applies to acreage that is not managed
+                      using organic methods.
+                    </li>
+                    <li>
+                      <strong>Certified Organic</strong>: This applies to acreage officially
+                      certified as organic and managed according to certified organic farming
+                      practices.
+                    </li>
+                    <li>
+                      <strong>Transitional</strong>: This option is for acreage that is converting
+                      from conventional to organic farming practices.
+                    </li>
+                  </ol>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )}
+          <p>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Impact</strong>
+            </span>
+          </p>
+          <p>
+            The choice of <em>intended use</em> impacts how the<em> county base value</em> is
+            determined and, subsequently, how other insurance components are calculated.
             <br />
-            When determining which <em>intended use</em> to select, factors like the type of forage,
-            location, elevation, and the time period when precipitation is most needed for the
-            insured crop should be considered.
-          </p>
-
-          <p>
-            If you choose <em>haying</em> as the intended use, you need to specify the irrigation
-            and organic practices used for the insured acreage.
-          </p>
-          <p>
-            <strong>Irrigation Practice:</strong>
-            <br />
-            <em>Irrigation practice</em> refers to the method or approach used for supplying water
-            to crops. The categorization of irrigation practices is simplified into two primary
-            options: <em>Irrigated</em> and <em>Non-irrigated</em>.
-          </p>
-
-          <ol>
-            <li>
-              <strong>Irrigated</strong>: This option applies to acreage that receives water through
-              artificial means, such as sprinklers, drip systems, or other forms of irrigation.
-            </li>
-            <li>
-              <strong>Non-irrigated</strong>: This option is for acreage that relies solely on
-              natural rainfall for water.
-            </li>
-          </ol>
-
-          <p>
-            <strong>Organic Practice:</strong>
-            <br />
-            <em>Organic Practice</em> refers to specific agricultural practices for cultivating
-            crops that are in line with organic farming standards.The options for organic practice
-            are categorized into three distinct types: <em>Non-Organic</em>, <em>Certified</em>, and{" "}
-            <em>Transitional</em>.
-          </p>
-          <ol>
-            <li>
-              <strong>Non-Organic</strong>: This applies to acreage that is not managed using
-              organic methods.
-            </li>
-            <li>
-              <strong>Certified Organic</strong>: This category is for acreage managed according to
-              certified organic farming practices. These practices must comply with the standards
-              set by an organic certification body, and the land must be officially certified as
-              organic.
-            </li>
-            <li>
-              <strong>Transitional</strong>: This option is for acreage that is converting from
-              conventional to organic farming practices. Transition to organic typically involves a
-              multi-year process in which the land is managed according to organic standards but has
-              not yet been certified.&nbsp;
-            </li>
-          </ol>
-
-          <br />
-          <p>
-            <strong>How does it impact the policy?</strong>
-          </p>
-          <p>
-            The choice of <em>intended use</em> impacts how the insurance coverage works, especially
-            in how the<em> county base value</em> is determined and, subsequently, how other
-            insurance components are calculated. The <em>county base value</em> is an estimate of
-            the average value per acre for a particular crop in a county.
-          </p>
-          <p>
-            The<em> intended use</em> directly influences the <em>county base value</em>, as
-            different uses have different average values. Due to the general market value, if you
-            choose <em>haying</em>, the <em>county base value</em> might be higher than if you
-            choose <em>grazing</em>. Higher <em>county base values</em> generally lead to higher
+            The <em>county base value</em> is an estimate of the average value per acre for a
+            particular crop in a county. Higher <em>county base values</em> generally lead to higher
             protection levels and premiums, potentially resulting in higher indemnities in case of a
-            claim, but they also mean a higher cost of insurance premiums for the producer.
+            claim.
           </p>
-          <p>
-            For the <em>intended use </em>of <em>haying</em>,
-            <br />
-            When choosing<em> irrigation practice</em>, selecting the <em>irrigated</em> option
-            often indicates a potentially lower risk of drought-related loss, as the crop or forage
-            has a supplementary water source beyond natural rainfall. Hence, <em>irrigated</em>{" "}
-            acreage will have a different<em> county base value</em> due to the perceived lower risk
-            and potentially higher yield. Choosing the <em>non-irrigated</em> option might carry a
-            higher risk of drought-related loss, given the dependence on rainfall, especially in
-            areas prone to irregular or insufficient rainfall. Consequently, the insurance terms for{" "}
-            <em>non-irrigated</em> acreage, particularly the <em>county base value</em>, might
-            reflect this higher risk.
-            <br />
-            The choice of the <em>organic practice</em> also influences <em>county base values</em>.
-            Typically, <em>certified</em> organic acreage commands the highest{" "}
-            <em>county base values</em>, reflecting the premium market value of organic produce.{" "}
-            <em>Transitional</em> organic practices, representing acreage in the process of
-            obtaining organic certification, generally yield the next highest base values. Lastly,{" "}
-            <em>non-organic</em> acreages, which utilize conventional farming practices, are
-            associated with lower county base values in comparison.
-          </p>
+          {intendedUse === "haying" && (
+            <React.Fragment>
+              <p>
+                When choosing<em> irrigation practice</em>, selecting the <em>irrigated</em> option
+                often indicates a potentially lower risk of drought-related loss, as the land has a
+                supplementary water source beyond natural rainfall. Hence, <em>irrigated</em>{" "}
+                acreage will have a lower<em> county base value</em> due to the perceived lower risk
+                and potentially higher yield.
+                <br />
+                Choosing the <em>non-irrigated</em> option might carry a higher risk of
+                drought-related loss, given the dependence on rainfall, especially in areas prone to
+                irregular or insufficient rainfall. Consequently, the <em>county base value</em> is
+                higher for <em>non-irrigated</em> acreage to reflect this higher risk.
+              </p>
+
+              {irrigationPractice === "non-irrigated" && (
+                <p>
+                  The choice of the <em>organic practice</em> also influences{" "}
+                  <em>county base values</em>. Typically, <em>certified</em> organic acreage
+                  commands the highest <em>county base values</em>, reflecting the premium market
+                  value of organic produce. <em>Transitional</em> and <em>non-organic</em> acreages
+                  are next, generally yielding the same
+                  <em> county base values</em>.
+                </p>
+              )}
+            </React.Fragment>
+          )}
         </Grid>
       )}
       {isGuided && (

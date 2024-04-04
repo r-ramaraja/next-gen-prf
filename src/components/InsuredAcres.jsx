@@ -75,27 +75,32 @@ export default function InsuredAcres({ marker, tabState, setTabState, isGuided }
       {isGuided && (
         <Box>
           <p>
-            <strong>What are insured acres?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
             <em>Insured acres</em> denote the total acreage of the policyholder&apos;s land covered
-            under the insurance policy. It represents the land area against which protection is
-            provided. Depending on their coverage needs and risk management strategy, the
-            policyholder can include all or a portion of the land they own or manage.
-            <br />
-            Accurate reporting of <em>insured acres</em> is crucial for effective risk management
-            and adequate coverage. Underreporting can lead to insufficient coverage, while
-            overreporting can increase costs without corresponding benefits.
+            under the insurance policy. The policyholder can include all or a portion of the land
+            they own or manage.
           </p>
           <p>
-            <strong>How does it impact the policy?</strong>
+            Accurate reporting of <em>insured acres</em> is crucial as underreporting can lead to
+            insufficient coverage, while overreporting can increase costs without corresponding
+            benefits.
           </p>
           <p>
-            The number of <em>insured acres</em> directly impacts the total premium cost, as
-            premiums are typically calculated per acre. It also affects the potential indemnity
-            payments, as these payments are generally based on the extent of loss multiplied by the
-            number of
-            <em>insured acres</em>.
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Impact</strong>
+            </span>
+          </p>
+          <p>
+            The number of <em>insured acres</em> directly impacts the premium cost, as premiums are
+            typically calculated per acre.
+          </p>
+          <p>
+            It also affects potential indemnity payouts, which are generally based on the extent of
+            loss multiplied by the number of <em>insured acres</em>.
           </p>
         </Box>
       )}

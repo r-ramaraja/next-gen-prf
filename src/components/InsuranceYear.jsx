@@ -57,23 +57,28 @@ export default function InsuranceYear({ id, tabState, setTabState, isGuided }) {
       {isGuided && (
         <Box>
           <p>
-            <strong>What is sample year?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
             A <em>sample year</em> is the specific year selected as a representative point of
-            reference for evaluating the insurance outcome regarding protection, premiums, and
-            indemnities. Policyholders can use data from <em>sample years</em> to make informed
-            decisions about the level of coverage they need based on past trends and patterns.
+            reference for evaluating the insurance outcome.
+            <br />
+            Policyholders can use data from <em>sample years</em> to make informed decisions about
+            the level of coverage they need based on past trends and patterns.
           </p>
           <p>
-            <strong>How does it impact the policy?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Impact</strong>
+            </span>
           </p>
           When a policyholder selects a <em>sample year</em>, they choose a reference point
-          representing a specific year&apos;s rainfall pattern. This choice gauges the typical
-          rainfall experience for their specific grid area, which is critical in areas with variable
-          climate conditions. The rainfall index from the selected <em>sample year</em> is used to
-          estimate indemnities. If the actual rainfall index falls below the<em> coverage level</em>{" "}
-          in the <em>sample year</em>, it will trigger an indemnity.
+          representing a specific year&apos;s rainfall pattern.
+          <br />
+          The rainfall index from the selected <em>sample year</em> is used to estimate indemnities.
+          If the actual rainfall index falls below the<em> coverage level</em> in the{" "}
+          <em>sample year</em>, it will trigger an indemnity.
         </Box>
       )}
     </Box>

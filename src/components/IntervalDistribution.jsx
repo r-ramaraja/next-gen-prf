@@ -202,49 +202,55 @@ export default function IntervalDistribution({ marker, tabState, setTabState, is
       {isGuided && (
         <Box>
           <p>
-            <strong>What is interval distribution?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
             <em>Interval distribution</em> refers to how coverage is allocated or distributed across
-            bi-monthly intervals within the policy year. The purpose of this distribution is to more
-            accurately reflect the risk of loss or damage across different parts of the growing
-            season. For example, a farmer might allocate more coverage to traditionally drier months
-            if drought is a concern or to periods crucial for crop development. The policyholder can
-            assign a certain percentage of their total coverage to each interval based on their risk
-            assessment during that time, as it allows for more nuanced protection, recognizing that
-            risk levels can vary significantly throughout the policy period.
+            bi-monthly intervals within the policy year.
+          </p>
+          <p>
+            The policyholder can assign a certain percentage of their total coverage to each
+            interval based on their risk assessment during that time. This allows for more nuanced
+            protection and recognizes that risk levels can vary significantly throughout the policy
+            period.
             <br />
+            For example, a farmer might allocate more coverage to traditionally drier months if
+            drought is a concern or to periods crucial for crop development.
+          </p>
+          <p>
             There are 11 intervals to choose from:
+            <ol>
+              <li>January - February</li>
+              <li>February - March</li>
+              <li>March - April</li>
+              <li>April - May</li>
+              <li>May - June</li>
+              <li>June - July</li>
+              <li>July - August</li>
+              <li>August - September</li>
+              <li>September - October</li>
+              <li>October - November</li>
+              <li>November - December&nbsp;</li>
+            </ol>
           </p>
-          <ol>
-            <li>January - February</li>
-            <li>February - March</li>
-            <li>March - April</li>
-            <li>April - May</li>
-            <li>May - June</li>
-            <li>June - July</li>
-            <li>July - August</li>
-            <li>August - September</li>
-            <li>September - October</li>
-            <li>October - November</li>
-            <li>November - December&nbsp;</li>
-          </ol>
           <p>
-            The policyholder{" "}
+            The policyholder <strong>must select a minimum of 2 intervals</strong>. The{" "}
+            <strong>sum of all allocations should be 100</strong>, and the maximum value per
+            interval is determined by the county/state.&nbsp;
+          </p>
+          <p>
             <span style={{ textDecoration: "underline" }}>
-              must select a minimum of 2 intervals
+              <strong>Impact</strong>
             </span>
-            . The sum of all allocations should be 100, and the maximum value per interval is
-            determined by the county/state.&nbsp;
-          </p>
-          <p>
-            <strong>How does it impact the policy?</strong>
           </p>
           <p>
             <em>Interval distribution</em> affects how indemnity payments are calculated. If a loss
             occurs, the payment is based on the amount of coverage allocated to the interval in
             which the loss happened.
-            <br />
+          </p>
+          <p>
             The way coverage is distributed among intervals can also impact the insurance premium.
             Intervals with higher allocated coverage might have higher associated premiums due to
             the increased risk of payout during those periods.

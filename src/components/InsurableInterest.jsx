@@ -75,27 +75,34 @@ export default function InsurableInterest({ id, tabState, setTabState, isGuided 
       {isGuided && (
         <Box>
           <p>
-            <strong>What is insurable interest?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Definition</strong>
+            </span>
           </p>
           <p>
             <em>Insurable interest</em>, expressed as a percentage, represents the
             policyholder&rsquo;s share or stake in the insured land. It reflects the portion of the
             crop or land value that the policyholder is responsible for or stands to lose
             financially in case of loss.
+          </p>
+          <p>
+            For instance, if a farmer owns 100% of the land or crop, the
+            <em> insurable interest</em> is 100%.
             <br />
-            The percentage is determined based on the policyholder&apos;s financial involvement in
-            the crop or land. For instance, if a farmer owns 100% of the land or crop, the
-            <em> insurable interest</em> is 100%. In cases of shared ownership, partnerships, or
-            leasing arrangements, the percentage would represent the policyholder&apos;s portion of
-            the risk. For example, if a farmer owns 50% of a crop, as is common with share and cash
-            grazing leases, their <em>insurable interest</em> would be 50%.
-            <br />
+            In cases of shared ownership, partnerships, or leasing arrangements, the percentage
+            would represent the policyholder&apos;s portion of the risk. For example, if a farmer
+            owns 50% of a crop, as is common with share and cash grazing leases, their{" "}
+            <em>insurable interest</em> would be 50%.
+          </p>
+          <p>
             Accurately determining and reporting<em> insurable interest</em> is crucial as it
             ensures that the farmer pays a fair premium based on their actual stake in the crop or
             land and receives appropriate compensation in proportion to their loss.
           </p>
           <p>
-            <strong>How does it impact the policy?</strong>
+            <span style={{ textDecoration: "underline" }}>
+              <strong>Impact</strong>
+            </span>
           </p>
           <p>
             <em>Insurable interest</em> directly influences the calculation of premiums and
