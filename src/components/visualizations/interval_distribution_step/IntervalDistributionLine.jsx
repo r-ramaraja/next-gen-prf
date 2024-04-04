@@ -35,7 +35,7 @@ const MenuProps = {
 
 export default function IntervalDistributionLine({ visualizationData }) {
   const [metric, setMetric] = useState("index");
-  const [intervals, setIntervals] = useState(monthRanges);
+  const [intervals, setIntervals] = useState([monthRanges[0]]);
 
   const colours = [
     "#1F77B4",
@@ -129,11 +129,15 @@ export default function IntervalDistributionLine({ visualizationData }) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip
+                  formatter={(value, name, props) => {
+                    return props.dataKey.split("-")[1] === "totalRainfall" ? `${value} mm` : value;
+                  }}
+                />
                 <Legend />
                 <Brush dataKey="year" height={30} x={70} />
-                <ReferenceLine y={0.9} label="0.90" stroke="black" strokeWidth={2} />
-                <ReferenceLine y={0.7} label="0.70" stroke="black" strokeWidth={2} />
+                <ReferenceLine y={0.9} label="0.90" stroke="black" strokeWidth={2} isFront={true} />
+                <ReferenceLine y={0.7} label="0.70" stroke="black" strokeWidth={2} isFront={true} />
                 {intervals.map((interval, index) => (
                   <Line
                     key={`${intervalMap[interval]}-${metric}-${index}`}
