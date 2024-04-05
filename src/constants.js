@@ -3,6 +3,8 @@ export const baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:5001/
 
 export const intervalCodes = [625, 626, 627, 628, 629, 630, 631, 632, 633, 634, 635];
 
+export const coverageLevelValues = [0.7, 0.75, 0.8, 0.85, 0.9];
+
 export const monthRanges = [
   "Jan-Feb",
   "Feb-Mar",

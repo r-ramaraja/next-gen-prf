@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import IntervalDistributionLine from "./IntervalDistributionLine";
 import axios from "axios";
-import { baseURL } from "../../../constants";
 import { Box, Skeleton } from "@mui/material";
+import { baseURL } from "../../../constants";
+import IntervalDistributionLine from "./IntervalDistributionLine";
+import InvocationsLine from "./InvocationsLine";
 
 export default function IntervalDistributionViz({ marker }) {
   const { county, state } = marker;
@@ -38,6 +39,11 @@ export default function IntervalDistributionViz({ marker }) {
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
         <IntervalDistributionLine visualizationData={visualizationData} />
+      ) : (
+        !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
+      )}
+      {visualizationData && Object.keys(visualizationData).length > 0 ? (
+        <InvocationsLine visualizationData={visualizationData} />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}

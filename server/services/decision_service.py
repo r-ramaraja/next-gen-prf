@@ -17,6 +17,20 @@ interval_codes = {
     635: "Nov-Dec",
 }
 
+interval_months = [
+    "Jan-Feb",
+    "Feb-Mar",
+    "Mar-Apr",
+    "Apr-May",
+    "May-Jun",
+    "Jun-Jul",
+    "Jul-Aug",
+    "Aug-Sep",
+    "Sep-Oct",
+    "Oct-Nov",
+    "Nov-Dec",
+]
+
 
 def compute_decision(data):
     db = get_db()
@@ -441,10 +455,27 @@ def fetch_interval_data(data):
             index = item[2]
             total_rainfall = item[3]
 
-            response.setdefault(year, {})[interval] = {
+            response.setdefault("metrics", {}).setdefault(year, {})[interval] = {
                 "index": index,
                 "total_rainfall": total_rainfall,
             }
+
+        coverage_levels = [0.7, 0.75, 0.8, 0.85, 0.9]
+        for coverage_level in coverage_levels:
+            for interval_month in interval_months:
+                total_invocations = 0
+                for year in response["metrics"]:
+                    for interval in response["metrics"][year]:
+                        if (
+                            interval == interval_month
+                            and response["metrics"][year][interval]["index"]
+                            < coverage_level
+                        ):
+                            total_invocations += 1
+
+                response.setdefault("invocations", {}).setdefault(coverage_level, {})[
+                    interval_month
+                ] = total_invocations
 
         return response
 

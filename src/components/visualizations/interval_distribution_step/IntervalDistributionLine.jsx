@@ -19,6 +19,7 @@ import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
+import { Typography } from "@mui/material";
 import { monthRanges, intervalMap } from "../../../constants";
 import Chip from "@mui/material/Chip";
 
@@ -34,6 +35,7 @@ const MenuProps = {
 };
 
 export default function IntervalDistributionLine({ visualizationData }) {
+  const { metrics } = visualizationData;
   const [metric, setMetric] = useState("index");
   const [intervals, setIntervals] = useState([monthRanges[0]]);
 
@@ -52,18 +54,15 @@ export default function IntervalDistributionLine({ visualizationData }) {
   ];
 
   const data = [];
-  const years = Object.keys(visualizationData);
+  const years = Object.keys(metrics);
 
   for (const year of years) {
     let yearData = { year };
     for (const month of monthRanges) {
       const intervalCode = intervalMap[month];
       yearData = { ...yearData, month, intervalCode };
-      yearData[`${intervalCode}-index`] =
-        Math.round(visualizationData[year][month].index * 100) / 100;
-      yearData[`${intervalCode}-totalRainfall`] = Math.round(
-        visualizationData[year][month].total_rainfall
-      );
+      yearData[`${intervalCode}-index`] = Math.round(metrics[year][month].index * 100) / 100;
+      yearData[`${intervalCode}-totalRainfall`] = Math.round(metrics[year][month].total_rainfall);
     }
     data.push(yearData);
   }
@@ -75,9 +74,19 @@ export default function IntervalDistributionLine({ visualizationData }) {
     setIntervals(typeof value === "string" ? value.split(",") : value);
   };
 
+  const labels = {
+    index: "Index",
+    totalRainfall: "Total Rainfall",
+  };
+
   return (
     <Box>
       <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "1rem" }} align="center">
+            {labels[metric]} Over Time
+          </Typography>
+        </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
           <FormControl fullWidth size="small">
             <InputLabel>Metric</InputLabel>
