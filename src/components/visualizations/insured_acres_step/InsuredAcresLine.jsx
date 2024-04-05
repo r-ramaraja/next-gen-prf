@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 export default function InsuredAcresLine({ visualizationData }) {
   const data = [];
@@ -20,6 +20,11 @@ export default function InsuredAcresLine({ visualizationData }) {
   return (
     <Box>
       <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            Insured Acres Over Time
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <Box sx={{ height: 300, marginTop: "1rem" }}>
             <ResponsiveContainer>

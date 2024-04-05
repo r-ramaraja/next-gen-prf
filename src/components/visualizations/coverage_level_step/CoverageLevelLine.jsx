@@ -18,7 +18,8 @@ import Chip from "@mui/material/Chip";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import { currencyFormatter } from "../../../constants";
+import { Typography } from "@mui/material";
+import { currencyFormatter, coverageLevelValues } from "../../../constants";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,11 +32,11 @@ const MenuProps = {
   },
 };
 
-export default function CoverageLevelLine({ visualizationData }) {
-  const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4D96FF", "#9D7BFF", "#FF926B"];
+const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
 
+export default function CoverageLevelLine({ visualizationData }) {
   const [metric, setMetric] = useState("indemnity");
-  const [coverageLevels, setCoverageLevels] = useState(Object.keys(visualizationData).sort());
+  const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues);
 
   const handleChange = (event) => {
     setMetric(event.target.value);
@@ -80,9 +81,22 @@ export default function CoverageLevelLine({ visualizationData }) {
     setCoverageLevels(typeof value === "string" ? value.split(",") : value);
   };
 
+  const labels = {
+    indemnity: "Indemnity",
+    premium: "Premium",
+    acres: "Acres",
+    policies_sold: "Policies Sold",
+    policies_indemnified: "Policies Indemnified",
+  };
+
   return (
     <Box>
       <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem" }} align="center">
+            {labels[metric]} Over Time
+          </Typography>
+        </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
           <FormControl fullWidth size="small">
             <InputLabel>Metric</InputLabel>
@@ -97,7 +111,7 @@ export default function CoverageLevelLine({ visualizationData }) {
         </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
           <FormControl fullWidth size="small">
-            <InputLabel>Interval</InputLabel>
+            <InputLabel>Coverage</InputLabel>
             <Select
               value={coverageLevels}
               label="Coverage Level"
@@ -113,7 +127,7 @@ export default function CoverageLevelLine({ visualizationData }) {
               input={<OutlinedInput label="Interval" />}
               MenuProps={MenuProps}
             >
-              {coverageLevels.map((coverageLevelOption) => (
+              {coverageLevelValues.map((coverageLevelOption) => (
                 <MenuItem key={coverageLevelOption} value={coverageLevelOption}>
                   <Checkbox checked={coverageLevels.indexOf(coverageLevelOption) > -1} />
                   <ListItemText primary={coverageLevelOption} />
@@ -135,7 +149,7 @@ export default function CoverageLevelLine({ visualizationData }) {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
+                <XAxis dataKey="year" angle={10} />
                 <YAxis />
                 <Tooltip
                   formatter={(value, name, props) => {

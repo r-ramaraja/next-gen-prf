@@ -14,6 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Typography } from "@mui/material";
 import { currencyFormatter } from "../../../constants";
 
 export default function IntendedUseBar({ visualizationData }) {
@@ -54,10 +55,21 @@ export default function IntendedUseBar({ visualizationData }) {
     });
   }
 
+  const labels = {
+    indemnity: "Indemnity",
+    premium: "Premium",
+    acres: "Acres",
+  };
+
   return (
     <Box>
       <Grid container>
-        <Grid item sx={{ marginLeft: "1.5rem", marginTop: "2rem" }}>
+        <Grid item xs={12}>
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "1rem" }} align="center">
+            {labels[metric]} Over Time
+          </Typography>
+        </Grid>
+        <Grid item sx={{ marginLeft: "1.5rem" }}>
           <FormControl fullWidth size="small">
             <InputLabel>Metric</InputLabel>
             <Select value={metric} label="metric" onChange={handleChange}>
@@ -80,7 +92,7 @@ export default function IntendedUseBar({ visualizationData }) {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
+                <XAxis dataKey="year" angle={14} />
                 <YAxis />
                 <Tooltip
                   formatter={(value, name, props) => {
