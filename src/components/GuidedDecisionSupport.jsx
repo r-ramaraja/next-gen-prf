@@ -246,8 +246,8 @@ export default function GuidedDecision({ marker, tabState, setTabState }) {
                   label="Guided"
                   labelPlacement="end"
                 />
-                <Button variant="contained" color="primary" onClick={handleReset}>
-                  Reset
+                <Button variant="contained" color="primary" onClick={handleBack}>
+                  Back
                 </Button>
               </Box>
               <DecisionSupport
