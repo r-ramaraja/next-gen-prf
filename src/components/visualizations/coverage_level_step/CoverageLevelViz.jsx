@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CoverageLevelBar from "./CoverageLevelBar";
+import CoverageLevelLine from "./CoverageLevelLine";
 import axios from "axios";
 import { baseURL } from "../../../constants";
 import { Box, Skeleton } from "@mui/material";
@@ -37,7 +37,7 @@ export default function CoverageLevelViz({ marker }) {
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <CoverageLevelBar visualizationData={visualizationData} />
+        <CoverageLevelLine visualizationData={visualizationData} />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
