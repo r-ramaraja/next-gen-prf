@@ -99,6 +99,17 @@ export default function DecisionSupportTableViz({ visualizationData, tabState })
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle">
+                    <strong>Dollar Amount Protection</strong> = County Base Value * Coverage Level *
+                    Productivity Factor = {countyBaseValue} * {coverageLevel / 100} *{" "}
+                    {productivityFactor / 100} ={" "}
+                    {dollarAmountProtection.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle">
                     <strong>Policy Protection Per Unit</strong> = Dollar amount Protection * Insured
                     Acres * Interval Distribution Share * Insurable Interest ={" "}
                     {dollarAmountProtection} * {acres} *{parseInt(row.percent_value) / 100} *
