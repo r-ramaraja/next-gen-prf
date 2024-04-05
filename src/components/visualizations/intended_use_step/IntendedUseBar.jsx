@@ -16,7 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { currencyFormatter } from "../../../constants";
 
-export default function IndemnitiesBar({ visualizationData }) {
+export default function IntendedUseBar({ visualizationData }) {
   const [metric, setMetric] = useState("indemnity");
   const [grazingKey, setGrazingKey] = useState("grazing_indemnity");
   const [hayingKey, setHayingKey] = useState("haying_indemnity");
@@ -90,8 +90,8 @@ export default function IndemnitiesBar({ visualizationData }) {
                   }}
                 />
                 <Legend />
-                <Bar dataKey={grazingKey} stackId="a" fill="#8884d8" name="Grazing" />
-                <Bar dataKey={hayingKey} stackId="a" fill="#82ca9d" name="Haying" />
+                <Bar dataKey={grazingKey} fill="#8884d8" name="Grazing" />
+                <Bar dataKey={hayingKey} fill="#82ca9d" name="Haying" />
               </BarChart>
             </ResponsiveContainer>
           </Box>

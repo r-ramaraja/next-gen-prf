@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IndemnitiesBar from "./IndemnitiesBar";
+import IntendedUseBar from "./IntendedUseBar";
 import axios from "axios";
 import { baseURL } from "../../../constants";
 import { Box, Grid, Skeleton } from "@mui/material";
@@ -43,7 +43,7 @@ export default function IntendedUseViz({ marker }) {
             <CountyBaseTable marker={marker} />
           </Grid>
           <Grid item xs={12}>
-            <IndemnitiesBar visualizationData={visualizationData} />
+            <IntendedUseBar visualizationData={visualizationData} />
           </Grid>
         </Grid>
       ) : (
