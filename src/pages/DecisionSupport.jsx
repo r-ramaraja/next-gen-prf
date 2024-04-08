@@ -40,6 +40,8 @@ export default function DecisionSupport({
         county,
         grid_id: gridcode,
         intended_use: tabState.intendedUse,
+        irrigation_practice: tabState.irrigationPractice,
+        organic_practice: tabState.organicPractice,
         coverage_level: tabState.coverageLevel,
         productivity_factor: tabState.productivityFactor / 100,
         insured_acres: tabState.acres,
