@@ -1,6 +1,10 @@
 import json
 from flask import request, Blueprint
-from services.overview_service import fetch_county_base, fetch_state_county_geojson
+from services.overview_service import (
+    fetch_county_base,
+    fetch_state_county_geojson,
+    fetch_county_base_geojson,
+)
 
 
 def construct_overview_blueprint():
@@ -13,5 +17,9 @@ def construct_overview_blueprint():
     @blueprint.route("/geojson", methods=["POST"])
     def get_state_county_geojson():
         return fetch_state_county_geojson(request.json)
+
+    @blueprint.route("/base/geojson", methods=["POST"])
+    def get_county_base_geojson():
+        return fetch_county_base_geojson(request.json)
 
     return blueprint

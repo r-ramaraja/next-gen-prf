@@ -1,5 +1,5 @@
-import psycopg2
-from flask import current_app, g
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 import os
 from dotenv import load_dotenv
 
@@ -11,39 +11,18 @@ db_password = os.getenv("DATABASE_PASSWORD")
 db_name = os.getenv("DATABASE_NAME")
 db_port = os.getenv("DATABASE_PORT")
 
-print(f"Connecting to the database {db_name} on {db_host}:{db_port} as {db_username}")
+database_url = f"postgresql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}"
+engine = create_engine(database_url, pool_size=10, max_overflow=20)
+
+db_session = scoped_session(
+    sessionmaker(autocommit=False, autoflush=False, bind=engine)
+)
 
 
-class Database:
-    _instance = None
-    connection = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(Database, cls).__new__(cls)
-            cls._instance.connection = None
-        return cls._instance
-
-    def get_connection(self):
-        if self.connection is None or self.connection.closed:
-            self.connection = psycopg2.connect(
-                dbname=db_name,
-                user=db_username,
-                password=db_password,
-                host=db_host,
-                port=db_port,
-            )
-        return self.connection
+def init_db():
+    # If you have models that need to create tables, initialize them here
+    pass
 
 
-def get_db():
-    if "db" not in g:
-        g.db = Database().get_connection()
-    return g.db
-
-
-def close_db(e=None):
-    db = g.pop("db", None)
-
-    if db is not None:
-        db.close()
+def shutdown_session(exception=None):
+    db_session.remove()

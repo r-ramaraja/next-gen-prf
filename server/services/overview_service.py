@@ -1,33 +1,32 @@
 import psycopg2
 import traceback
-from database import get_db
+from database import db_session
+from sqlalchemy import text
 import json
 
 
 def fetch_county_base(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
 
     try:
-        cur = db.cursor()
 
         query = """
         SELECT IntendedUse, IrrigationPractice, OrganicPractice, CountyBaseValue
         FROM  CountyDetail cd
         JOIN County c ON cd.CountyID = c.CountyID
         JOIN State s ON c.StateID = s.StateID
-        WHERE s.StateName = %s AND c.CountyName = %s
+        WHERE s.StateName = :state_name AND c.CountyName = :county_name
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
+        result = session.execute(
+            text(query),
+            params,
         )
-        result = cur.fetchall()
 
         response = []
         for row in result:
@@ -46,7 +45,7 @@ def fetch_county_base(data):
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_state_county_geojson(data):
@@ -59,3 +58,15 @@ def fetch_state_county_geojson(data):
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
         traceback.print_exc()
+
+
+# def fetch_county_base_geojson(data):
+
+#     state_name = data["state"]
+
+#     try:
+#         with open(f"data/geojsons/{state_name.lower()}_rd.json") as f:
+#             return json.load(f)
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(f"Error: {error}")
+#         traceback.print_exc()

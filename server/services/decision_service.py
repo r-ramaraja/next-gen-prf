@@ -1,7 +1,7 @@
 import psycopg2
 import traceback
-from database import get_db
-
+from database import db_session
+from sqlalchemy import text
 
 interval_codes = {
     625: "Jan-Feb",
@@ -33,7 +33,7 @@ interval_months = [
 
 
 def compute_decision(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
@@ -49,38 +49,40 @@ def compute_decision(data):
     interval_distribution = data["interval_distribution"]
 
     try:
-        cur = db.cursor()
 
         query = """
         SELECT cd.CountyBaseValue
         FROM CountyDetail cd
         JOIN County c ON cd.CountyID = c.CountyID
         JOIN State s ON c.StateID = s.StateID
-        WHERE s.StateName = %s AND c.CountyName = %s AND cd.IntendedUse = %s
+        WHERE s.StateName = :state_name AND c.CountyName = :county_name AND cd.IntendedUse = :intended_use
         """
 
         if irrigation_practice is not None:
-            query += "AND cd.IrrigationPractice = %s "
+            query += "AND cd.IrrigationPractice = :irrigation_practice "
         else:
             query += "AND cd.IrrigationPractice IS NULL "
 
         if organic_practice is not None:
-            query += "AND cd.OrganicPractice = %s "
+            query += "AND cd.OrganicPractice = :organic_practice "
         else:
             query += "AND cd.OrganicPractice IS NULL;"
 
-        params = [state_name, county_name, intended_use]
-        if irrigation_practice is not None:
-            params.append(irrigation_practice)
-        if organic_practice is not None:
-            params.append(organic_practice)
+        params = {
+            "state_name": state_name,
+            "county_name": county_name,
+            "intended_use": intended_use,
+        }
 
-        cur.execute(
-            query,
-            tuple(params),
-        )
-        result = cur.fetchone()
-        county_base = float(result[0]) if result else None
+        if irrigation_practice is not None:
+            params["irrigation_practice"] = irrigation_practice
+        if organic_practice is not None:
+            params["organic_practice"] = organic_practice
+
+        result = session.execute(text(query), params)
+
+        result_row = result.fetchone()
+        county_base = float(result_row[0]) if result_row else None
 
         dollar_protection = county_base * (coverage_level / 100) * productivity_factor
 
@@ -105,21 +107,25 @@ def compute_decision(data):
             FROM CoverageData cd
             JOIN County c ON cd.CountyID = c.CountyID
             JOIN State s ON c.StateID = s.StateID
-            WHERE s.StateName = %s AND c.CountyName = %s AND cd.GridID = %s AND cd.Interval = %s AND cd.CoverageLevel = %s
+            WHERE s.StateName = :state_name AND c.CountyName = :county_name AND cd.GridID = :grid_id AND cd.Interval = :interval AND cd.CoverageLevel = :coverage_level
             """
-            cur.execute(
-                query,
-                (
-                    state_name,
-                    county_name,
-                    int(grid_id),
-                    int(interval),
-                    int(coverage_level),
-                ),
+
+            params = {
+                "state_name": state_name,
+                "county_name": county_name,
+                "intended_use": intended_use,
+                "grid_id": int(grid_id),
+                "interval": int(interval),
+                "coverage_level": int(coverage_level),
+            }
+
+            result = session.execute(
+                text(query),
+                params,
             )
-            result = cur.fetchone()
-            premium_rate = float(result[0])
-            subsidy_level = float(result[1])
+            result_row = result.fetchone()
+            premium_rate = float(result_row[0])
+            subsidy_level = float(result_row[1])
             subsidy[interval] = subsidy_level
             premium_rates[interval] = round(premium_rate, 2)
 
@@ -144,15 +150,21 @@ def compute_decision(data):
             query = """
             SELECT rd.Index
             FROM RainfallData rd
-            WHERE rd.GridID = %s AND rd.Year = %s AND rd.Interval = %s
+            WHERE rd.GridID = :grid_id AND rd.Year = :year AND rd.Interval = :interval
             """
 
-            cur.execute(
-                query,
-                (int(grid_id), int(year), int(interval)),
+            params = {
+                "grid_id": int(grid_id),
+                "year": int(year),
+                "interval": int(interval),
+            }
+
+            result = session.execute(
+                text(query),
+                params,
             )
-            result = cur.fetchone()
-            final_index = float(result[0])
+            result_row = result.fetchone()
+            final_index = float(result_row[0])
             index[interval] = final_index
             pcf = ((coverage_level / 100) - final_index) / (coverage_level / 100)
             if pcf > 0:
@@ -160,9 +172,9 @@ def compute_decision(data):
             else:
                 indemnity[interval] = 0
 
-        result = {"intervals": {}}
+        response = {"intervals": {}}
         for interval, percent_value in interval_distribution.items():
-            result["intervals"][interval] = {
+            response["intervals"][interval] = {
                 "interval_name": interval_codes[int(interval)],
                 "percent_value": percent_value,
                 "policy_protection": policy_protection[interval],
@@ -174,32 +186,31 @@ def compute_decision(data):
                 "indemnity": indemnity[interval],
             }
 
-        result["total_acres"] = insured_acres
-        result["subsidy"] = list(subsidy.values())[0] * 100
-        result["county_base"] = county_base
-        result["sum_percent_value"] = sum(interval_distribution.values()) * 100
-        result["sum_policy_protection"] = sum(policy_protection.values())
-        result["sum_premium"] = sum(premium.values())
-        result["sum_premium_subsidy"] = sum(premium_subsidy.values())
-        result["sum_actual_premium"] = sum(actual_premium.values())
-        result["sum_indemnity"] = sum(indemnity.values())
-        return result
+        response["total_acres"] = insured_acres
+        response["subsidy"] = list(subsidy.values())[0] * 100
+        response["county_base"] = county_base
+        response["sum_percent_value"] = sum(interval_distribution.values()) * 100
+        response["sum_policy_protection"] = sum(policy_protection.values())
+        response["sum_premium"] = sum(premium.values())
+        response["sum_premium_subsidy"] = sum(premium_subsidy.values())
+        response["sum_actual_premium"] = sum(actual_premium.values())
+        response["sum_indemnity"] = sum(indemnity.values())
+        return response
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_intended_use_data(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
 
     try:
-        cur = db.cursor()
 
         query = """
         SELECT 
@@ -216,21 +227,16 @@ def fetch_intended_use_data(data):
         JOIN 
             State s ON c.StateID = s.StateID
         WHERE 
-            s.StateName = %s AND 
-            c.CountyName = %s AND
+            s.StateName = :state_name AND 
+            c.CountyName = :county_name AND
             (bd.IntendedUse = 'haying' OR bd.IntendedUse = 'grazing')
         GROUP BY 
             bd.Year, bd.IntendedUse;
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
-        )
-
-        result = cur.fetchall()
+        result = session.execute(text(query), params)
 
         response = {}
         for item in result:
@@ -252,17 +258,16 @@ def fetch_intended_use_data(data):
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_coverage_level_data(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
 
     try:
-        cur = db.cursor()
 
         query = """
         SELECT 
@@ -279,21 +284,19 @@ def fetch_coverage_level_data(data):
         JOIN 
             State s ON c.StateID = s.StateID
         WHERE 
-            s.StateName = %s AND 
-            c.CountyName = %s AND
+            s.StateName = :state_name AND 
+            c.CountyName = :county_name AND
             bd.CoverageLevel != 0.0
         GROUP BY 
             bd.Year, bd.CoverageLevel;
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
+        result = session.execute(
+            text(query),
+            params,
         )
-
-        result = cur.fetchall()
 
         response = {}
         for item in result:
@@ -325,20 +328,15 @@ def fetch_coverage_level_data(data):
         JOIN 
             State s ON c.StateID = s.StateID
         WHERE 
-            s.StateName = %s AND 
-            c.CountyName = %s
+            s.StateName = :state_name AND 
+            c.CountyName = :county_name
         GROUP BY 
             pd.Year, pd.CoverageLevel;
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
-        )
-
-        result = cur.fetchall()
+        result = session.execute(text(query), params)
 
         for item in result:
             year = item[0]
@@ -359,17 +357,16 @@ def fetch_coverage_level_data(data):
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_insured_acres_data(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
 
     try:
-        cur = db.cursor()
 
         query = """
         SELECT 
@@ -382,20 +379,15 @@ def fetch_insured_acres_data(data):
         JOIN 
             State s ON c.StateID = s.StateID
         WHERE 
-            s.StateName = %s AND 
-            c.CountyName = %s
+            s.StateName = :state_name AND 
+            c.CountyName = :county_name
         GROUP BY 
             bd.Year
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
-        )
-
-        result = cur.fetchall()
+        result = session.execute(text(query), params)
 
         response = {}
         for item in result:
@@ -409,17 +401,16 @@ def fetch_insured_acres_data(data):
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_interval_data(data):
-    db = get_db()
+    session = db_session()
 
     state_name = data["state"]
     county_name = data["county"]
 
     try:
-        cur = db.cursor()
 
         query = """
        SELECT 
@@ -434,19 +425,14 @@ def fetch_interval_data(data):
         JOIN 
             State s ON c.StateID = s.StateID
         WHERE 
-            s.StateName = %s AND 
-            c.CountyName = %s AND
+            s.StateName = :state_name AND 
+            c.CountyName = :county_name AND
             rd.Year >= 2007;
         """
 
-        params = [state_name, county_name]
+        params = {"state_name": state_name, "county_name": county_name}
 
-        cur.execute(
-            query,
-            tuple(params),
-        )
-
-        result = cur.fetchall()
+        result = session.execute(text(query), params)
 
         response = {}
         for item in result:
@@ -483,7 +469,7 @@ def fetch_interval_data(data):
         print(f"Error: {error}")
         traceback.print_exc()
     finally:
-        cur.close()
+        session.close()
 
 
 def fetch_historical_trend(data):
