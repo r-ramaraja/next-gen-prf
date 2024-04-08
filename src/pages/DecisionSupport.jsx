@@ -40,8 +40,6 @@ export default function DecisionSupport({
         county,
         grid_id: gridcode,
         intended_use: tabState.intendedUse,
-        irrigation_practice: tabState.irrigationPractice,
-        organic_practice: tabState.organicPractice,
         coverage_level: tabState.coverageLevel,
         productivity_factor: tabState.productivityFactor / 100,
         insured_acres: tabState.acres,
@@ -54,6 +52,13 @@ export default function DecisionSupport({
           return acc;
         }, {}),
       };
+
+      if (tabState.intendedUse === "haying") {
+        requestBody.irrigation_practice = tabState.irrigationPractice;
+        if (tabState.irrigationPractice === "non-irrigated") {
+          requestBody.organic_practice = tabState.organicPractice;
+        }
+      }
 
       const response = await axios.post(`${baseURL}/trend`, requestBody);
       setVisualizationData(response.data);

@@ -14,15 +14,14 @@ export default function IntendedUse({ tabState, setTabState, marker, isGuided })
           <Select
             value={intendedUse}
             label="Intended Use"
-            onChange={(event) =>
-              setTabState(
-                {
-                  ...tabState,
-                  intendedUse: event.target.value,
-                },
-                id
-              )
-            }
+            onChange={(event) => {
+              let newTabState = {
+                ...tabState,
+                intendedUse: event.target.value,
+              };
+
+              setTabState(newTabState, id);
+            }}
           >
             <MenuItem value="grazing">Grazing</MenuItem>
             <MenuItem value="haying">Haying</MenuItem>
@@ -37,15 +36,14 @@ export default function IntendedUse({ tabState, setTabState, marker, isGuided })
             <Select
               value={irrigationPractice}
               label="Irrigation Practice"
-              onChange={(event) =>
-                setTabState(
-                  {
-                    ...tabState,
-                    irrigationPractice: event.target.value,
-                  },
-                  id
-                )
-              }
+              onChange={(event) => {
+                const newTabState = {
+                  ...tabState,
+                  irrigationPractice: event.target.value,
+                };
+
+                setTabState(newTabState, id);
+              }}
             >
               <MenuItem value="irrigated">Irrigated</MenuItem>
               <MenuItem value="non-irrigated">Non-Irrigated</MenuItem>
