@@ -10,9 +10,10 @@ import {
   ResponsiveContainer,
   Brush,
 } from "recharts";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import Download from "../../Download";
 import _ from "lodash";
+import { currencyFormatter } from "../../../constants";
 
 export default function HistoricalTrend({ visualizationData }) {
   const [start, setStart] = useState(0);
@@ -41,54 +42,76 @@ export default function HistoricalTrend({ visualizationData }) {
   };
 
   return (
-    <Box sx={{ height: 300, marginTop: "4rem" }}>
-      <Download />
-      <Typography sx={{ marginLeft: "2rem" }}>
-        <span style={{ fontWeight: "bold" }}>Total Premium:</span>{" "}
-        {(sum_actual_premium * (end - start + 1)).toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })}
-      </Typography>
-      <Typography sx={{ marginLeft: "2rem" }}>
-        <span style={{ fontWeight: "bold" }}>Total Indemnity:</span>{" "}
-        {calculateIndemnity(start, end).toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })}
-      </Typography>
-      <ResponsiveContainer>
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="year" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="indemnity" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Brush
-            dataKey="year"
-            height={30}
-            x={70}
-            onChange={handleBrushChange}
-            startIndex={start}
-            endIndex={end}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "4rem" }} align="center">
+          Indemnity Over Time
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Box sx={{ height: 400 }}>
+          <Download />
+          <Typography sx={{ marginLeft: "2rem" }}>
+            <span style={{ fontWeight: "bold" }}>
+              Total Premium ({data[start].year} - {data[end].year}):
+            </span>{" "}
+            {(sum_actual_premium * (end - start + 1)).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </Typography>
+          <Typography sx={{ marginLeft: "2rem" }}>
+            <span style={{ fontWeight: "bold" }}>
+              Total Indemnity ({data[start].year} - {data[end].year}):
+            </span>{" "}
+            {calculateIndemnity(start, end).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </Typography>
+          <ResponsiveContainer>
+            <LineChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 75,
+                bottom: 30,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="year"
+                label={{ value: "Years", position: "insideBottom", offset: -15 }}
+              />
+              <YAxis
+                label={{
+                  value: "Indemnity",
+                  position: "insideLeft",
+                  offset: -75,
+                }}
+                tickFormatter={currencyFormatter}
+              />
+              <Tooltip formatter={currencyFormatter} />
+              <Legend verticalAlign="top" />
+              <Line type="monotone" dataKey="indemnity" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Brush
+                dataKey="year"
+                height={30}
+                x={120}
+                y={365}
+                onChange={handleBrushChange}
+                startIndex={start}
+                endIndex={end}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

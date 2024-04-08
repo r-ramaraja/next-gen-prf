@@ -5,7 +5,7 @@ import { baseURL } from "../../../constants";
 import { Box, Grid, Skeleton } from "@mui/material";
 import CountyBaseTable from "../overview/CountyBaseTable";
 
-export default function IntendedUseViz({ marker }) {
+export default function IntendedUseViz({ marker, isOverviewView }) {
   const { county, state } = marker;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -43,7 +43,7 @@ export default function IntendedUseViz({ marker }) {
             <CountyBaseTable marker={marker} />
           </Grid>
           <Grid item xs={12}>
-            <IntendedUseBar visualizationData={visualizationData} />
+            <IntendedUseBar visualizationData={visualizationData} isOverviewView={isOverviewView} />
           </Grid>
         </Grid>
       ) : (

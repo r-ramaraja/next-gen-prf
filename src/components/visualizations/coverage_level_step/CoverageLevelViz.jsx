@@ -4,7 +4,7 @@ import axios from "axios";
 import { baseURL } from "../../../constants";
 import { Box, Skeleton } from "@mui/material";
 
-export default function CoverageLevelViz({ marker }) {
+export default function CoverageLevelViz({ marker, isOverviewView }) {
   const { county, state } = marker;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,7 +37,7 @@ export default function CoverageLevelViz({ marker }) {
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <CoverageLevelLine visualizationData={visualizationData} />
+        <CoverageLevelLine visualizationData={visualizationData} isOverviewView={isOverviewView} />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}

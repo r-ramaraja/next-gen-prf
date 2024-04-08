@@ -75,7 +75,7 @@ export default function IntervalDistributionLine({ visualizationData }) {
   };
 
   const labels = {
-    index: "Index",
+    index: "Rainfall Index",
     totalRainfall: "Total Rainfall",
   };
 
@@ -124,29 +124,60 @@ export default function IntervalDistributionLine({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, marginTop: "1rem" }}>
+          <Box sx={{ height: 400, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <LineChart
                 data={data}
                 margin={{
                   top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
+                  right: 40,
+                  left: 85,
+                  bottom: 30,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
+                <XAxis
+                  dataKey="year"
+                  label={{ value: "Years", position: "insideBottom", offset: -15 }}
+                />
+                <YAxis
+                  label={{
+                    value: labels[metric],
+                    position: "insideLeft",
+                    offset: -85,
+                  }}
+                />
                 <Tooltip
                   formatter={(value, name, props) => {
                     return props.dataKey.split("-")[1] === "totalRainfall" ? `${value} mm` : value;
                   }}
                 />
-                <Legend />
-                <Brush dataKey="year" height={30} x={70} />
-                <ReferenceLine y={0.9} label="0.90" stroke="black" strokeWidth={2} isFront={true} />
-                <ReferenceLine y={0.7} label="0.70" stroke="black" strokeWidth={2} isFront={true} />
+                <Legend verticalAlign="top" />
+                <Brush dataKey="year" height={30} x={130} y={365} />
+                {metric === "index" && (
+                  <ReferenceLine
+                    y={0.9}
+                    label={{
+                      value: "0.90",
+                      position: "right",
+                    }}
+                    stroke="black"
+                    strokeWidth={2}
+                    isFront={true}
+                  />
+                )}
+                {metric === "index" && (
+                  <ReferenceLine
+                    y={0.7}
+                    label={{
+                      value: "0.70",
+                      position: "right",
+                    }}
+                    stroke="black"
+                    strokeWidth={2}
+                    isFront={true}
+                  />
+                )}
                 {intervals.map((interval, index) => (
                   <Line
                     key={`${intervalMap[interval]}-${metric}-${index}`}

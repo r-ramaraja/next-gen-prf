@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Box from "@mui/material/Box";
+import { Grid, Box, Typography } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -52,46 +52,57 @@ export default function CountyBaseTable({ marker }) {
   }, [marker]);
 
   return (
-    <Box>
+    <Grid container>
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {countyBaseData.length > 0 ? (
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <StyledTableHeader>Intended Use</StyledTableHeader>
-                <StyledTableHeader>Irrigation Practice</StyledTableHeader>
-                <StyledTableHeader>Organic Practice</StyledTableHeader>
-                <StyledTableHeader>County Base Value</StyledTableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {countyBaseData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{capitalizeFirstLetter(row.intended_use)}</TableCell>
-                  <TableCell>
-                    {row.irrigation_practice ? capitalizeFirstLetter(row.irrigation_practice) : "-"}
-                  </TableCell>
-                  <TableCell>
-                    {row.organic_practice ? capitalizeFirstLetter(row.organic_practice) : "-"}
-                  </TableCell>
-                  <TableCell>
-                    {row.county_base_value.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <React.Fragment>
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ marginTop: "1rem" }} align="center">
+              County Base Values
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableHeader>Intended Use</StyledTableHeader>
+                    <StyledTableHeader>Irrigation Practice</StyledTableHeader>
+                    <StyledTableHeader>Organic Practice</StyledTableHeader>
+                    <StyledTableHeader>County Base Value</StyledTableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {countyBaseData.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{capitalizeFirstLetter(row.intended_use)}</TableCell>
+                      <TableCell>
+                        {row.irrigation_practice
+                          ? capitalizeFirstLetter(row.irrigation_practice)
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {row.organic_practice ? capitalizeFirstLetter(row.organic_practice) : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {row.county_base_value.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </React.Fragment>
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
-    </Box>
+    </Grid>
   );
 }

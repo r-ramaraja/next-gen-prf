@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
 import { Box, Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -17,7 +18,7 @@ import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 import { currencyFormatter } from "../../../constants";
 
-export default function IntendedUseBar({ visualizationData }) {
+export default function IntendedUseBar({ visualizationData, isOverviewView }) {
   const [metric, setMetric] = useState("indemnity");
   const [grazingKey, setGrazingKey] = useState("grazing_indemnity");
   const [hayingKey, setHayingKey] = useState("haying_indemnity");
@@ -41,17 +42,23 @@ export default function IntendedUseBar({ visualizationData }) {
 
   const haying = visualizationData["haying"] ?? {};
 
-  const yearSet = new Set([...Object.keys(haying), ...Object.keys(grazing)]);
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let year = 2007; year < currentYear; year++) {
+    years.push(year);
+  }
 
-  for (const year of yearSet) {
+  for (const year of years) {
+    const grazingData = grazing[year] ?? {};
+    const hayingData = haying[year] ?? {};
     data.push({
       year,
-      grazing_indemnity: grazing[year] ? grazing[year]["sum_indemnity"] : 0,
-      grazing_actual_premium: grazing[year] ? grazing[year]["sum_actual_premium"] : 0,
-      grazing_acres: grazing[year] ? grazing[year]["acres"] : 0,
-      haying_indemnity: haying[year] ? haying[year]["sum_indemnity"] : 0,
-      haying_actual_premium: haying[year] ? haying[year]["sum_actual_premium"] : 0,
-      haying_acres: haying[year] ? haying[year]["acres"] : 0,
+      grazing_indemnity: grazingData.sum_indemnity ?? 0,
+      grazing_actual_premium: grazingData.sum_actual_premium ?? 0,
+      grazing_acres: grazingData.acres ?? 0,
+      haying_indemnity: hayingData.sum_indemnity ?? 0,
+      haying_actual_premium: hayingData.sum_actual_premium ?? 0,
+      haying_acres: hayingData.acres ?? 0,
     });
   }
 
@@ -65,8 +72,8 @@ export default function IntendedUseBar({ visualizationData }) {
     <Box>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "1rem" }} align="center">
-            {labels[metric]} Over Time
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+            {isOverviewView && "Intended Use - "} {labels[metric]} Over Time
           </Typography>
         </Grid>
         <Grid item sx={{ marginLeft: "1.5rem" }}>
@@ -80,20 +87,33 @@ export default function IntendedUseBar({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, marginTop: "1rem" }}>
+          <Box sx={{ height: 400, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <BarChart
                 data={data}
                 margin={{
                   top: 5,
                   right: 30,
-                  left: 20,
-                  bottom: 5,
+                  left: 90,
+                  bottom: 30,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" angle={14} />
-                <YAxis />
+                <XAxis
+                  dataKey="year"
+                  angle={14}
+                  label={{ value: "Years", position: "insideBottom", offset: -15 }}
+                />
+                <YAxis
+                  label={{
+                    value: labels[metric],
+                    position: "insideLeft",
+                    offset: metric === "acres" ? -40 : -85,
+                  }}
+                  tickFormatter={(value) => {
+                    return metric === "acres" ? value : currencyFormatter(value);
+                  }}
+                />
                 <Tooltip
                   formatter={(value, name, props) => {
                     return props.dataKey === "grazing_acres" || props.dataKey === "haying_acres"
@@ -101,9 +121,10 @@ export default function IntendedUseBar({ visualizationData }) {
                       : currencyFormatter(value);
                   }}
                 />
-                <Legend />
+                <Legend verticalAlign="top" />
                 <Bar dataKey={grazingKey} fill="#8884d8" name="Grazing" />
                 <Bar dataKey={hayingKey} fill="#82ca9d" name="Haying" />
+                <Brush dataKey="year" height={30} x={140} y={365} />
               </BarChart>
             </ResponsiveContainer>
           </Box>

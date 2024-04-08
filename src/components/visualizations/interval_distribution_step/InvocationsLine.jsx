@@ -76,7 +76,7 @@ export default function InvocationsLine({ visualizationData }) {
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} />
+                    <Chip key={value} label={`${value * 100}%`} />
                   ))}
                 </Box>
               )}
@@ -93,29 +93,40 @@ export default function InvocationsLine({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, marginTop: "1rem" }}>
+          <Box sx={{ height: 400, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <LineChart
                 data={data}
                 margin={{
                   top: 5,
                   right: 30,
-                  left: 20,
-                  bottom: 5,
+                  left: 85,
+                  bottom: 30,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="interval" interval={0} angle={14} />
-                <YAxis />
+                <XAxis
+                  dataKey="interval"
+                  interval={0}
+                  angle={14}
+                  label={{ value: "Intervals", position: "insideBottom", offset: -15 }}
+                />
+                <YAxis
+                  label={{
+                    value: "Trigger Count",
+                    position: "insideLeft",
+                    offset: -70,
+                  }}
+                />
                 <Tooltip />
-                <Legend />
+                <Legend verticalAlign="top" />
                 {coverageLevels.map((coverageLevel, index) => (
                   <Line
                     key={`${coverageLevel}-${index}`}
                     dataKey={`${coverageLevel}-invocations`}
                     activeDot={{ r: 8 }}
                     stroke={colours[index]}
-                    name={coverageLevel}
+                    name={`${coverageLevel * 100}%`}
                   />
                 ))}
               </LineChart>

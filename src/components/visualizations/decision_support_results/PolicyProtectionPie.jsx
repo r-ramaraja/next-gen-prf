@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
-import { Box } from "@mui/material";
+import { PieChart, Pie, Sector, ResponsiveContainer, Cell, Legend } from "recharts";
+import { Box, Grid, Typography } from "@mui/material";
 import Download from "../../Download";
 import { currencyFormatter } from "../../../constants";
 
@@ -81,24 +81,43 @@ export default function PolicyProtectionPie({ visualizationData }) {
   };
 
   return (
-    <Box style={{ height: 300, marginTop: "4rem" }}>
-      <Download />
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={400} height={400}>
-          <Pie
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            onMouseEnter={onPieEnter}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginTop: "4rem" }} align="center">
+          Protection Breakdown
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Box style={{ height: 300 }}>
+          <Download />
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+                onMouseEnter={onPieEnter}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      ["#7BC0FF", "#FF6B6B", "#4CAF50", "#30A7A7", "#AD51F6", "#F0C808"][index % 6]
+                    }
+                  />
+                ))}
+              </Pie>
+              <Legend verticalAlign="top" />
+            </PieChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

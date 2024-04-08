@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PieChart, Pie, Sector, ResponsiveContainer, Cell } from "recharts";
-import { Box } from "@mui/material";
+import { PieChart, Pie, Sector, ResponsiveContainer, Cell, Legend } from "recharts";
+import { Box, Grid, Typography } from "@mui/material";
 import Download from "../../Download";
 import { currencyFormatter } from "../../../constants";
 
@@ -17,7 +17,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, val
       x={x}
       y={y}
       fill="white"
-      textAnchor={x > cx ? "start" : "end"}
+      textAnchor="middle"
       dominantBaseline="central"
       alignmentBaseline="middle"
     >
@@ -125,43 +125,60 @@ export default function DecisionSupportPieViz({ visualizationData }) {
   }
 
   return (
-    <Box style={{ height: 300, marginTop: "4rem" }}>
-      <Download />
-      <ResponsiveContainer>
-        <PieChart width={500} height={500}>
-          <Pie
-            data={data01}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            outerRadius={60}
-            fill="#8884d8"
-            labelLine={false}
-            label={(props) => renderCustomizedLabel({ ...props, index: props.index })}
-          >
-            {data01.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Pie
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            data={data02}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={70}
-            outerRadius={90}
-            fill="#82ca9d"
-            onMouseEnter={onPieEnter}
-          >
-            {data02.map((entry) => {
-              const index = entry.parent === "Producer Premium" ? 0 : 1;
-              return <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
-            })}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginTop: "4rem" }} align="center">
+          Premium Breakdown
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Box style={{ height: 300 }}>
+          <Download />
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={data01}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                outerRadius={60}
+                fill="#8884d8"
+                labelLine={false}
+                label={(props) => renderCustomizedLabel({ ...props, index: props.index })}
+              >
+                {data01.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Pie
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+                data={data02}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                innerRadius={70}
+                outerRadius={90}
+                fill="#82ca9d"
+                onMouseEnter={onPieEnter}
+                id="ID01"
+              >
+                {data02.map((entry) => {
+                  const index = entry.parent === "Producer Premium" ? 0 : 1;
+                  return <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
+                })}
+              </Pie>
+              <Legend
+                verticalAlign="top"
+                payload={[
+                  { id: "ID01", value: "Producer Premium", type: "square", color: COLORS[0] },
+                  { id: "ID02", value: "Premium Subsidy", type: "square", color: COLORS[1] },
+                ]}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

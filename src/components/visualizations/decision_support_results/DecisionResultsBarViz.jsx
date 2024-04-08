@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Box } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Download from "../../Download";
 import { currencyFormatter } from "../../../constants";
 
@@ -25,42 +25,54 @@ export default function DecisionResultsBarViz({ visualizationData }) {
     });
   }
   return (
-    <Box sx={{ height: 300, marginTop: "8rem" }}>
-      <Download />
-      <ResponsiveContainer>
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip formatter={currencyFormatter} />
-          <Legend />
-          {/* <Bar
-            dataKey="protection"
-            fill="#4c9f70" // A shade of green
-            activeBar={<Rectangle fill="#76c1a0" stroke="#2e6e47" />}
-          /> */}
-          <Bar
-            dataKey="premium"
-            fill="#4d85bd"
-            activeBar={<Rectangle fill="#7aaed6" stroke="#2c5d8f" />}
-          />
-          <Bar
-            dataKey="indemnity"
-            fill="#e57373"
-            activeBar={<Rectangle fill="#ef9a9a" stroke="#af4448" />}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginLeft: "3rem", marginTop: "8rem" }} align="center">
+          Premium-Indemnity for Current Policy
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Box sx={{ height: 300 }}>
+          <Download />
+          <ResponsiveContainer>
+            <BarChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 35,
+                bottom: 10,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="name"
+                label={{ value: "Intervals", position: "insideBottom", offset: -10 }}
+              />
+              <YAxis
+                label={{
+                  value: "Value",
+                  position: "insideLeft",
+                  offset: -35,
+                }}
+                tickFormatter={currencyFormatter}
+              />
+              <Tooltip formatter={currencyFormatter} />
+              <Legend verticalAlign="top" />
+              <Bar
+                dataKey="premium"
+                fill="#4d85bd"
+                activeBar={<Rectangle fill="#7aaed6" stroke="#2c5d8f" />}
+              />
+              <Bar
+                dataKey="indemnity"
+                fill="#e57373"
+                activeBar={<Rectangle fill="#ef9a9a" stroke="#af4448" />}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

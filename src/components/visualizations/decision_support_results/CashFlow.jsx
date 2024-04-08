@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Rectangle,
 } from "recharts";
-import { Box } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Download from "../../Download";
 import { currencyFormatter } from "../../../constants";
 
@@ -27,33 +27,50 @@ export default function CashFlow({ visualizationData }) {
   }
 
   return (
-    <Box sx={{ height: 300, marginTop: "8rem" }}>
-      <Download />
-      <ResponsiveContainer>
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip formatter={currencyFormatter} />
-          <Legend />
-          <ReferenceLine y={0} stroke="#000" />
-          <Bar
-            dataKey="cashflow"
-            fill="#4d85bd"
-            activeBar={<Rectangle fill="#7aaed6" stroke="#2c5d8f" />}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginLeft: "3rem", marginTop: "8rem" }} align="center">
+          Cashflow for Current Policy
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Box sx={{ height: 300 }}>
+          <Download />
+          <ResponsiveContainer>
+            <BarChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 75,
+                bottom: 10,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="name"
+                label={{ value: "Intervals", position: "insideBottom", offset: -10 }}
+              />
+              <YAxis
+                label={{
+                  value: "Cashflow",
+                  position: "insideLeft",
+                  offset: -75,
+                }}
+                tickFormatter={currencyFormatter}
+              />
+              <Tooltip formatter={currencyFormatter} />
+              <Legend verticalAlign="top" />
+              <ReferenceLine y={0} stroke="#000" />
+              <Bar
+                dataKey="cashflow"
+                fill="#4d85bd"
+                activeBar={<Rectangle fill="#7aaed6" stroke="#2c5d8f" />}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Line,
   LineChart,
+  Brush,
 } from "recharts";
 import { Box, Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -34,7 +35,7 @@ const MenuProps = {
 
 const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
 
-export default function CoverageLevelLine({ visualizationData }) {
+export default function CoverageLevelLine({ visualizationData, isOverviewView }) {
   const [metric, setMetric] = useState("indemnity");
   const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues);
 
@@ -44,32 +45,23 @@ export default function CoverageLevelLine({ visualizationData }) {
 
   const data = [];
 
-  let yearSet = new Set();
-  for (const coverageLevel of Object.keys(visualizationData).sort()) {
-    const coverageLevelData = visualizationData[coverageLevel];
-    yearSet = new Set([...yearSet, ...Object.keys(coverageLevelData)]);
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let year = 2007; year < currentYear; year++) {
+    years.push(year);
   }
 
-  for (const year of yearSet) {
+  for (const year of years) {
     const yearData = { year };
     for (const coverageLevel of Object.keys(visualizationData).sort()) {
-      const coverageLevelData = visualizationData[coverageLevel];
-      yearData["coverageLevel"] = coverageLevel;
-      yearData[`${coverageLevel}-indemnity`] = coverageLevelData[year]
-        ? coverageLevelData[year]["sum_indemnity"]
-        : 0;
-      yearData[`${coverageLevel}-premium`] = coverageLevelData[year]
-        ? coverageLevelData[year]["sum_actual_premium"]
-        : 0;
-      yearData[`${coverageLevel}-acres`] = coverageLevelData[year]
-        ? coverageLevelData[year]["acres"]
-        : 0;
-      yearData[`${coverageLevel}-policies_sold`] = coverageLevelData[year]
-        ? coverageLevelData[year]["sum_policy_sold"]
-        : 0;
-      yearData[`${coverageLevel}-policies_indemnified`] = coverageLevelData[year]
-        ? coverageLevelData[year]["sum_policy_indemnified"]
-        : 0;
+      const coverageLevelData = visualizationData[coverageLevel][year] || {};
+
+      yearData[`${coverageLevel}-indemnity`] = coverageLevelData.sum_indemnity ?? 0;
+      yearData[`${coverageLevel}-premium`] = coverageLevelData.sum_actual_premium ?? 0;
+      yearData[`${coverageLevel}-acres`] = coverageLevelData.acres ?? 0;
+      yearData[`${coverageLevel}-policies_sold`] = coverageLevelData.sum_policy_sold ?? 0;
+      yearData[`${coverageLevel}-policies_indemnified`] =
+        coverageLevelData.sum_policy_indemnified ?? 0;
     }
     data.push(yearData);
   }
@@ -93,8 +85,8 @@ export default function CoverageLevelLine({ visualizationData }) {
     <Box>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem" }} align="center">
-            {labels[metric]} Over Time
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+            {isOverviewView && "Coverage Level - "} {labels[metric]} Over Time
           </Typography>
         </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
@@ -120,7 +112,7 @@ export default function CoverageLevelLine({ visualizationData }) {
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} />
+                    <Chip key={value} label={`${value * 100}%`} />
                   ))}
                 </Box>
               )}
@@ -137,20 +129,44 @@ export default function CoverageLevelLine({ visualizationData }) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Box sx={{ height: 300, marginTop: "1rem" }}>
+          <Box sx={{ height: 400, marginTop: "1rem" }}>
             <ResponsiveContainer>
               <LineChart
                 data={data}
                 margin={{
                   top: 5,
                   right: 30,
-                  left: 20,
-                  bottom: 5,
+                  left: 120,
+                  bottom: 30,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" angle={10} />
-                <YAxis />
+                <XAxis
+                  dataKey="year"
+                  label={{ value: "Years", position: "insideBottom", offset: -15 }}
+                  interval={0}
+                />
+                <YAxis
+                  label={{
+                    value: labels[metric],
+                    position: "insideLeft",
+                    offset: (() => {
+                      if (metric === "acres") {
+                        return -40;
+                      }
+                      if (metric === "policies_indemnified") {
+                        return -120;
+                      }
+
+                      return -85;
+                    })(),
+                  }}
+                  tickFormatter={(value) => {
+                    return metric === "indemnity" || metric === "premium"
+                      ? currencyFormatter(value)
+                      : value;
+                  }}
+                />
                 <Tooltip
                   formatter={(value, name, props) => {
                     return props.dataKey.split("-")[1] === "indemnity" ||
@@ -159,16 +175,17 @@ export default function CoverageLevelLine({ visualizationData }) {
                       : value;
                   }}
                 />
-                <Legend />
+                <Legend verticalAlign="top" />
                 {coverageLevels.map((coverageLevel, index) => (
                   <Line
                     key={`${coverageLevel}-${metric}-${index}`}
                     dataKey={`${coverageLevel}-${metric}`}
                     activeDot={{ r: 8 }}
                     stroke={colours[index]}
-                    name={coverageLevel}
+                    name={`${coverageLevel * 100}%`}
                   />
                 ))}
+                <Brush dataKey="year" height={30} x={170} y={365} />
               </LineChart>
             </ResponsiveContainer>
           </Box>
