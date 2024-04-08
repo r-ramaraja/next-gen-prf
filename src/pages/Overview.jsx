@@ -2,8 +2,11 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
-import CountyBaseTable from "../components/visualizations/overview/CountyBaseTable";
 import CountyMap from "../components/visualizations/overview/CountyMap";
+import IntendedUseViz from "../components/visualizations/intended_use_step/IntendedUseViz";
+import CoverageLevelViz from "../components/visualizations/coverage_level_step/CoverageLevelViz";
+import InsuredAcresViz from "../components/visualizations/insured_acres_step/InsuredAcresViz";
+import IntervalDistributionViz from "../components/visualizations/interval_distribution_step/IntervalDistributionViz";
 
 export default function Overview({ marker }) {
   return (
@@ -38,7 +41,16 @@ export default function Overview({ marker }) {
           <CountyMap marker={marker} />
         </Grid>
         <Grid item xs={12}>
-          <CountyBaseTable marker={marker} />
+          <IntendedUseViz marker={marker} isOverviewView />
+        </Grid>
+        <Grid item xs={12}>
+          <CoverageLevelViz marker={marker} isOverviewView />
+        </Grid>
+        <Grid item xs={12}>
+          <InsuredAcresViz marker={marker} />
+        </Grid>
+        <Grid item xs={12}>
+          <IntervalDistributionViz marker={marker} isOverviewView />
         </Grid>
       </Grid>
     </Box>

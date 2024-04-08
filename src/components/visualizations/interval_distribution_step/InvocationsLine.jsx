@@ -34,7 +34,7 @@ const MenuProps = {
 
 const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
 
-export default function InvocationsLine({ visualizationData }) {
+export default function InvocationsLine({ visualizationData, isOverviewView }) {
   const { invocations } = visualizationData;
 
   const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues);
@@ -61,8 +61,9 @@ export default function InvocationsLine({ visualizationData }) {
     <Box>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "1rem" }} align="center">
-            Total Triggers (2007 - {new Date().getFullYear() - 1})
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+            {isOverviewView && "Intervals - "} Total Triggers (2007 - {new Date().getFullYear() - 1}
+            )
           </Typography>
         </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>

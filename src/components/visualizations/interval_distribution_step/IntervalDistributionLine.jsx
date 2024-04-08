@@ -34,7 +34,7 @@ const MenuProps = {
   },
 };
 
-export default function IntervalDistributionLine({ visualizationData }) {
+export default function IntervalDistributionLine({ visualizationData, isOverviewView }) {
   const { metrics } = visualizationData;
   const [metric, setMetric] = useState("index");
   const [intervals, setIntervals] = useState([monthRanges[0]]);
@@ -83,8 +83,8 @@ export default function IntervalDistributionLine({ visualizationData }) {
     <Box>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "1rem" }} align="center">
-            {labels[metric]} Over Time
+          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+            {isOverviewView && "Intervals - "} {labels[metric]} Over Time
           </Typography>
         </Grid>
         <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
