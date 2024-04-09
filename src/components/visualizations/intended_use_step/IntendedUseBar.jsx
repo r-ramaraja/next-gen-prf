@@ -16,6 +16,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { currencyFormatter } from "../../../constants";
 
 export default function IntendedUseBar({ visualizationData, isOverviewView, state, county }) {
@@ -182,55 +189,82 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Grazing:</strong>
-                  <br />
-                  {visualizationData["grazing"] ? (
-                    <ul>
-                      <li>Sum: {currencyFormatter(visualizationData.grazing_total_indemnity)}</li>
-                      <li>Average: {currencyFormatter(visualizationData.grazing_avg_indemnity)}</li>
-                      <li>
-                        Max: {currencyFormatter(visualizationData.grazing_max_indemnity.value)}
-                        {visualizationData.grazing_max_indemnity.year &&
-                          ` in ${visualizationData.grazing_max_indemnity.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {currencyFormatter(visualizationData.grazing_min_indemnity.value)}
-                        {visualizationData.grazing_min_indemnity.year &&
-                          ` in ${visualizationData.grazing_min_indemnity.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
-              </Grid>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Haying:</strong>
-                  <br />
-                  {visualizationData["haying"] ? (
-                    <ul>
-                      <li>Sum: {currencyFormatter(visualizationData.haying_total_indemnity)}</li>
-                      <li>Average: {currencyFormatter(visualizationData.haying_avg_indemnity)}</li>
-                      <li>
-                        Max: {currencyFormatter(visualizationData.haying_max_indemnity.value)}
-                        {visualizationData.haying_max_indemnity.year &&
-                          ` in ${visualizationData.haying_max_indemnity.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {currencyFormatter(visualizationData.haying_min_indemnity.value)}
-                        {visualizationData.haying_min_indemnity.year &&
-                          ` in ${visualizationData.haying_min_indemnity.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
+              <Grid item xs={4}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">Grazing</TableCell>
+                        <TableCell align="right">Haying</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          grazing: visualizationData["grazing"]
+                            ? currencyFormatter(visualizationData.grazing_total_indemnity)
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? currencyFormatter(visualizationData.haying_total_indemnity)
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Average",
+                          grazing: visualizationData["grazing"]
+                            ? currencyFormatter(visualizationData.grazing_avg_indemnity)
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? currencyFormatter(visualizationData.haying_avg_indemnity)
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Max",
+                          grazing: visualizationData["grazing"]
+                            ? `${currencyFormatter(visualizationData.grazing_max_indemnity.value)}
+                        ${
+                          visualizationData.grazing_max_indemnity.year &&
+                          ` in ${visualizationData.grazing_max_indemnity.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${currencyFormatter(visualizationData.haying_max_indemnity.value)}
+                          ${
+                            visualizationData.haying_max_indemnity.year &&
+                            ` in ${visualizationData.haying_max_indemnity.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          grazing: visualizationData["grazing"]
+                            ? `${currencyFormatter(visualizationData.grazing_min_indemnity.value)}
+                        ${
+                          visualizationData.grazing_min_indemnity.year &&
+                          ` in ${visualizationData.grazing_min_indemnity.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${currencyFormatter(visualizationData.haying_min_indemnity.value)}
+                          ${
+                            visualizationData.haying_min_indemnity.year &&
+                            ` in ${visualizationData.haying_min_indemnity.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell>
+                            <strong>{row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row.grazing}</TableCell>
+                          <TableCell align="right">{row.haying}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -283,59 +317,82 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Grazing:</strong>
-                  <br />
-                  {visualizationData["grazing"] ? (
-                    <ul>
-                      <li>Sum: {currencyFormatter(visualizationData.grazing_total_premium)}</li>
-                      <li>Average: {currencyFormatter(visualizationData.grazing_avg_premium)}</li>
-                      <li>
-                        Max: {currencyFormatter(visualizationData.grazing_max_premium.value)}
-                        {visualizationData.grazing_max_premium.year &&
-                          ` in
-                    ${visualizationData.grazing_max_premium.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {currencyFormatter(visualizationData.grazing_min_premium.value)}
-                        {visualizationData.grazing_max_premium.year &&
-                          ` in
-                    ${visualizationData.grazing_max_premium.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
-              </Grid>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Haying:</strong>
-                  <br />
-                  {visualizationData["haying"] ? (
-                    <ul>
-                      <li>Sum: {currencyFormatter(visualizationData.haying_total_premium)}</li>
-                      <li>Average: {currencyFormatter(visualizationData.haying_avg_premium)}</li>
-                      <li>
-                        Max: {currencyFormatter(visualizationData.haying_max_premium.value)}
-                        {visualizationData.haying_max_premium.year &&
-                          ` in
-                    ${visualizationData.haying_max_premium.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {currencyFormatter(visualizationData.haying_min_premium.value)}
-                        {visualizationData.haying_min_premium.year &&
-                          ` in
-                    ${visualizationData.haying_min_premium.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
+              <Grid item xs={4}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">Grazing</TableCell>
+                        <TableCell align="right">Haying</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          grazing: visualizationData["grazing"]
+                            ? currencyFormatter(visualizationData.grazing_total_premium)
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? currencyFormatter(visualizationData.haying_total_premium)
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Average",
+                          grazing: visualizationData["grazing"]
+                            ? currencyFormatter(visualizationData.grazing_avg_premium)
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? currencyFormatter(visualizationData.haying_avg_premium)
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Max",
+                          grazing: visualizationData["grazing"]
+                            ? `${currencyFormatter(visualizationData.grazing_max_premium.value)}
+                        ${
+                          visualizationData.grazing_max_premium.year &&
+                          ` in ${visualizationData.grazing_max_premium.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${currencyFormatter(visualizationData.haying_max_premium.value)}
+                          ${
+                            visualizationData.haying_max_premium.year &&
+                            ` in ${visualizationData.haying_max_premium.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          grazing: visualizationData["grazing"]
+                            ? `${currencyFormatter(visualizationData.grazing_min_premium.value)}
+                        ${
+                          visualizationData.grazing_min_premium.year &&
+                          ` in ${visualizationData.grazing_min_premium.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${currencyFormatter(visualizationData.haying_min_premium.value)}
+                          ${
+                            visualizationData.haying_min_premium.year &&
+                            ` in ${visualizationData.haying_min_premium.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell>
+                            <strong>{row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row.grazing}</TableCell>
+                          <TableCell align="right">{row.haying}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -389,61 +446,82 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Grazing:</strong>
-                  <br />
-                  {visualizationData["grazing"] ? (
-                    <ul>
-                      <li>Sum: {visualizationData.grazing_total_acres.toLocaleString("en-US")}</li>
-                      <li>
-                        Average: {visualizationData.grazing_avg_acres.toLocaleString("en-US")}
-                      </li>
-                      <li>
-                        Max: {visualizationData.grazing_max_acres.value.toLocaleString("en-US")}
-                        {visualizationData.grazing_max_acres.year &&
-                          ` in
-                    ${visualizationData.grazing_max_acres.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {visualizationData.grazing_min_acres.value.toLocaleString("en-US")}
-                        {visualizationData.grazing_min_acres.year &&
-                          ` in
-                    ${visualizationData.grazing_min_acres.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
-              </Grid>
-              <Grid item xs={6}>
-                <p>
-                  <strong>For Haying:</strong>
-                  <br />
-                  {visualizationData["haying"] ? (
-                    <ul>
-                      <li>Sum: {visualizationData.haying_total_acres.toLocaleString("en-US")}</li>
-                      <li>Average: {visualizationData.haying_avg_acres.toLocaleString("en-US")}</li>
-                      <li>
-                        Max: {visualizationData.haying_max_acres.value.toLocaleString("en-US")}
-                        {visualizationData.haying_max_acres.year &&
-                          ` in
-                    ${visualizationData.haying_max_acres.year}.`}
-                      </li>
-                      <li>
-                        Min (non-zero):{" "}
-                        {visualizationData.haying_min_acres.value.toLocaleString("en-US")}
-                        {visualizationData.haying_min_acres.year &&
-                          ` in
-                    ${visualizationData.haying_min_acres.year}.`}
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>No data available</p>
-                  )}
-                </p>
+              <Grid item xs={4}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">Grazing</TableCell>
+                        <TableCell align="right">Haying</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          grazing: visualizationData["grazing"]
+                            ? visualizationData.grazing_total_acres.toLocaleString("en-US")
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? visualizationData.haying_total_acres.toLocaleString("en-US")
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Average",
+                          grazing: visualizationData["grazing"]
+                            ? visualizationData.grazing_avg_acres.toLocaleString("en-US")
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? visualizationData.haying_avg_acres.toLocaleString("en-US")
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Max",
+                          grazing: visualizationData["grazing"]
+                            ? `${visualizationData.grazing_max_acres.value.toLocaleString("en-US")}
+                        ${
+                          visualizationData.grazing_max_acres.year &&
+                          ` in ${visualizationData.grazing_max_acres.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${visualizationData.haying_max_acres.value.toLocaleString("en-US")}
+                          ${
+                            visualizationData.haying_max_acres.year &&
+                            ` in ${visualizationData.haying_max_acres.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          grazing: visualizationData["grazing"]
+                            ? `${visualizationData.grazing_min_acres.value.toLocaleString("en-US")}
+                        ${
+                          visualizationData.grazing_min_acres.year &&
+                          ` in ${visualizationData.grazing_min_acres.year}`
+                        }`
+                            : "No data avaialable",
+                          haying: visualizationData["haying"]
+                            ? `${visualizationData.haying_min_acres.value.toLocaleString("en-US")}
+                          ${
+                            visualizationData.haying_min_acres.year &&
+                            ` in ${visualizationData.haying_min_acres.year}`
+                          }`
+                            : "No data avaialable",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell>
+                            <strong>{row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row.grazing}</TableCell>
+                          <TableCell align="right">{row.haying}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>

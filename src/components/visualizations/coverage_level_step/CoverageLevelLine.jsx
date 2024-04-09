@@ -20,6 +20,13 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { currencyFormatter, coverageLevelValues } from "../../../constants";
 
 const ITEM_HEIGHT = 48;
@@ -289,145 +296,148 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 70% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.7) &&
-                    (visualizationData[0.7] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.7_total_indemnity"])}</li>
-                        <li>
-                          Average: {currencyFormatter(visualizationData["0.7_avg_indemnity"])}
-                        </li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.7_max_indemnity"].value)}
-                          {visualizationData["0.7_max_indemnity"].year &&
-                            ` in ${visualizationData["0.7_max_indemnity"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.7_min_indemnity"].value)}
-                          {visualizationData["0.7_min_indemnity"].year &&
-                            ` in ${visualizationData["0.7_min_indemnity"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 75% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.75) &&
-                    (visualizationData[0.75] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.75_total_indemnity"])}</li>
-                        <li>
-                          Average: {currencyFormatter(visualizationData["0.75_avg_indemnity"])}
-                        </li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.75_max_indemnity"].value)}
-                          {visualizationData["0.75_max_indemnity"].year &&
-                            ` in ${visualizationData["0.75_max_indemnity"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.75_min_indemnity"].value)}{" "}
-                          {visualizationData["0.75_min_indemnity"].year &&
-                            ` in ${visualizationData["0.75_min_indemnity"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 80% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.8) &&
-                    (visualizationData[0.8] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.8_total_indemnity"])}</li>
-                        <li>
-                          Average: {currencyFormatter(visualizationData["0.8_avg_indemnity"])}
-                        </li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.8_max_indemnity"].value)}
-                          {visualizationData["0.8_max_indemnity"].year &&
-                            ` in ${visualizationData["0.8_max_indemnity"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.8_min_indemnity"].value)}
-                          {visualizationData["0.8_min_indemnity"].year &&
-                            ` in ${visualizationData["0.8_min_indemnity"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 85% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.85) &&
-                    (visualizationData[0.85] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.85_total_indemnity"])}</li>
-                        <li>
-                          Average: {currencyFormatter(visualizationData["0.85_avg_indemnity"])}
-                        </li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.85_max_indemnity"].value)}
-                          {visualizationData["0.85_max_indemnity"].year &&
-                            ` in ${visualizationData["0.85_max_indemnity"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.85_min_indemnity"].value)}
-                          {visualizationData["0.85_min_indemnity"].year &&
-                            ` in ${visualizationData["0.85_min_indemnity"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 90% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.9) &&
-                    (visualizationData[0.9] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.9_total_indemnity"])}</li>
-                        <li>
-                          Average: {currencyFormatter(visualizationData["0.9_avg_indemnity"])}
-                        </li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.9_max_indemnity"].value)}
-                          {visualizationData["0.9_max_indemnity"].year &&
-                            ` in ${visualizationData["0.9_max_indemnity"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.9_min_indemnity"].value)}
-                          {visualizationData["0.9_min_indemnity"].year &&
-                            ` in ${visualizationData["0.9_min_indemnity"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
+              <Grid item xs={10}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">70% coverage level</TableCell>
+                        <TableCell align="right">75% coverage level</TableCell>
+                        <TableCell align="right">80% coverage level</TableCell>
+                        <TableCell align="right">85% coverage level</TableCell>
+                        <TableCell align="right">90% coverage level</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          70: visualizationData[0.7]
+                            ? currencyFormatter(visualizationData["0.7_total_indemnity"])
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? currencyFormatter(visualizationData["0.75_total_indemnity"])
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? currencyFormatter(visualizationData["0.8_total_indemnity"])
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? currencyFormatter(visualizationData["0.85_total_indemnity"])
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? currencyFormatter(visualizationData["0.9_total_indemnity"])
+                            : "No data available",
+                        },
+                        {
+                          header: "Average",
+                          70: visualizationData[0.7]
+                            ? currencyFormatter(visualizationData["0.7_avg_indemnity"])
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? currencyFormatter(visualizationData["0.75_avg_indemnity"])
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? currencyFormatter(visualizationData["0.8_avg_indemnity"])
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? currencyFormatter(visualizationData["0.85_avg_indemnity"])
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? currencyFormatter(visualizationData["0.9_avg_indemnity"])
+                            : "No data available",
+                        },
+                        {
+                          header: "Max",
+                          70: visualizationData[0.7]
+                            ? `${currencyFormatter(visualizationData["0.7_max_indemnity"].value)}
+                            ${
+                              visualizationData["0.7_max_indemnity"].year &&
+                              ` in ${visualizationData["0.7_max_indemnity"].year}`
+                            }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${currencyFormatter(visualizationData["0.75_max_indemnity"].value)}
+                          ${
+                            visualizationData["0.75_max_indemnity"].year &&
+                            ` in ${visualizationData["0.75_max_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${currencyFormatter(visualizationData["0.8_max_indemnity"].value)}
+                          ${
+                            visualizationData["0.8_max_indemnity"].year &&
+                            ` in ${visualizationData["0.8_max_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${currencyFormatter(visualizationData["0.85_max_indemnity"].value)}
+                          ${
+                            visualizationData["0.85_max_indemnity"].year &&
+                            ` in ${visualizationData["0.85_max_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${currencyFormatter(visualizationData["0.9_max_indemnity"].value)}
+                          ${
+                            visualizationData["0.9_max_indemnity"].year &&
+                            ` in ${visualizationData["0.9_max_indemnity"].year}`
+                          }`
+                            : "No data available",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          70: visualizationData[0.7]
+                            ? `${currencyFormatter(visualizationData["0.7_min_indemnity"].value)}
+                          ${
+                            visualizationData["0.7_min_indemnity"].year &&
+                            ` in ${visualizationData["0.7_min_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${currencyFormatter(visualizationData["0.75_min_indemnity"].value)}
+                          ${
+                            visualizationData["0.75_min_indemnity"].year &&
+                            ` in ${visualizationData["0.75_min_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${currencyFormatter(visualizationData["0.8_min_indemnity"].value)}
+                          ${
+                            visualizationData["0.8_min_indemnity"].year &&
+                            ` in ${visualizationData["0.8_min_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${currencyFormatter(visualizationData["0.85_min_indemnity"].value)}
+                          ${
+                            visualizationData["0.85_min_indemnity"].year &&
+                            ` in ${visualizationData["0.85_min_indemnity"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${currencyFormatter(visualizationData["0.9_min_indemnity"].value)}
+                          ${
+                            visualizationData["0.9_min_indemnity"].year &&
+                            ` in ${visualizationData["0.9_min_indemnity"].year}`
+                          }`
+                            : "No data available",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell component="th" scope="row">
+                            <strong> {row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row[70]}</TableCell>
+                          <TableCell align="right">{row[75]}</TableCell>
+                          <TableCell align="right">{row[80]}</TableCell>
+                          <TableCell align="right">{row[85]}</TableCell>
+                          <TableCell align="right">{row[90]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -526,145 +536,148 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 70% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.7) &&
-                    (visualizationData[0.7] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.7_total_premium"])}</li>
-                        <li>Average: {currencyFormatter(visualizationData["0.7_avg_premium"])}</li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.7_max_premium"].value)}
-                          {visualizationData["0.7_max_premium"].year &&
-                            ` in
-                      ${visualizationData["0.7_max_premium"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.7_min_premium"].value)}
-                          {visualizationData["0.7_min_premium"].year &&
-                            ` in
-                      ${visualizationData["0.7_min_premium"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 75% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.75) &&
-                    (visualizationData[0.75] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.75_total_premium"])}</li>
-                        <li>Average: {currencyFormatter(visualizationData["0.75_avg_premium"])}</li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.75_max_premium"].value)}
-                          {visualizationData["0.75_max_premium"].year &&
-                            ` in
-                      ${visualizationData["0.75_max_premium"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.75_min_premium"].value)}
-                          {visualizationData["0.75_min_premium"].year &&
-                            ` in
-                      ${visualizationData["0.75_min_premium"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 80% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.8) &&
-                    (visualizationData[0.8] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.8_total_premium"])}</li>
-                        <li>Average: {currencyFormatter(visualizationData["0.8_avg_premium"])}</li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.8_max_premium"].value)}
-                          {visualizationData["0.8_max_premium"].year &&
-                            ` in
-                      ${visualizationData["0.8_max_premium"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.8_min_premium"].value)}{" "}
-                          {visualizationData["0.8_min_premium"].year &&
-                            ` in
-                      ${visualizationData["0.8_min_premium"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 85% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.85) &&
-                    (visualizationData[0.85] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.85_total_premium"])}</li>
-                        <li>Average: {currencyFormatter(visualizationData["0.85_avg_premium"])}</li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.85_max_premium"].value)}
-                          {visualizationData["0.85_max_premium"].year &&
-                            ` in
-                      ${visualizationData["0.85_max_premium"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.85_min_premium"].value)}
-                          {visualizationData["0.85_min_premium"].year &&
-                            ` in
-                      ${visualizationData["0.85_min_premium"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 90% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.9) &&
-                    (visualizationData[0.9] ? (
-                      <ul>
-                        <li>Sum: {currencyFormatter(visualizationData["0.9_total_premium"])}</li>
-                        <li>Average: {currencyFormatter(visualizationData["0.9_avg_premium"])}</li>
-                        <li>
-                          Max: {currencyFormatter(visualizationData["0.9_max_premium"].value)}
-                          {visualizationData["0.9_max_premium"].year &&
-                            ` in
-                      ${visualizationData["0.9_max_premium"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {currencyFormatter(visualizationData["0.9_min_premium"].value)}
-                          {visualizationData["0.9_min_premium"].year &&
-                            ` in
-                      ${visualizationData["0.9_min_premium"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
+              <Grid item xs={10}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">70% coverage level</TableCell>
+                        <TableCell align="right">75% coverage level</TableCell>
+                        <TableCell align="right">80% coverage level</TableCell>
+                        <TableCell align="right">85% coverage level</TableCell>
+                        <TableCell align="right">90% coverage level</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          70: visualizationData[0.7]
+                            ? currencyFormatter(visualizationData["0.7_total_premium"])
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? currencyFormatter(visualizationData["0.75_total_premium"])
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? currencyFormatter(visualizationData["0.8_total_premium"])
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? currencyFormatter(visualizationData["0.85_total_premium"])
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? currencyFormatter(visualizationData["0.9_total_premium"])
+                            : "No data available",
+                        },
+                        {
+                          header: "Average",
+                          70: visualizationData[0.7]
+                            ? currencyFormatter(visualizationData["0.7_avg_premium"])
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? currencyFormatter(visualizationData["0.75_avg_premium"])
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? currencyFormatter(visualizationData["0.8_avg_premium"])
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? currencyFormatter(visualizationData["0.85_avg_premium"])
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? currencyFormatter(visualizationData["0.9_avg_premium"])
+                            : "No data available",
+                        },
+                        {
+                          header: "Max",
+                          70: visualizationData[0.7]
+                            ? `${currencyFormatter(visualizationData["0.7_max_premium"].value)}
+                            ${
+                              visualizationData["0.7_max_premium"].year &&
+                              ` in ${visualizationData["0.7_max_premium"].year}`
+                            }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${currencyFormatter(visualizationData["0.75_max_premium"].value)}
+                          ${
+                            visualizationData["0.75_max_premium"].year &&
+                            ` in ${visualizationData["0.75_max_premium"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${currencyFormatter(visualizationData["0.8_max_premium"].value)}
+                          ${
+                            visualizationData["0.8_max_premium"].year &&
+                            ` in ${visualizationData["0.8_max_premium"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${currencyFormatter(visualizationData["0.85_max_premium"].value)}
+                          ${
+                            visualizationData["0.85_max_premium"].year &&
+                            ` in ${visualizationData["0.85_max_premium"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${currencyFormatter(visualizationData["0.9_max_premium"].value)}
+                          ${
+                            visualizationData["0.9_max_premium"].year &&
+                            ` in ${visualizationData["0.9_max_premium"].year}`
+                          }`
+                            : "No data available",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          70: visualizationData[0.7]
+                            ? `${currencyFormatter(visualizationData["0.7_min_premium"].value)}
+                          ${
+                            visualizationData["0.7_min_premium"].year &&
+                            ` in ${visualizationData["0.7_min_premium"].year}`
+                          }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${currencyFormatter(visualizationData["0.75_min_premium"].value)}
+                          ${
+                            visualizationData["0.75_min_premium"].year &&
+                            ` in ${visualizationData["0.75_min_premium"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${currencyFormatter(visualizationData["0.8_min_premium"].value)}
+                          ${
+                            visualizationData["0.8_min_premium"].year &&
+                            ` in ${visualizationData["0.8_min_premium"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${currencyFormatter(visualizationData["0.85_min_premium"].value)}
+                          ${
+                            visualizationData["0.85_min_premium"].year &&
+                            ` in ${visualizationData["0.85_min_premium"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${currencyFormatter(visualizationData["0.9_min_premium"].value)}
+                          ${
+                            visualizationData["0.9_min_premium"].year &&
+                            ` in ${visualizationData["0.9_min_premium"].year}`
+                          }`
+                            : "No data available",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell component="th" scope="row">
+                            <strong> {row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row[70]}</TableCell>
+                          <TableCell align="right">{row[75]}</TableCell>
+                          <TableCell align="right">{row[80]}</TableCell>
+                          <TableCell align="right">{row[85]}</TableCell>
+                          <TableCell align="right">{row[90]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -764,159 +777,148 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 70% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.7) &&
-                    (visualizationData[0.7] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.7_total_acres"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.7_avg_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.7_max_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_max_acres"].year &&
-                            ` in
-                      ${visualizationData["0.7_max_acres"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.7_min_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_min_acres"].year &&
-                            ` in
-                      ${visualizationData["0.7_min_acres"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 75% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.75) &&
-                    (visualizationData[0.75] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.75_total_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average: {visualizationData["0.75_avg_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.75_max_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_max_acres"].year &&
-                            ` in
-                      ${visualizationData["0.75_max_acres"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.75_min_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_min_acres"].year &&
-                            ` in
-                      ${visualizationData["0.75_min_acres"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 80% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.8) &&
-                    (visualizationData[0.8] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.8_total_acres"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.8_avg_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.8_max_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_max_acres"].year &&
-                            ` in
-                      ${visualizationData["0.8_max_acres"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.8_min_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_min_acres"].year &&
-                            ` in
-                      ${visualizationData["0.8_min_acres"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 85% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.85) &&
-                    (visualizationData[0.85] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.85_total_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average: {visualizationData["0.85_avg_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.85_max_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_max_acres"].year &&
-                            ` in
-                      ${visualizationData["0.85_max_acres"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.85_min_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_min_acres"].year &&
-                            ` in
-                      ${visualizationData["0.85_min_acres"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 90% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.9) &&
-                    (visualizationData[0.9] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.9_total_acres"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.9_avg_acres"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.9_max_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_max_acres"].year &&
-                            ` in
-                      ${visualizationData["0.9_max_acres"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.9_min_acres"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_min_acres"].year &&
-                            ` in
-                      ${visualizationData["0.9_min_acres"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
+              <Grid item xs={10}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">70% coverage level</TableCell>
+                        <TableCell align="right">75% coverage level</TableCell>
+                        <TableCell align="right">80% coverage level</TableCell>
+                        <TableCell align="right">85% coverage level</TableCell>
+                        <TableCell align="right">90% coverage level</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_total_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_total_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_total_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_total_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_total_acres"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Average",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_avg_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_avg_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_avg_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_avg_acres"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_avg_acres"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Max",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_max_acres"].value.toLocaleString("en-US")}
+                            ${
+                              visualizationData["0.7_max_acres"].year &&
+                              ` in ${visualizationData["0.7_max_acres"].year}`
+                            }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_max_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_max_acres"].year &&
+                            ` in ${visualizationData["0.75_max_acres"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_max_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_max_acres"].year &&
+                            ` in ${visualizationData["0.8_max_acres"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_max_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_max_acres"].year &&
+                            ` in ${visualizationData["0.85_max_acres"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_max_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_max_acres"].year &&
+                            ` in ${visualizationData["0.9_max_acres"].year}`
+                          }`
+                            : "No data available",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_min_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.7_min_acres"].year &&
+                            ` in ${visualizationData["0.7_min_acres"].year}`
+                          }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_min_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_min_acres"].year &&
+                            ` in ${visualizationData["0.75_min_acres"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_min_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_min_acres"].year &&
+                            ` in ${visualizationData["0.8_min_acres"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_min_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_min_acres"].year &&
+                            ` in ${visualizationData["0.85_min_acres"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_min_acres"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_min_acres"].year &&
+                            ` in ${visualizationData["0.9_min_acres"].year}`
+                          }`
+                            : "No data available",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell component="th" scope="row">
+                            <strong> {row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row[70]}</TableCell>
+                          <TableCell align="right">{row[75]}</TableCell>
+                          <TableCell align="right">{row[80]}</TableCell>
+                          <TableCell align="right">{row[85]}</TableCell>
+                          <TableCell align="right">{row[90]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -1016,155 +1018,148 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 70% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.7) &&
-                    (visualizationData[0.7] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.7_total_sold"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.7_avg_sold"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.7_max_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_max_sold"].year &&
-                            ` in
-                      ${visualizationData["0.7_max_sold"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.7_min_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_min_sold"].year &&
-                            ` in
-                      ${visualizationData["0.7_min_sold"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 75% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.75) &&
-                    (visualizationData[0.75] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.75_total_sold"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.75_avg_sold"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.75_max_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_max_sold"].year &&
-                            ` in
-                      ${visualizationData["0.75_max_sold"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.75_min_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_min_sold"].year &&
-                            ` in
-                      ${visualizationData["0.75_min_sold"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 80% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.8) &&
-                    (visualizationData[0.8] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.8_total_sold"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.8_avg_sold"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.8_max_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_max_sold"].year &&
-                            ` in
-                      ${visualizationData["0.8_max_sold"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.8_min_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_min_sold"].year &&
-                            ` in
-                      ${visualizationData["0.8_min_sold"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 85% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.85) &&
-                    (visualizationData[0.85] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.85_total_sold"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.85_avg_sold"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.85_max_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_max_sold"].year &&
-                            ` in
-                      ${visualizationData["0.85_max_sold"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.85_min_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_min_sold"].year &&
-                            ` in
-                      ${visualizationData["0.85_min_sold"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 90% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.9) &&
-                    (visualizationData[0.9] ? (
-                      <ul>
-                        <li>Sum: {visualizationData["0.9_total_sold"].toLocaleString("en-US")}</li>
-                        <li>
-                          Average: {visualizationData["0.9_avg_sold"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max: {visualizationData["0.9_max_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_max_sold"].year &&
-                            ` in
-                      ${visualizationData["0.9_max_sold"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.9_min_sold"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_min_sold"].year &&
-                            ` in
-                      ${visualizationData["0.9_min_sold"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
+              <Grid item xs={10}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">70% coverage level</TableCell>
+                        <TableCell align="right">75% coverage level</TableCell>
+                        <TableCell align="right">80% coverage level</TableCell>
+                        <TableCell align="right">85% coverage level</TableCell>
+                        <TableCell align="right">90% coverage level</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_total_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_total_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_total_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_total_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_total_sold"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Average",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_avg_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_avg_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_avg_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_avg_sold"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_avg_sold"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Max",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_max_sold"].value.toLocaleString("en-US")}
+                            ${
+                              visualizationData["0.7_max_sold"].year &&
+                              ` in ${visualizationData["0.7_max_sold"].year}`
+                            }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_max_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_max_sold"].year &&
+                            ` in ${visualizationData["0.75_max_sold"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_max_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_max_sold"].year &&
+                            ` in ${visualizationData["0.8_max_sold"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_max_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_max_sold"].year &&
+                            ` in ${visualizationData["0.85_max_sold"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_max_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_max_sold"].year &&
+                            ` in ${visualizationData["0.9_max_sold"].year}`
+                          }`
+                            : "No data available",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_min_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.7_min_sold"].year &&
+                            ` in ${visualizationData["0.7_min_sold"].year}`
+                          }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_min_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_min_sold"].year &&
+                            ` in ${visualizationData["0.75_min_sold"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_min_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_min_sold"].year &&
+                            ` in ${visualizationData["0.8_min_sold"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_min_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_min_sold"].year &&
+                            ` in ${visualizationData["0.85_min_sold"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_min_sold"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_min_sold"].year &&
+                            ` in ${visualizationData["0.9_min_sold"].year}`
+                          }`
+                            : "No data available",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell component="th" scope="row">
+                            <strong> {row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row[70]}</TableCell>
+                          <TableCell align="right">{row[75]}</TableCell>
+                          <TableCell align="right">{row[80]}</TableCell>
+                          <TableCell align="right">{row[85]}</TableCell>
+                          <TableCell align="right">{row[90]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>
@@ -1265,175 +1260,148 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 70% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.7) &&
-                    (visualizationData[0.7] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.7_total_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average:{" "}
-                          {visualizationData["0.7_avg_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max:{" "}
-                          {visualizationData["0.7_max_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_max_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.7_max_indemnified"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.7_min_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.7_min_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.7_min_indemnified"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 75% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.75) &&
-                    (visualizationData[0.75] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.75_total_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average:{" "}
-                          {visualizationData["0.75_avg_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max:{" "}
-                          {visualizationData["0.75_max_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_max_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.75_max_indemnified"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.75_min_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.75_min_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.75_min_indemnified"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 80% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.8) &&
-                    (visualizationData[0.8] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.8_total_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average:{" "}
-                          {visualizationData["0.8_avg_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max:{" "}
-                          {visualizationData["0.8_max_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_max_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.8_max_indemnified"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.8_min_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.8_min_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.8_min_indemnified"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 85% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.85) &&
-                    (visualizationData[0.85] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.85_total_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average:{" "}
-                          {visualizationData["0.85_avg_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max:{" "}
-                          {visualizationData["0.85_max_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_max_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.85_max_indemnified"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.85_min_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.85_min_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.85_min_indemnified"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For 90% coverage level:</strong>
-                  <br />
-                  {coverageLevels.includes(0.9) &&
-                    (visualizationData[0.9] ? (
-                      <ul>
-                        <li>
-                          Sum: {visualizationData["0.9_total_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Average:{" "}
-                          {visualizationData["0.9_avg_indemnified"].toLocaleString("en-US")}
-                        </li>
-                        <li>
-                          Max:{" "}
-                          {visualizationData["0.9_max_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_max_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.9_max_indemnified"].year}.`}
-                        </li>
-                        <li>
-                          Min (non-zero):{" "}
-                          {visualizationData["0.9_min_indemnified"].value.toLocaleString("en-US")}
-                          {visualizationData["0.9_min_indemnified"].year &&
-                            ` in
-                      ${visualizationData["0.9_min_indemnified"].year}.`}
-                        </li>
-                      </ul>
-                    ) : (
-                      <p>No data available</p>
-                    ))}
-                </p>
+              <Grid item xs={10}>
+                <TableContainer component={Paper}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Metrics</TableCell>
+                        <TableCell align="right">70% coverage level</TableCell>
+                        <TableCell align="right">75% coverage level</TableCell>
+                        <TableCell align="right">80% coverage level</TableCell>
+                        <TableCell align="right">85% coverage level</TableCell>
+                        <TableCell align="right">90% coverage level</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          header: "Sum",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_total_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_total_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_total_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_total_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_total_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Average",
+                          70: visualizationData[0.7]
+                            ? visualizationData["0.7_avg_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? visualizationData["0.75_avg_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? visualizationData["0.8_avg_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? visualizationData["0.85_avg_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? visualizationData["0.9_avg_indemnified"].toLocaleString("en-US")
+                            : "No data available",
+                        },
+                        {
+                          header: "Max",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_max_indemnified"].value.toLocaleString("en-US")}
+                            ${
+                              visualizationData["0.7_max_indemnified"].year &&
+                              ` in ${visualizationData["0.7_max_indemnified"].year}`
+                            }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_max_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_max_indemnified"].year &&
+                            ` in ${visualizationData["0.75_max_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_max_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_max_indemnified"].year &&
+                            ` in ${visualizationData["0.8_max_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_max_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_max_indemnified"].year &&
+                            ` in ${visualizationData["0.85_max_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_max_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_max_indemnified"].year &&
+                            ` in ${visualizationData["0.9_max_indemnified"].year}`
+                          }`
+                            : "No data available",
+                        },
+                        {
+                          header: "Min (non-zero)",
+                          70: visualizationData[0.7]
+                            ? `${visualizationData["0.7_min_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.7_min_indemnified"].year &&
+                            ` in ${visualizationData["0.7_min_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          75: visualizationData[0.75]
+                            ? `${visualizationData["0.75_min_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.75_min_indemnified"].year &&
+                            ` in ${visualizationData["0.75_min_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          80: visualizationData[0.8]
+                            ? `${visualizationData["0.8_min_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.8_min_indemnified"].year &&
+                            ` in ${visualizationData["0.8_min_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          85: visualizationData[0.85]
+                            ? `${visualizationData["0.85_min_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.85_min_indemnified"].year &&
+                            ` in ${visualizationData["0.85_min_indemnified"].year}`
+                          }`
+                            : "No data available",
+                          90: visualizationData[0.9]
+                            ? `${visualizationData["0.9_min_indemnified"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.9_min_indemnified"].year &&
+                            ` in ${visualizationData["0.9_min_indemnified"].year}`
+                          }`
+                            : "No data available",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.header}>
+                          <TableCell component="th" scope="row">
+                            <strong> {row.header}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row[70]}</TableCell>
+                          <TableCell align="right">{row[75]}</TableCell>
+                          <TableCell align="right">{row[80]}</TableCell>
+                          <TableCell align="right">{row[85]}</TableCell>
+                          <TableCell align="right">{row[90]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Typography>

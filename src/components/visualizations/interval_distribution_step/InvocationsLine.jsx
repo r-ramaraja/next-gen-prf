@@ -19,6 +19,13 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { monthRanges, coverageLevelValues } from "../../../constants";
 
 const ITEM_HEIGHT = 48;
@@ -227,120 +234,100 @@ export default function InvocationsLine({ visualizationData, isOverviewView, gri
           <p>The points on each line correspond to the total triggers in that year.</p>
           <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
           <Grid container>
-            <Grid item xs={4}>
-              <p>
-                <strong>For 70% coverage level:</strong>
-                <br />
-                {coverageLevels.includes(0.7) && (
-                  <ul>
-                    <li>Sum: {visualizationData["0.7_total_triggers"].toLocaleString("en-US")}</li>
-                    <li>
-                      Max: {visualizationData["0.7_max_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.7_max_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.7_max_triggers"].interval}.`}
-                    </li>
-                    <li>
-                      Min: {visualizationData["0.7_min_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.7_min_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.7_min_triggers"].interval}.`}
-                    </li>
-                  </ul>
-                )}
-              </p>
-            </Grid>
-            <Grid item xs={4}>
-              <p>
-                <strong>For 75% coverage level:</strong>
-                <br />
-                {coverageLevels.includes(0.75) && (
-                  <ul>
-                    <li>Sum: {visualizationData["0.75_total_triggers"].toLocaleString("en-US")}</li>
-                    <li>
-                      Max: {visualizationData["0.75_max_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.75_max_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.75_max_triggers"].interval}.`}
-                    </li>
-                    <li>
-                      Min: {visualizationData["0.75_min_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.75_min_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.75_min_triggers"].interval}.`}
-                    </li>
-                  </ul>
-                )}
-              </p>
-            </Grid>
-            <Grid item xs={4}>
-              <p>
-                <strong>For 80% coverage level:</strong>
-                <br />
-                {coverageLevels.includes(0.8) && (
-                  <ul>
-                    <li>Sum: {visualizationData["0.8_total_triggers"].toLocaleString("en-US")}</li>
-                    <li>
-                      Max: {visualizationData["0.8_max_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.8_max_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.8_max_triggers"].interval}.`}
-                    </li>
-                    <li>
-                      Min: {visualizationData["0.8_min_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.8_min_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.8_min_triggers"].interval}.`}
-                    </li>
-                  </ul>
-                )}
-              </p>
-            </Grid>
-            <Grid item xs={4}>
-              <p>
-                <strong>For 85% coverage level:</strong>
-                <br />
-                {coverageLevels.includes(0.85) && (
-                  <ul>
-                    <li>Sum: {visualizationData["0.85_total_triggers"].toLocaleString("en-US")}</li>
-                    <li>
-                      Max: {visualizationData["0.85_max_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.85_max_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.85_max_triggers"].interval}.`}
-                    </li>
-                    <li>
-                      Min: {visualizationData["0.85_min_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.85_min_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.85_min_triggers"].interval}.`}
-                    </li>
-                  </ul>
-                )}
-              </p>
-            </Grid>
-            <Grid item xs={4}>
-              <p>
-                <strong>For 90% coverage level:</strong>
-                <br />
-                {coverageLevels.includes(0.9) && (
-                  <ul>
-                    <li>Sum: {visualizationData["0.9_total_triggers"].toLocaleString("en-US")}</li>
-                    <li>
-                      Max: {visualizationData["0.9_max_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.9_max_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.9_max_triggers"].interval}.`}
-                    </li>
-                    <li>
-                      Min: {visualizationData["0.9_min_triggers"].value.toLocaleString("en-US")}
-                      {visualizationData["0.9_min_triggers"].interval &&
-                        ` in
-                      ${visualizationData["0.9_min_triggers"].interval}.`}
-                    </li>
-                  </ul>
-                )}
-              </p>
+            <Grid item xs={10}>
+              <TableContainer component={Paper}>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Metrics</TableCell>
+                      <TableCell align="right">70% coverage level</TableCell>
+                      <TableCell align="right">75% coverage level</TableCell>
+                      <TableCell align="right">80% coverage level</TableCell>
+                      <TableCell align="right">85% coverage level</TableCell>
+                      <TableCell align="right">90% coverage level</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {[
+                      {
+                        header: "Sum",
+                        70: visualizationData["0.7_total_triggers"].toLocaleString("en-US"),
+                        75: visualizationData["0.75_total_triggers"].toLocaleString("en-US"),
+                        80: visualizationData["0.8_total_triggers"].toLocaleString("en-US"),
+                        85: visualizationData["0.85_total_triggers"].toLocaleString("en-US"),
+                        90: visualizationData["0.9_total_triggers"].toLocaleString("en-US"),
+                      },
+                      {
+                        header: "Max",
+                        70: `${visualizationData["0.7_max_triggers"].value.toLocaleString("en-US")}
+                          ${
+                            visualizationData["0.7_max_triggers"].interval &&
+                            ` in ${visualizationData["0.7_max_triggers"].interval}`
+                          }`,
+                        75: `${visualizationData["0.75_max_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.75_max_triggers"].interval &&
+                          ` in ${visualizationData["0.75_max_triggers"].interval}`
+                        }`,
+                        80: `${visualizationData["0.8_max_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.8_max_triggers"].interval &&
+                          ` in ${visualizationData["0.8_max_triggers"].interval}`
+                        }`,
+                        85: `${visualizationData["0.85_max_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.85_max_triggers"].interval &&
+                          ` in ${visualizationData["0.85_max_triggers"].interval}`
+                        }`,
+                        90: `${visualizationData["0.9_max_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.9_max_triggers"].interval &&
+                          ` in ${visualizationData["0.9_max_triggers"].interval}`
+                        }`,
+                      },
+                      {
+                        header: "Min (non-zero)",
+                        70: `${visualizationData["0.7_min_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.7_min_triggers"].interval &&
+                          ` in ${visualizationData["0.7_min_triggers"].interval}`
+                        }`,
+                        75: `${visualizationData["0.75_min_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.75_min_triggers"].interval &&
+                          ` in ${visualizationData["0.75_min_triggers"].interval}`
+                        }`,
+                        80: `${visualizationData["0.8_min_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.8_min_triggers"].interval &&
+                          ` in ${visualizationData["0.8_min_triggers"].interval}`
+                        }`,
+                        85: `${visualizationData["0.85_min_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.85_min_triggers"].interval &&
+                          ` in ${visualizationData["0.85_min_triggers"].interval}`
+                        }`,
+                        90: `${visualizationData["0.9_min_triggers"].value.toLocaleString("en-US")}
+                        ${
+                          visualizationData["0.9_min_triggers"].interval &&
+                          ` in ${visualizationData["0.9_min_triggers"].interval}`
+                        }`,
+                      },
+                    ].map((row) => (
+                      <TableRow key={row.header}>
+                        <TableCell component="th" scope="row">
+                          <strong> {row.header}</strong>
+                        </TableCell>
+                        <TableCell align="right">{row[70]}</TableCell>
+                        <TableCell align="right">{row[75]}</TableCell>
+                        <TableCell align="right">{row[80]}</TableCell>
+                        <TableCell align="right">{row[85]}</TableCell>
+                        <TableCell align="right">{row[90]}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Grid>
           </Grid>
         </Typography>

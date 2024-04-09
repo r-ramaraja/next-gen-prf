@@ -22,6 +22,13 @@ import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
 import { monthRanges, intervalMap } from "../../../constants";
 import Chip from "@mui/material/Chip";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -373,428 +380,317 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
 
           {metric === "index" && (
             <Grid container>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Jan-Feb interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Jan-Feb_average_index"]}</li>
-                    <li>Min: {visualizationData["Jan-Feb_max_index"].value}</li>
-                    <li>Max: {visualizationData["Jan-Feb_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Feb-Mar interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Feb-Mar_average_index"]}</li>
-                    <li>Min: {visualizationData["Feb-Mar_max_index"].value}</li>
-                    <li>Max: {visualizationData["Feb-Mar_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Mar-Apr interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Mar-Apr_average_index"]}</li>
-                    <li>Min: {visualizationData["Mar-Apr_max_index"].value}</li>
-                    <li>Max: {visualizationData["Mar-Apr_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Apr-May interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Apr-May_average_index"]}</li>
-                    <li>Min: {visualizationData["Apr-May_max_index"].value}</li>
-                    <li>Max: {visualizationData["Apr-May_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For May-Jun interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["May-Jun_average_index"]}</li>
-                    <li>Min: {visualizationData["May-Jun_max_index"].value}</li>
-                    <li>Max: {visualizationData["May-Jun_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Jun-Jul interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Jun-Jul_average_index"]}</li>
-                    <li>Min: {visualizationData["Jun-Jul_max_index"].value}</li>
-                    <li>Max: {visualizationData["Jun-Jul_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Jul-Aug interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Jul-Aug_average_index"]}</li>
-                    <li>Min: {visualizationData["Jul-Aug_max_index"].value}</li>
-                    <li>Max: {visualizationData["Jul-Aug_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Aug-Sep interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Aug-Sep_average_index"]}</li>
-                    <li>Min: {visualizationData["Aug-Sep_max_index"].value}</li>
-                    <li>Max: {visualizationData["Aug-Sep_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Sep-Oct interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Sep-Oct_average_index"]}</li>
-                    <li>Min: {visualizationData["Sep-Oct_max_index"].value}</li>
-                    <li>Max: {visualizationData["Sep-Oct_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Oct-Nov interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Oct-Nov_average_index"]}</li>
-                    <li>Min: {visualizationData["Oct-Nov_max_index"].value}</li>
-                    <li>Max: {visualizationData["Oct-Nov_min_index"].value}</li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={3}>
-                <p>
-                  <strong>For Nov-Dec interval:</strong>
-                  <br />
-                  <ul>
-                    <li>Average: {visualizationData["Nov-Dec_average_index"]}</li>
-                    <li>Min: {visualizationData["Nov-Dec_max_index"].value}</li>
-                    <li>Max: {visualizationData["Nov-Dec_min_index"].value}</li>
-                  </ul>
-                </p>
+              <Grid item xs={4}>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Interval</TableCell>
+                        <TableCell align="right">Average</TableCell>
+                        <TableCell align="right">Min</TableCell>
+                        <TableCell align="right">Max</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          interval: "Jan-Feb",
+                          average: visualizationData["Jan-Feb_average_index"],
+                          min: visualizationData["Jan-Feb_min_index"].value,
+                          max: visualizationData["Jan-Feb_max_index"].value,
+                        },
+                        {
+                          interval: "Feb-Mar",
+                          average: visualizationData["Feb-Mar_average_index"],
+                          min: visualizationData["Feb-Mar_min_index"].value,
+                          max: visualizationData["Feb-Mar_max_index"].value,
+                        },
+                        {
+                          interval: "Mar-Apr",
+                          average: visualizationData["Mar-Apr_average_index"],
+                          min: visualizationData["Mar-Apr_min_index"].value,
+                          max: visualizationData["Mar-Apr_max_index"].value,
+                        },
+                        {
+                          interval: "Apr-May",
+                          average: visualizationData["Apr-May_average_index"],
+                          min: visualizationData["Apr-May_min_index"].value,
+                          max: visualizationData["Apr-May_max_index"].value,
+                        },
+                        {
+                          interval: "May-Jun",
+                          average: visualizationData["May-Jun_average_index"],
+                          min: visualizationData["May-Jun_min_index"].value,
+                          max: visualizationData["May-Jun_max_index"].value,
+                        },
+                        {
+                          interval: "Jun-Jul",
+                          average: visualizationData["Jun-Jul_average_index"],
+                          min: visualizationData["Jun-Jul_min_index"].value,
+                          max: visualizationData["Jun-Jul_max_index"].value,
+                        },
+                        {
+                          interval: "Jul-Aug",
+                          average: visualizationData["Jul-Aug_average_index"],
+                          min: visualizationData["Jul-Aug_min_index"].value,
+                          max: visualizationData["Jul-Aug_max_index"].value,
+                        },
+                        {
+                          interval: "Aug-Sep",
+                          average: visualizationData["Aug-Sep_average_index"],
+                          min: visualizationData["Aug-Sep_min_index"].value,
+                          max: visualizationData["Aug-Sep_max_index"].value,
+                        },
+                        {
+                          interval: "Sep-Oct",
+                          average: visualizationData["Sep-Oct_average_index"],
+                          min: visualizationData["Sep-Oct_min_index"].value,
+                          max: visualizationData["Sep-Oct_max_index"].value,
+                        },
+                        {
+                          interval: "Oct-Nov",
+                          average: visualizationData["Oct-Nov_average_index"],
+                          min: visualizationData["Oct-Nov_min_index"].value,
+                          max: visualizationData["Oct-Nov_max_index"].value,
+                        },
+                        {
+                          interval: "Nov-Dec",
+                          average: visualizationData["Nov-Dec_average_index"],
+                          min: visualizationData["Nov-Dec_min_index"].value,
+                          max: visualizationData["Nov-Dec_max_index"].value,
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.interval}>
+                          <TableCell component="th" scope="row">
+                            <strong>{row.interval}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row.average}</TableCell>
+                          <TableCell align="right">{row.min}</TableCell>
+                          <TableCell align="right">{row.max}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           )}
 
           {metric === "totalRainfall" && (
             <Grid container>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Jan-Feb interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Jan-Feb_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Jan-Feb_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Jan-Feb_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Jan-Feb_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Feb-Mar interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Feb-Mar_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Feb-Mar_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Feb-Mar_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Feb-Mar_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Mar-Apr interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Mar-Apr_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Mar-Apr_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Mar-Apr_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Mar-Apr_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Apr-May interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Apr-May_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Apr-May_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Apr-May_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Apr-May_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For May-Jun interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["May-Jun_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["May-Jun_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["May-Jun_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["May-Jun_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Jun-Jul interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Jun-Jul_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Jun-Jul_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Jun-Jul_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Jun-Jul_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Jul-Aug interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Jul-Aug_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Jul-Aug_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Jul-Aug_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Jul-Aug_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Aug-Sep interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Aug-Sep_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Aug-Sep_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Aug-Sep_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Aug-Sep_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Sep-Oct interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Sep-Oct_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Sep-Oct_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Sep-Oct_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Sep-Oct_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Oct-Nov interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Oct-Nov_total_rainfall"].toLocaleString("en-us") + " mm"}{" "}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Oct-Nov_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Oct-Nov_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Oct-Nov_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
-              </Grid>
-              <Grid item xs={4}>
-                <p>
-                  <strong>For Nov-Dec interval:</strong>
-                  <br />
-                  <ul>
-                    <li>
-                      Sum:{" "}
-                      {visualizationData["Nov-Dec_total_rainfall"].toLocaleString("en-us") + " mm"}
-                    </li>
-                    <li>
-                      Average:{" "}
-                      {visualizationData["Nov-Dec_average_rainfall"].toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Min:{" "}
-                      {visualizationData["Nov-Dec_max_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                    <li>
-                      Max:{" "}
-                      {visualizationData["Nov-Dec_min_rainfall"].value.toLocaleString("en-us") +
-                        " mm"}
-                    </li>
-                  </ul>
-                </p>
+              <Grid item xs={6}>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Interval</TableCell>
+                        <TableCell align="right">Average</TableCell>
+                        <TableCell align="right">Min</TableCell>
+                        <TableCell align="right">Max</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[
+                        {
+                          interval: "Jan-Feb",
+                          sum:
+                            visualizationData["Jan-Feb_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Jan-Feb_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Jan-Feb_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Jan-Feb_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Feb-Mar",
+                          sum:
+                            visualizationData["Feb-Mar_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Feb-Mar_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Feb-Mar_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Feb-Mar_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Mar-Apr",
+                          sum:
+                            visualizationData["Mar-Apr_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Mar-Apr_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Mar-Apr_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Mar-Apr_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Apr-May",
+                          sum:
+                            visualizationData["Apr-May_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Apr-May_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Apr-May_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Apr-May_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "May-Jun",
+                          sum:
+                            visualizationData["May-Jun_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["May-Jun_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["May-Jun_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["May-Jun_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Jun-Jul",
+                          sum:
+                            visualizationData["Jun-Jul_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Jun-Jul_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Jun-Jul_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Jun-Jul_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Jul-Aug",
+                          sum:
+                            visualizationData["Jul-Aug_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Jul-Aug_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Jul-Aug_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Jul-Aug_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Aug-Sep",
+                          sum:
+                            visualizationData["Aug-Sep_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Aug-Sep_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Aug-Sep_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Aug-Sep_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Sep-Oct",
+                          sum:
+                            visualizationData["Sep-Oct_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Sep-Oct_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Sep-Oct_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Sep-Oct_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Oct-Nov",
+                          sum:
+                            visualizationData["Oct-Nov_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Oct-Nov_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Oct-Nov_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Oct-Nov_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                        {
+                          interval: "Nov-Dec",
+                          sum:
+                            visualizationData["Nov-Dec_total_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          average:
+                            visualizationData["Nov-Dec_average_rainfall"].toLocaleString("en-us") +
+                            " mm",
+                          min:
+                            visualizationData["Nov-Dec_min_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                          max:
+                            visualizationData["Nov-Dec_max_rainfall"].value.toLocaleString(
+                              "en-us"
+                            ) + " mm",
+                        },
+                      ].map((row) => (
+                        <TableRow key={row.interval}>
+                          <TableCell component="th" scope="row">
+                            <strong>{row.interval}</strong>
+                          </TableCell>
+                          <TableCell align="right">{row.average}</TableCell>
+                          <TableCell align="right">{row.min}</TableCell>
+                          <TableCell align="right">{row.max}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           )}
