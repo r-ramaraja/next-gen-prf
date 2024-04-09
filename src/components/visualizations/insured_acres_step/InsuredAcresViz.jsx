@@ -37,7 +37,7 @@ export default function InsuredAcresViz({ marker }) {
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <InsuredAcresLine visualizationData={visualizationData} />
+        <InsuredAcresLine visualizationData={visualizationData} state={state} county={county} />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}

@@ -18,7 +18,7 @@ import Select from "@mui/material/Select";
 import { Typography } from "@mui/material";
 import { currencyFormatter } from "../../../constants";
 
-export default function IntendedUseBar({ visualizationData, isOverviewView }) {
+export default function IntendedUseBar({ visualizationData, isOverviewView, state, county }) {
   const [metric, setMetric] = useState("indemnity");
   const [grazingKey, setGrazingKey] = useState("grazing_indemnity");
   const [hayingKey, setHayingKey] = useState("haying_indemnity");
@@ -69,67 +69,426 @@ export default function IntendedUseBar({ visualizationData, isOverviewView }) {
   };
 
   return (
-    <Box>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
-            {isOverviewView && "Intended Use - "} {labels[metric]} Over Time
-          </Typography>
-        </Grid>
-        <Grid item sx={{ marginLeft: "1.5rem" }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Metric</InputLabel>
-            <Select value={metric} label="metric" onChange={handleChange}>
-              <MenuItem value={"indemnity"}>Indemnity</MenuItem>
-              <MenuItem value={"premium"}>Premium</MenuItem>
-              <MenuItem value={"acres"}>Acres</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <Box sx={{ height: 400, marginTop: "1rem" }}>
-            <ResponsiveContainer>
-              <BarChart
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 90,
-                  bottom: 30,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="year"
-                  angle={14}
-                  label={{ value: "Years", position: "insideBottom", offset: -15 }}
-                />
-                <YAxis
-                  label={{
-                    value: labels[metric],
-                    position: "insideLeft",
-                    offset: metric === "acres" ? -40 : -85,
-                  }}
-                  tickFormatter={(value) => {
-                    return metric === "acres" ? value : currencyFormatter(value);
-                  }}
-                />
-                <Tooltip
-                  formatter={(value, name, props) => {
-                    return props.dataKey === "grazing_acres" || props.dataKey === "haying_acres"
-                      ? value
-                      : currencyFormatter(value);
-                  }}
-                />
-                <Legend verticalAlign="top" />
-                <Bar dataKey={grazingKey} fill="#8884d8" name="Grazing" />
-                <Bar dataKey={hayingKey} fill="#82ca9d" name="Haying" />
-                <Brush dataKey="year" height={30} x={140} y={365} />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
-        </Grid>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+          {isOverviewView && "Intended Use - "} {"Total " + labels[metric]} Over Time
+        </Typography>
       </Grid>
-    </Box>
+      <Grid item sx={{ marginLeft: "1.5rem" }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Metric</InputLabel>
+          <Select value={metric} label="metric" onChange={handleChange}>
+            <MenuItem value={"indemnity"}>Indemnity</MenuItem>
+            <MenuItem value={"premium"}>Premium</MenuItem>
+            <MenuItem value={"acres"}>Acres</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <Box sx={{ height: 400, marginTop: "1rem" }}>
+          <ResponsiveContainer>
+            <BarChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 90,
+                bottom: 30,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="year"
+                angle={14}
+                label={{ value: "Years", position: "insideBottom", offset: -15 }}
+              />
+              <YAxis
+                label={{
+                  value: labels[metric],
+                  position: "insideLeft",
+                  offset: metric === "acres" ? -40 : -85,
+                }}
+                tickFormatter={(value) => {
+                  return metric === "acres"
+                    ? value.toLocaleString("en-US")
+                    : currencyFormatter(value);
+                }}
+              />
+              <Tooltip
+                formatter={(value, name, props) => {
+                  return props.dataKey === "grazing_acres" || props.dataKey === "haying_acres"
+                    ? value.toLocaleString("en-US")
+                    : currencyFormatter(value);
+                }}
+              />
+              <Legend verticalAlign="top" />
+              <Bar dataKey={grazingKey} fill="#8884d8" name="Grazing" />
+              <Bar dataKey={hayingKey} fill="#82ca9d" name="Haying" />
+              <Brush dataKey="year" height={30} x={140} y={365} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        {metric === "indemnity" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total indemnity payments received from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+              <br />
+              The data is categorized into two intended use categories: Grazing and Haying.
+            </p>
+            <p>
+              The X-axis represents the timeline from 2007 to {new Date().getFullYear() - 1}. The
+              Y-axis represents the total indemnity amount in U.S. dollars.
+              <br />
+              There are two bars for each year, each in a different color:
+            </p>
+            <ol>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#8884d8",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total indemnity payments for Grazing.
+              </li>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#82ca9d",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total indemnity payments for Haying.
+              </li>
+            </ol>
+            <p>
+              The height of each bar corresponds to the amount of total indemnity received in that
+              year.
+            </p>
+
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Grazing:</strong>
+                  <br />
+                  {visualizationData["grazing"] ? (
+                    <ul>
+                      <li>
+                        The sum of total indemnity payments is{" "}
+                        {currencyFormatter(visualizationData.grazing_total_indemnity)}.
+                      </li>
+                      <li>
+                        The average total indemnity payments is{" "}
+                        {currencyFormatter(visualizationData.grazing_avg_indemnity)}.
+                      </li>
+                      <li>
+                        The maximum total indemnity is{" "}
+                        {currencyFormatter(visualizationData.grazing_max_indemnity.value)}
+                        {visualizationData.grazing_max_indemnity.year &&
+                          `, paid out in ${visualizationData.grazing_max_indemnity.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total indemnity is{" "}
+                        {currencyFormatter(visualizationData.grazing_min_indemnity.value)}
+                        {visualizationData.grazing_min_indemnity.year &&
+                          `, paid out in ${visualizationData.grazing_min_indemnity.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Haying:</strong>
+                  <br />
+                  {visualizationData["haying"] ? (
+                    <ul>
+                      <li>
+                        The sum of total indemnity payments is{" "}
+                        {currencyFormatter(visualizationData.haying_total_indemnity)}.
+                      </li>
+                      <li>
+                        The average total indemnity payments is{" "}
+                        {currencyFormatter(visualizationData.haying_avg_indemnity)}.
+                      </li>
+                      <li>
+                        The maximum total indemnity is{" "}
+                        {currencyFormatter(visualizationData.haying_max_indemnity.value)}
+                        {visualizationData.haying_max_indemnity.year &&
+                          `, paid out in ${visualizationData.haying_max_indemnity.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total indemnity is{" "}
+                        {currencyFormatter(visualizationData.haying_min_indemnity.value)}
+                        {visualizationData.haying_min_indemnity.year &&
+                          `, paid out in ${visualizationData.haying_min_indemnity.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "premium" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total premium from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+              <br />
+              The data is categorized into two intended use categories: Grazing and Haying.
+            </p>
+            <p>
+              The X-axis represents the timeline from 2007 to {new Date().getFullYear() - 1}. The
+              Y-axis represents the total premium in U.S. dollars.
+              <br />
+              There are two bars for each year, each in a different color:
+            </p>
+            <ol>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#8884d8",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total premium for Grazing.
+              </li>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#82ca9d",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total premium for Haying.
+              </li>
+            </ol>
+            <p>The height of each bar corresponds to the amount of total premium for that year.</p>
+
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Grazing:</strong>
+                  <br />
+                  {visualizationData["grazing"] ? (
+                    <ul>
+                      <li>
+                        The sum of total premiums is{" "}
+                        {currencyFormatter(visualizationData.grazing_total_premium)}.
+                      </li>
+                      <li>
+                        The average total premium is{" "}
+                        {currencyFormatter(visualizationData.grazing_avg_premium)}.
+                      </li>
+                      <li>
+                        The maximum total premium is{" "}
+                        {currencyFormatter(visualizationData.grazing_max_premium.value)}
+                        {visualizationData.grazing_max_premium.year &&
+                          `, in
+                    ${visualizationData.grazing_max_premium.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total premium is{" "}
+                        {currencyFormatter(visualizationData.grazing_min_premium.value)}
+                        {visualizationData.grazing_max_premium.year &&
+                          `, in
+                    ${visualizationData.grazing_max_premium.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Haying:</strong>
+                  <br />
+                  {visualizationData["haying"] ? (
+                    <ul>
+                      <li>
+                        The sum of total premiums is{" "}
+                        {currencyFormatter(visualizationData.haying_total_premium)}.
+                      </li>
+                      <li>
+                        The average total premium payments is{" "}
+                        {currencyFormatter(visualizationData.haying_avg_premium)}.
+                      </li>
+                      <li>
+                        The maximum total premium is{" "}
+                        {currencyFormatter(visualizationData.haying_max_premium.value)}
+                        {visualizationData.haying_max_premium.year &&
+                          `, in
+                    ${visualizationData.haying_max_premium.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total premium is{" "}
+                        {currencyFormatter(visualizationData.haying_min_premium.value)}
+                        {visualizationData.haying_min_premium.year &&
+                          `, in
+                    ${visualizationData.haying_min_premium.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "acres" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total acres insured from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+              <br />
+              The data is categorized into two intended use categories: Grazing and Haying.
+            </p>
+            <p>
+              The X-axis represents the timeline from 2007 to {new Date().getFullYear() - 1}. The
+              Y-axis represents the total acres insured.
+              <br />
+              There are two bars for each year, each in a different color:
+            </p>
+            <ol>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#8884d8",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total acres insured for Grazing.
+              </li>
+              <li>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "15px",
+                    height: "15px",
+                    backgroundColor: "#82ca9d",
+                    marginRight: "5px",
+                  }}
+                ></span>{" "}
+                represent total acres insured for Haying.
+              </li>
+            </ol>
+            <p>
+              The height of each bar corresponds to the amount of total acres insured in that year.
+            </p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Grazing:</strong>
+                  <br />
+                  {visualizationData["grazing"] ? (
+                    <ul>
+                      <li>
+                        The sum of total acres insured is{" "}
+                        {visualizationData.grazing_total_acres.toLocaleString("en-US")}.
+                      </li>
+                      <li>
+                        The average total acres insured is{" "}
+                        {visualizationData.grazing_avg_acres.toLocaleString("en-US")}.
+                      </li>
+                      <li>
+                        The maximum total acres insured is{" "}
+                        {visualizationData.grazing_max_acres.value.toLocaleString("en-US")}
+                        {visualizationData.grazing_max_acres.year &&
+                          `, in
+                    ${visualizationData.grazing_max_acres.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total acres insured is{" "}
+                        {visualizationData.grazing_min_acres.value.toLocaleString("en-US")}
+                        {visualizationData.grazing_min_acres.year &&
+                          `, in
+                    ${visualizationData.grazing_min_acres.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For Haying:</strong>
+                  <br />
+                  {visualizationData["haying"] ? (
+                    <ul>
+                      <li>
+                        The sum of total acres insured is{" "}
+                        {visualizationData.haying_total_acres.toLocaleString("en-US")}.
+                      </li>
+                      <li>
+                        The average total acres insured is{" "}
+                        {visualizationData.haying_avg_acres.toLocaleString("en-US")}.
+                      </li>
+                      <li>
+                        The maximum total acres insured is{" "}
+                        {visualizationData.haying_max_acres.value.toLocaleString("en-US")}
+                        {visualizationData.haying_max_acres.year &&
+                          `, in
+                    ${visualizationData.haying_max_acres.year}.`}
+                      </li>
+                      <li>
+                        The minimum non-zero total acres insured is{" "}
+                        {visualizationData.haying_min_acres.value.toLocaleString("en-US")}
+                        {visualizationData.haying_min_acres.year &&
+                          `, in
+                    ${visualizationData.haying_min_acres.year}.`}
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>No data available</p>
+                  )}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+      </Grid>
+    </Grid>
   );
 }

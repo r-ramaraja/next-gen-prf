@@ -35,7 +35,7 @@ const MenuProps = {
 
 const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
 
-export default function CoverageLevelLine({ visualizationData, isOverviewView }) {
+export default function CoverageLevelLine({ visualizationData, isOverviewView, state, county }) {
   const [metric, setMetric] = useState("indemnity");
   const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues);
 
@@ -53,8 +53,10 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView })
 
   for (const year of years) {
     const yearData = { year };
-    for (const coverageLevel of Object.keys(visualizationData).sort()) {
-      const coverageLevelData = visualizationData[coverageLevel][year] || {};
+    for (const coverageLevel of coverageLevelValues) {
+      const coverageLevelData = visualizationData[coverageLevel]
+        ? visualizationData[coverageLevel][year] ?? {}
+        : {};
 
       yearData[`${coverageLevel}-indemnity`] = coverageLevelData.sum_indemnity ?? 0;
       yearData[`${coverageLevel}-premium`] = coverageLevelData.sum_actual_premium ?? 0;
@@ -82,115 +84,1470 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView })
   };
 
   return (
-    <Box>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
-            {isOverviewView && "Coverage Level - "} {labels[metric]} Over Time
-          </Typography>
-        </Grid>
-        <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Metric</InputLabel>
-            <Select value={metric} label="metric" onChange={handleChange}>
-              <MenuItem value={"indemnity"}>Indemnity</MenuItem>
-              <MenuItem value={"premium"}>Premium</MenuItem>
-              <MenuItem value={"acres"}>Acres</MenuItem>
-              <MenuItem value={"policies_sold"}>Policies Sold</MenuItem>
-              <MenuItem value={"policies_indemnified"}>Policies Indemnified</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Coverage</InputLabel>
-            <Select
-              value={coverageLevels}
-              label="Coverage Level"
-              onChange={handleCoverageLevelChange}
-              multiple
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={`${value * 100}%`} />
-                  ))}
-                </Box>
-              )}
-              input={<OutlinedInput label="Interval" />}
-              MenuProps={MenuProps}
-            >
-              {coverageLevelValues.map((coverageLevelOption) => (
-                <MenuItem key={coverageLevelOption} value={coverageLevelOption}>
-                  <Checkbox checked={coverageLevels.indexOf(coverageLevelOption) > -1} />
-                  <ListItemText primary={coverageLevelOption} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <Box sx={{ height: 400, marginTop: "1rem" }}>
-            <ResponsiveContainer>
-              <LineChart
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 120,
-                  bottom: 30,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="year"
-                  label={{ value: "Years", position: "insideBottom", offset: -15 }}
-                  interval={0}
-                />
-                <YAxis
-                  label={{
-                    value: labels[metric],
-                    position: "insideLeft",
-                    offset: (() => {
-                      if (metric === "acres") {
-                        return -40;
-                      }
-                      if (metric === "policies_indemnified") {
-                        return -120;
-                      }
-
-                      return -85;
-                    })(),
-                  }}
-                  tickFormatter={(value) => {
-                    return metric === "indemnity" || metric === "premium"
-                      ? currencyFormatter(value)
-                      : value;
-                  }}
-                />
-                <Tooltip
-                  formatter={(value, name, props) => {
-                    return props.dataKey.split("-")[1] === "indemnity" ||
-                      props.dataKey.split("-")[1] === "premium"
-                      ? currencyFormatter(value)
-                      : value;
-                  }}
-                />
-                <Legend verticalAlign="top" />
-                {coverageLevels.map((coverageLevel, index) => (
-                  <Line
-                    key={`${coverageLevel}-${metric}-${index}`}
-                    dataKey={`${coverageLevel}-${metric}`}
-                    activeDot={{ r: 8 }}
-                    stroke={colours[index]}
-                    name={`${coverageLevel * 100}%`}
-                  />
-                ))}
-                <Brush dataKey="year" height={30} x={170} y={365} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
-        </Grid>
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={{ marginLeft: "1.5rem", marginTop: "2rem" }} align="center">
+          {isOverviewView && "Coverage Level - "} {"Total " + labels[metric]} Over Time
+        </Typography>
       </Grid>
-    </Box>
+      <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Metric</InputLabel>
+          <Select value={metric} label="metric" onChange={handleChange}>
+            <MenuItem value={"indemnity"}>Indemnity</MenuItem>
+            <MenuItem value={"premium"}>Premium</MenuItem>
+            <MenuItem value={"acres"}>Acres</MenuItem>
+            <MenuItem value={"policies_sold"}>Policies Sold</MenuItem>
+            <MenuItem value={"policies_indemnified"}>Policies Indemnified</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item sx={{ marginLeft: "1.5rem", marginTop: "1rem" }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Coverage</InputLabel>
+          <Select
+            value={coverageLevels}
+            label="Coverage Level"
+            onChange={handleCoverageLevelChange}
+            multiple
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={`${value * 100}%`} />
+                ))}
+              </Box>
+            )}
+            input={<OutlinedInput label="Interval" />}
+            MenuProps={MenuProps}
+          >
+            {coverageLevelValues.map((coverageLevelOption) => (
+              <MenuItem key={coverageLevelOption} value={coverageLevelOption}>
+                <Checkbox checked={coverageLevels.indexOf(coverageLevelOption) > -1} />
+                <ListItemText primary={coverageLevelOption} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <Box sx={{ height: 400, marginTop: "1rem" }}>
+          <ResponsiveContainer>
+            <LineChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 120,
+                bottom: 30,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="year"
+                label={{ value: "Years", position: "insideBottom", offset: -15 }}
+                interval={0}
+              />
+              <YAxis
+                label={{
+                  value: labels[metric],
+                  position: "insideLeft",
+                  offset: (() => {
+                    if (metric === "acres") {
+                      return -40;
+                    }
+                    if (metric === "policies_indemnified") {
+                      return -120;
+                    }
+
+                    return -85;
+                  })(),
+                }}
+                tickFormatter={(value) => {
+                  return metric === "indemnity" || metric === "premium"
+                    ? currencyFormatter(value)
+                    : value.toLocaleString("en-US");
+                }}
+              />
+              <Tooltip
+                formatter={(value, name, props) => {
+                  return props.dataKey.split("-")[1] === "indemnity" ||
+                    props.dataKey.split("-")[1] === "premium"
+                    ? currencyFormatter(value)
+                    : value.toLocaleString("en-US");
+                }}
+              />
+              <Legend verticalAlign="top" />
+              {coverageLevels.map((coverageLevel, index) => (
+                <Line
+                  key={`${coverageLevel}-${metric}-${index}`}
+                  dataKey={`${coverageLevel}-${metric}`}
+                  activeDot={{ r: 8 }}
+                  stroke={colours[index]}
+                  name={`${coverageLevel * 100}%`}
+                />
+              ))}
+              <Brush dataKey="year" height={30} x={170} y={365} />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        {metric === "indemnity" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total indemnity payments received from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+            </p>
+            <p>
+              The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
+            </p>
+            <p>
+              The X-axis represents the timeline from the year 2007 to{" "}
+              {new Date().getFullYear() - 1}. The Y-axis represents the total indemnity amount in
+              U.S. dollars.
+            </p>
+            <p>There are five lines for each coverage level, each in a different color:</p>
+            <ol>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[0],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total indemnity payments for 70% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[1],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total indemnity payments for 75% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[2],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total indemnity payments for 80% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[3],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total indemnity payments for 85% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[4],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total indemnity payments for 90% coverage level.
+              </li>
+            </ol>
+            <p>
+              The points on each line correspond to the amount of total indemnity received in that
+              year.
+            </p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 70% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.7) &&
+                    (visualizationData[0.7] ? (
+                      <ul>
+                        <li>
+                          The sum of total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.7_total_indemnity"])}.
+                        </li>
+                        <li>
+                          The average total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.7_avg_indemnity"])}.
+                        </li>
+                        <li>
+                          The maximum total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.7_max_indemnity"].value)}
+                          {visualizationData["0.7_max_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.7_max_indemnity"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.7_min_indemnity"].value)}
+                          {visualizationData["0.7_min_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.7_min_indemnity"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 75% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.75) &&
+                    (visualizationData[0.75] ? (
+                      <ul>
+                        <li>
+                          The sum of total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.75_total_indemnity"])}.
+                        </li>
+                        <li>
+                          The average total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.75_avg_indemnity"])}.
+                        </li>
+                        <li>
+                          The maximum total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.75_max_indemnity"].value)}
+                          {visualizationData["0.75_max_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.75_max_indemnity"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.75_min_indemnity"].value)}{" "}
+                          {visualizationData["0.75_min_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.75_min_indemnity"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 80% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.8) &&
+                    (visualizationData[0.8] ? (
+                      <ul>
+                        <li>
+                          The sum of total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.8_total_indemnity"])}.
+                        </li>
+                        <li>
+                          The average total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.8_avg_indemnity"])}.
+                        </li>
+                        <li>
+                          The maximum total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.8_max_indemnity"].value)}
+                          {visualizationData["0.8_max_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.8_max_indemnity"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.8_min_indemnity"].value)}
+                          {visualizationData["0.8_min_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.8_min_indemnity"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 85% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.85) &&
+                    (visualizationData[0.85] ? (
+                      <ul>
+                        <li>
+                          The sum of total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.85_total_indemnity"])}.
+                        </li>
+                        <li>
+                          The average total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.85_avg_indemnity"])}.
+                        </li>
+                        <li>
+                          The maximum total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.85_max_indemnity"].value)}
+                          {visualizationData["0.85_max_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.85_max_indemnity"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.85_min_indemnity"].value)}
+                          {visualizationData["0.85_min_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.85_min_indemnity"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 90% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.9) &&
+                    (visualizationData[0.9] ? (
+                      <ul>
+                        <li>
+                          The sum of total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.9_total_indemnity"])}.
+                        </li>
+                        <li>
+                          The average total indemnity payments is{" "}
+                          {currencyFormatter(visualizationData["0.9_avg_indemnity"])}.
+                        </li>
+                        <li>
+                          The maximum total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.9_max_indemnity"].value)}
+                          {visualizationData["0.9_max_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.9_max_indemnity"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total indemnity is{" "}
+                          {currencyFormatter(visualizationData["0.9_min_indemnity"].value)}
+                          {visualizationData["0.9_min_indemnity"].year &&
+                            `, paid out in ${visualizationData["0.9_min_indemnity"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "premium" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total premium from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+            </p>
+            <p>
+              The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
+            </p>
+            <p>
+              The X-axis represents the timeline from the year 2007 to{" "}
+              {new Date().getFullYear() - 1}. The Y-axis represents the total premium amount in U.S.
+              dollars.
+            </p>
+            <p>There are five lines for each coverage level, each in a different color:</p>
+            <ol>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[0],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total premium for 70% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[1],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total premium for 75% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[2],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total premium for 80% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[3],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total premium for 85% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[4],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total premium for 90% coverage level.
+              </li>
+            </ol>
+            <p>The points on each line correspond to the amount of total premium in that year.</p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 70% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.7) &&
+                    (visualizationData[0.7] ? (
+                      <ul>
+                        <li>
+                          The sum of total premiums is{" "}
+                          {currencyFormatter(visualizationData["0.7_total_premium"])}.
+                        </li>
+                        <li>
+                          The average total premium is{" "}
+                          {currencyFormatter(visualizationData["0.7_avg_premium"])}.
+                        </li>
+                        <li>
+                          The maximum total premium is{" "}
+                          {currencyFormatter(visualizationData["0.7_max_premium"].value)}
+                          {visualizationData["0.7_max_premium"].year &&
+                            `, in
+                      ${visualizationData["0.7_max_premium"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total premium is{" "}
+                          {currencyFormatter(visualizationData["0.7_min_premium"].value)}
+                          {visualizationData["0.7_min_premium"].year &&
+                            `, in
+                      ${visualizationData["0.7_min_premium"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 75% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.75) &&
+                    (visualizationData[0.75] ? (
+                      <ul>
+                        <li>
+                          The sum of total premiums is{" "}
+                          {currencyFormatter(visualizationData["0.75_total_premium"])}.
+                        </li>
+                        <li>
+                          The average total premium is{" "}
+                          {currencyFormatter(visualizationData["0.75_avg_premium"])}.
+                        </li>
+                        <li>
+                          The maximum total premium is{" "}
+                          {currencyFormatter(visualizationData["0.75_max_premium"].value)}
+                          {visualizationData["0.75_max_premium"].year &&
+                            `, in
+                      ${visualizationData["0.75_max_premium"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total premium is{" "}
+                          {currencyFormatter(visualizationData["0.75_min_premium"].value)}
+                          {visualizationData["0.75_min_premium"].year &&
+                            `, in
+                      ${visualizationData["0.75_min_premium"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 80% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.8) &&
+                    (visualizationData[0.8] ? (
+                      <ul>
+                        <li>
+                          The sum of total premiums is{" "}
+                          {currencyFormatter(visualizationData["0.8_total_premium"])}.
+                        </li>
+                        <li>
+                          The average total premium is{" "}
+                          {currencyFormatter(visualizationData["0.8_avg_premium"])}.
+                        </li>
+                        <li>
+                          The maximum total premium is{" "}
+                          {currencyFormatter(visualizationData["0.8_max_premium"].value)}
+                          {visualizationData["0.8_max_premium"].year &&
+                            `, in
+                      ${visualizationData["0.8_max_premium"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total premium is{" "}
+                          {currencyFormatter(visualizationData["0.8_min_premium"].value)}{" "}
+                          {visualizationData["0.8_min_premium"].year &&
+                            `, in
+                      ${visualizationData["0.8_min_premium"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 85% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.85) &&
+                    (visualizationData[0.85] ? (
+                      <ul>
+                        <li>
+                          The sum of total premiums is{" "}
+                          {currencyFormatter(visualizationData["0.85_total_premium"])}.
+                        </li>
+                        <li>
+                          The average total premium is{" "}
+                          {currencyFormatter(visualizationData["0.85_avg_premium"])}.
+                        </li>
+                        <li>
+                          The maximum total premium is{" "}
+                          {currencyFormatter(visualizationData["0.85_max_premium"].value)}
+                          {visualizationData["0.85_max_premium"].year &&
+                            `, in
+                      ${visualizationData["0.85_max_premium"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total premium is{" "}
+                          {currencyFormatter(visualizationData["0.85_min_premium"].value)}
+                          {visualizationData["0.85_min_premium"].year &&
+                            `, in
+                      ${visualizationData["0.85_min_premium"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 90% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.9) &&
+                    (visualizationData[0.9] ? (
+                      <ul>
+                        <li>
+                          The sum of total premiums is{" "}
+                          {currencyFormatter(visualizationData["0.9_total_premium"])}.
+                        </li>
+                        <li>
+                          The average total premium is{" "}
+                          {currencyFormatter(visualizationData["0.9_avg_premium"])}.
+                        </li>
+                        <li>
+                          The maximum total premium is{" "}
+                          {currencyFormatter(visualizationData["0.9_max_premium"].value)}
+                          {visualizationData["0.9_max_premium"].year &&
+                            `, in
+                      ${visualizationData["0.9_max_premium"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total premium is{" "}
+                          {currencyFormatter(visualizationData["0.9_min_premium"].value)}
+                          {visualizationData["0.9_min_premium"].year &&
+                            `, in
+                      ${visualizationData["0.9_min_premium"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "acres" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total acres insured from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+            </p>
+            <p>
+              The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
+            </p>
+            <p>
+              The X-axis represents the timeline from the year 2007 to{" "}
+              {new Date().getFullYear() - 1}. The Y-axis represents the total acres insured.
+            </p>
+            <p>There are five lines for each coverage level, each in a different color:</p>
+            <ol>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[0],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total acres insured for 70% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[1],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total acres insured for 75% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[2],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total acres insured for 80% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[3],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total acres insured for 85% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[4],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total acres insured for 90% coverage level.
+              </li>
+            </ol>
+            <p>
+              The points on each line correspond to the amount of total acres insured in that year.
+            </p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 70% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.7) &&
+                    (visualizationData[0.7] ? (
+                      <ul>
+                        <li>
+                          The sum of total acres insured is{" "}
+                          {visualizationData["0.7_total_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total acres insured is{" "}
+                          {visualizationData["0.7_avg_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total acres insured is{" "}
+                          {visualizationData["0.7_max_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_max_acres"].year &&
+                            `, in
+                      ${visualizationData["0.7_max_acres"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total acres insured is{" "}
+                          {visualizationData["0.7_min_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_min_acres"].year &&
+                            `, in
+                      ${visualizationData["0.7_min_acres"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 75% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.75) &&
+                    (visualizationData[0.75] ? (
+                      <ul>
+                        <li>
+                          The sum of total acres insured is{" "}
+                          {visualizationData["0.75_total_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total acres insured is{" "}
+                          {visualizationData["0.75_avg_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total acres insured is{" "}
+                          {visualizationData["0.75_max_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_max_acres"].year &&
+                            `, in
+                      ${visualizationData["0.75_max_acres"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total acres insured is{" "}
+                          {visualizationData["0.75_min_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_min_acres"].year &&
+                            `, in
+                      ${visualizationData["0.75_min_acres"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 80% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.8) &&
+                    (visualizationData[0.8] ? (
+                      <ul>
+                        <li>
+                          The sum of total acres insured is{" "}
+                          {visualizationData["0.8_total_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total acres insured is{" "}
+                          {visualizationData["0.8_avg_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total acres insured is{" "}
+                          {visualizationData["0.8_max_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_max_acres"].year &&
+                            `, in
+                      ${visualizationData["0.8_max_acres"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total acres insured is{" "}
+                          {visualizationData["0.8_min_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_min_acres"].year &&
+                            `, in
+                      ${visualizationData["0.8_min_acres"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 85% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.85) &&
+                    (visualizationData[0.85] ? (
+                      <ul>
+                        <li>
+                          The sum of total acres insured is{" "}
+                          {visualizationData["0.85_total_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total acres insured is{" "}
+                          {visualizationData["0.85_avg_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total acres insured is{" "}
+                          {visualizationData["0.85_max_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_max_acres"].year &&
+                            `, in
+                      ${visualizationData["0.85_max_acres"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total acres insured is{" "}
+                          {visualizationData["0.85_min_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_min_acres"].year &&
+                            `, in
+                      ${visualizationData["0.85_min_acres"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 90% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.9) &&
+                    (visualizationData[0.9] ? (
+                      <ul>
+                        <li>
+                          The sum of total acres insured is{" "}
+                          {visualizationData["0.9_total_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total acres insured is{" "}
+                          {visualizationData["0.9_avg_acres"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total acres insured is{" "}
+                          {visualizationData["0.9_max_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_max_acres"].year &&
+                            `, in
+                      ${visualizationData["0.9_max_acres"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total acres insured is{" "}
+                          {visualizationData["0.9_min_acres"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_min_acres"].year &&
+                            `, in
+                      ${visualizationData["0.9_min_acres"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "policies_sold" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total policies sold from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+            </p>
+            <p>
+              The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
+            </p>
+            <p>
+              The X-axis represents the timeline from the year 2007 to{" "}
+              {new Date().getFullYear() - 1}. The Y-axis represents the total policies sold.
+            </p>
+            <p>There are five lines for each coverage level, each in a different color:</p>
+            <ol>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[0],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies sold for 70% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[1],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies sold for 75% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[2],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies sold for 80% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[3],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies sold for 85% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[4],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies sold for 90% coverage level.
+              </li>
+            </ol>
+            <p>
+              The points on each line correspond to the amount of total policies sold in that year.
+            </p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 70% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.7) &&
+                    (visualizationData[0.7] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies sold is{" "}
+                          {visualizationData["0.7_total_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies sold is{" "}
+                          {visualizationData["0.7_avg_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies sold is{" "}
+                          {visualizationData["0.7_max_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_max_sold"].year &&
+                            `, in
+                      ${visualizationData["0.7_max_sold"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies sold is{" "}
+                          {visualizationData["0.7_min_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_min_sold"].year &&
+                            `, in
+                      ${visualizationData["0.7_min_sold"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 75% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.75) &&
+                    (visualizationData[0.75] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies sold is{" "}
+                          {visualizationData["0.75_total_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies sold is{" "}
+                          {visualizationData["0.75_avg_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies sold is{" "}
+                          {visualizationData["0.75_max_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_max_sold"].year &&
+                            `, in
+                      ${visualizationData["0.75_max_sold"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies sold is{" "}
+                          {visualizationData["0.75_min_sold"].value.toLocaleString("en-US")}, in{" "}
+                          {visualizationData["0.75_min_sold"].year}.
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 80% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.8) &&
+                    (visualizationData[0.8] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies sold is{" "}
+                          {visualizationData["0.8_total_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies sold is{" "}
+                          {visualizationData["0.8_avg_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies sold is{" "}
+                          {visualizationData["0.8_max_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_max_sold"].year &&
+                            `, in
+                      ${visualizationData["0.8_max_sold"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies sold is{" "}
+                          {visualizationData["0.8_min_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_min_sold"].year &&
+                            `, in
+                      ${visualizationData["0.8_min_sold"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 85% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.85) &&
+                    (visualizationData[0.85] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies sold is{" "}
+                          {visualizationData["0.85_total_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies sold is{" "}
+                          {visualizationData["0.85_avg_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies sold is{" "}
+                          {visualizationData["0.85_max_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_max_sold"].year &&
+                            `, in
+                      ${visualizationData["0.85_max_sold"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies sold is{" "}
+                          {visualizationData["0.85_min_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_min_sold"].year &&
+                            `, in
+                      ${visualizationData["0.85_min_sold"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 90% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.9) &&
+                    (visualizationData[0.9] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies sold is{" "}
+                          {visualizationData["0.9_total_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies sold is{" "}
+                          {visualizationData["0.9_avg_sold"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies sold is{" "}
+                          {visualizationData["0.9_max_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_max_sold"].year &&
+                            `, in
+                      ${visualizationData["0.9_max_sold"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies sold is{" "}
+                          {visualizationData["0.9_min_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_min_sold"].year &&
+                            `, in
+                      ${visualizationData["0.9_min_sold"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+        {metric === "policies_indemnified" && (
+          <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
+            <p>
+              The above graph visualizes the total policies indemnified from 2007 to{" "}
+              {new Date().getFullYear() - 1} in {county}, {state}.
+            </p>
+            <p>
+              The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
+            </p>
+            <p>
+              The X-axis represents the timeline from the year 2007 to{" "}
+              {new Date().getFullYear() - 1}. The Y-axis represents the total policies indemnified.
+            </p>
+            <p>There are five lines for each coverage level, each in a different color:</p>
+            <ol>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[0],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies indemnified for 70% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[1],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies indemnified for 75% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[2],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies indemnified for 80% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[3],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies indemnified for 85% coverage level.
+              </li>
+              <li>
+                {" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "30px",
+                    height: "3px",
+                    backgroundColor: colours[4],
+                    marginRight: "5px",
+                    verticalAlign: "middle",
+                  }}
+                ></span>{" "}
+                represents total policies indemnified for 90% coverage level.
+              </li>
+            </ol>
+            <p>
+              The points on each line correspond to the amount of total policies indemnified in that
+              year.
+            </p>
+            <p>
+              The brush tool at the bottom of the graph can be used to zoom in on a specific range
+              of years.
+            </p>
+            <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+            <Grid container>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 70% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.7) &&
+                    (visualizationData[0.7] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies indemnified is{" "}
+                          {visualizationData["0.7_total_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies indemnified is{" "}
+                          {visualizationData["0.7_avg_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies indemnified is{" "}
+                          {visualizationData["0.7_max_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_max_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.7_max_indemnified"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies indemnified is{" "}
+                          {visualizationData["0.7_min_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.7_min_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.7_min_indemnified"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 75% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.75) &&
+                    (visualizationData[0.75] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies indemnified is{" "}
+                          {visualizationData["0.75_total_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies indemnified is{" "}
+                          {visualizationData["0.75_avg_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies indemnified is{" "}
+                          {visualizationData["0.75_max_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_max_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.75_max_indemnified"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies indemnified is{" "}
+                          {visualizationData["0.75_min_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_min_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.75_min_indemnified"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 80% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.8) &&
+                    (visualizationData[0.8] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies indemnified is{" "}
+                          {visualizationData["0.8_total_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies indemnified is{" "}
+                          {visualizationData["0.8_avg_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies indemnified is{" "}
+                          {visualizationData["0.8_max_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_max_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.8_max_indemnified"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies indemnified is{" "}
+                          {visualizationData["0.8_min_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.8_min_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.8_min_indemnified"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 85% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.85) &&
+                    (visualizationData[0.85] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies indemnified is{" "}
+                          {visualizationData["0.85_total_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies indemnified is{" "}
+                          {visualizationData["0.85_avg_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies indemnified is{" "}
+                          {visualizationData["0.85_max_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_max_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.85_max_indemnified"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies indemnified is{" "}
+                          {visualizationData["0.85_min_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.85_min_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.85_min_indemnified"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+              <Grid item xs={6}>
+                <p>
+                  <strong>For 90% coverage level:</strong>
+                  <br />
+                  {coverageLevels.includes(0.9) &&
+                    (visualizationData[0.9] ? (
+                      <ul>
+                        <li>
+                          The sum of total policies indemnified is{" "}
+                          {visualizationData["0.9_total_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The average total policies indemnified is{" "}
+                          {visualizationData["0.9_avg_indemnified"].toLocaleString("en-US")}.
+                        </li>
+                        <li>
+                          The maximum total policies indemnified is{" "}
+                          {visualizationData["0.9_max_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_max_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.9_max_indemnified"].year}.`}
+                        </li>
+                        <li>
+                          The minimum non-zero total policies indemnified is{" "}
+                          {visualizationData["0.9_min_indemnified"].value.toLocaleString("en-US")}
+                          {visualizationData["0.9_min_indemnified"].year &&
+                            `, in
+                      ${visualizationData["0.9_min_indemnified"].year}.`}
+                        </li>
+                      </ul>
+                    ) : (
+                      <p>No data available</p>
+                    ))}
+                </p>
+              </Grid>
+            </Grid>
+          </Typography>
+        )}
+      </Grid>
+    </Grid>
   );
 }

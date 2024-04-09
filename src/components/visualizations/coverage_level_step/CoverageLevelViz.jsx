@@ -37,7 +37,12 @@ export default function CoverageLevelViz({ marker, isOverviewView }) {
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <CoverageLevelLine visualizationData={visualizationData} isOverviewView={isOverviewView} />
+        <CoverageLevelLine
+          visualizationData={visualizationData}
+          isOverviewView={isOverviewView}
+          state={state}
+          county={county}
+        />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}

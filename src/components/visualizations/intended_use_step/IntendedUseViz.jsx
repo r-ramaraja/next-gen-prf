@@ -43,7 +43,12 @@ export default function IntendedUseViz({ marker, isOverviewView }) {
             <CountyBaseTable marker={marker} />
           </Grid>
           <Grid item xs={12}>
-            <IntendedUseBar visualizationData={visualizationData} isOverviewView={isOverviewView} />
+            <IntendedUseBar
+              visualizationData={visualizationData}
+              isOverviewView={isOverviewView}
+              state={state}
+              county={county}
+            />
           </Grid>
         </Grid>
       ) : (
