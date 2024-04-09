@@ -13,7 +13,6 @@ import {
 import { Box, Grid, Typography } from "@mui/material";
 
 export default function InsuredAcresLine({ visualizationData, state, county }) {
-  console.log("🚀 ~ InsuredAcresLine ~ visualizationData:", visualizationData);
   const data = [];
 
   const currentYear = new Date().getFullYear();
@@ -94,26 +93,18 @@ export default function InsuredAcresLine({ visualizationData, state, county }) {
 
           <p>
             <ul>
+              <li>Sum: {visualizationData["total_acres"].toLocaleString("en-US")}</li>
+              <li>Average: {visualizationData["avg_acres"].toLocaleString("en-US")}.</li>
               <li>
-                The sum of total acres insured is{" "}
-                {visualizationData["total_acres"].toLocaleString("en-US")}
-              </li>
-              <li>
-                The average total acres insured is{" "}
-                {visualizationData["avg_acres"].toLocaleString("en-US")}.
-              </li>
-              <li>
-                The maximum total acres insured is{" "}
-                {visualizationData["max_acres"].value.toLocaleString("en-US")}
+                Max: {visualizationData["max_acres"].value.toLocaleString("en-US")}
                 {visualizationData["max_acres"].year &&
-                  `, in
+                  ` in
                       ${visualizationData["max_acres"].year}.`}
               </li>
               <li>
-                The minimum total acres insured is{" "}
-                {visualizationData["min_acres"].value.toLocaleString("en-US")}
+                Min: {visualizationData["min_acres"].value.toLocaleString("en-US")}
                 {visualizationData["min_acres"].year &&
-                  `, in
+                  ` in
                       ${visualizationData["min_acres"].year}.`}
               </li>
             </ul>

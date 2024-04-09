@@ -254,6 +254,9 @@ def fetch_intended_use_data(data):
                 "acres": acres,
             }
 
+        current_year = datetime.now().year
+        count = current_year - 1 - 2007
+
         if "grazing" in response:
             max_indemnity = {"year": "", "value": 0}
             min_indemnity = {"year": "", "value": float("inf")}
@@ -264,9 +267,6 @@ def fetch_intended_use_data(data):
             total_indemnity = 0
             total_premium = 0
             total_acres = 0
-
-            current_year = datetime.now().year
-            count = current_year - 1 - 2007
 
             for year, values in response["grazing"].items():
                 indemnity = values["sum_indemnity"]
@@ -297,15 +297,26 @@ def fetch_intended_use_data(data):
             average_acres = total_acres / count
 
             response["grazing_max_indemnity"] = max_indemnity
-            response["grazing_min_indemnity"] = min_indemnity
+            if min_indemnity["value"] != float("inf"):
+                response["grazing_min_indemnity"] = min_indemnity
+            else:
+                response["grazing_min_indemnity"] = {"year": "", "value": 0}
             response["grazing_avg_indemnity"] = round(average_indemnity, 2)
             response["grazing_total_indemnity"] = total_indemnity
+
             response["grazing_max_premium"] = max_premium
-            response["grazing_min_premium"] = min_premium
+            if min_premium["value"] != float("inf"):
+                response["grazing_min_premium"] = min_premium
+            else:
+                response["grazing_min_premium"] = {"year": "", "value": 0}
             response["grazing_avg_premium"] = round(average_premium, 2)
             response["grazing_total_premium"] = total_premium
+
             response["grazing_max_acres"] = max_acres
-            response["grazing_min_acres"] = min_acres
+            if min_acres["value"] != float("inf"):
+                response["grazing_min_acres"] = min_acres
+            else:
+                response["grazing_min_acres"] = {"year": "", "value": 0}
             response["grazing_avg_acres"] = round(average_acres, 2)
             response["grazing_total_acres"] = total_acres
 
@@ -349,15 +360,26 @@ def fetch_intended_use_data(data):
             average_acres = total_acres / count
 
             response["haying_max_indemnity"] = max_indemnity
-            response["haying_min_indemnity"] = min_indemnity
+            if min_indemnity["value"] != float("inf"):
+                response["haying_min_indemnity"] = min_indemnity
+            else:
+                response["haying_min_indemnity"] = {"year": "", "value": 0}
             response["haying_avg_indemnity"] = round(average_indemnity, 2)
             response["haying_total_indemnity"] = total_indemnity
+
             response["haying_max_premium"] = max_premium
-            response["haying_min_premium"] = min_premium
+            if min_premium["value"] != float("inf"):
+                response["haying_min_premium"] = min_premium
+            else:
+                response["haying_min_premium"] = {"year": "", "value": 0}
             response["haying_avg_premium"] = round(average_premium, 2)
             response["haying_total_premium"] = total_premium
+
             response["haying_max_acres"] = max_acres
-            response["haying_min_acres"] = min_acres
+            if min_acres["value"] != float("inf"):
+                response["haying_min_acres"] = min_acres
+            else:
+                response["haying_min_acres"] = {"year": "", "value": 0}
             response["haying_avg_acres"] = round(average_acres, 2)
             response["haying_total_acres"] = total_acres
 
@@ -1094,6 +1116,52 @@ def fetch_interval_data(data):
                 "total_rainfall": total_rainfall,
             }
 
+        current_year = datetime.now().year
+        count = current_year - 1 - 2007
+
+        for interval in interval_months:
+            max_index = {"year": "", "value": 0}
+            min_index = {"year": "", "value": float("inf")}
+            max_rainfall = {"year": "", "value": 0}
+            min_rainfall = {"year": "", "value": float("inf")}
+            total_index = 0
+            total_rainfall = 0
+
+            for year, values in response["metrics"].items():
+                index = values[interval]["index"]
+                rainfall = values[interval]["total_rainfall"]
+
+                if index > max_index["value"]:
+                    max_index = {"year": year, "value": index}
+                if index < min_index["value"]:
+                    min_index = {"year": year, "value": index}
+
+                if rainfall > max_rainfall["value"]:
+                    max_rainfall = {"year": year, "value": rainfall}
+                if rainfall < min_rainfall["value"]:
+                    min_rainfall = {"year": year, "value": rainfall}
+
+                total_index += index
+                total_rainfall += rainfall
+
+            average_index = total_index / count
+            average_rainfall = total_rainfall / count
+
+            response[f"{interval}_max_index"] = max_index
+            if min_index["value"] != float("inf"):
+                response[f"{interval}_min_index"] = min_index
+            else:
+                response[f"{interval}_min_index"] = {"year": "", "value": 0}
+            response[f"{interval}_average_index"] = round(average_index, 2)
+
+            response[f"{interval}_max_rainfall"] = max_rainfall
+            if min_rainfall["value"] != float("inf"):
+                response[f"{interval}_min_rainfall"] = min_rainfall
+            else:
+                response[f"{interval}_min_rainfall"] = {"year": "", "value": 0}
+            response[f"{interval}_average_rainfall"] = round(average_rainfall, 2)
+            response[f"{interval}_total_rainfall"] = total_rainfall
+
         coverage_levels = [0.7, 0.75, 0.8, 0.85, 0.9]
         for coverage_level in coverage_levels:
             for interval_month in interval_months:
@@ -1110,6 +1178,32 @@ def fetch_interval_data(data):
                 response.setdefault("invocations", {}).setdefault(coverage_level, {})[
                     interval_month
                 ] = total_invocations
+
+        for coverage_level in coverage_levels:
+            if coverage_level in response["invocations"]:
+                max_triggers = {"interval": "", "value": 0}
+                min_triggers = {"interval": "", "value": float("inf")}
+                total_triggers = 0
+
+                for interval, triggers in response["invocations"][
+                    coverage_level
+                ].items():
+                    if triggers > max_triggers["value"]:
+                        max_triggers = {"interval": interval, "value": triggers}
+                    if triggers < min_triggers["value"]:
+                        min_triggers = {"interval": interval, "value": triggers}
+
+                    total_triggers += triggers
+
+                response[f"{coverage_level}_max_triggers"] = max_triggers
+                if min_triggers["value"] != float("inf"):
+                    response[f"{coverage_level}_min_triggers"] = min_triggers
+                else:
+                    response[f"{coverage_level}_min_triggers"] = {
+                        "interval": "",
+                        "value": 0,
+                    }
+                response[f"{coverage_level}_total_triggers"] = total_triggers
 
         return response
 

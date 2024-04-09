@@ -6,7 +6,7 @@ import IntervalDistributionLine from "./IntervalDistributionLine";
 import InvocationsLine from "./InvocationsLine";
 
 export default function IntervalDistributionViz({ marker, isOverviewView }) {
-  const { county, state } = marker;
+  const { county, state, gridcode } = marker;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [visualizationData, setVisualizationData] = useState(null);
@@ -38,12 +38,21 @@ export default function IntervalDistributionViz({ marker, isOverviewView }) {
       {error && !loading && <Box sx={{ margin: "5rem" }}>Error loading data.</Box>}
       {loading && <Skeleton variant="rectangular" width={"80%"} height="20rem" />}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <IntervalDistributionLine visualizationData={visualizationData} isOverviewView />
+        <IntervalDistributionLine
+          visualizationData={visualizationData}
+          isOverviewView={isOverviewView}
+          gridcode={gridcode}
+        />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}
       {visualizationData && Object.keys(visualizationData).length > 0 ? (
-        <InvocationsLine visualizationData={visualizationData} isOverviewView />
+        <InvocationsLine
+          visualizationData={visualizationData}
+          isOverviewView={isOverviewView}
+          state={state}
+          gridcode={gridcode}
+        />
       ) : (
         !loading && <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>
       )}

@@ -195,8 +195,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
         {metric === "indemnity" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total indemnity payments received from 2007 to{" "}
-              {new Date().getFullYear() - 1} in {county}, {state}.
+              The above graph visualizes the total indemnity payments received for each coverage
+              level from 2007 to {new Date().getFullYear() - 1} in {county}, {state}.
             </p>
             <p>
               The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
@@ -220,7 +220,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total indemnity payments for 70% coverage level.
+                represents the 70% coverage level.
               </li>
               <li>
                 {" "}
@@ -234,7 +234,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total indemnity payments for 75% coverage level.
+                represents the 75% coverage level.
               </li>
               <li>
                 {" "}
@@ -248,7 +248,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total indemnity payments for 80% coverage level.
+                represents the 80% coverage level.
               </li>
               <li>
                 {" "}
@@ -262,7 +262,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total indemnity payments for 85% coverage level.
+                represents the 85% coverage level.
               </li>
               <li>
                 {" "}
@@ -276,7 +276,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total indemnity payments for 90% coverage level.
+                represents the 90% coverage level.
               </li>
             </ol>
             <p>
@@ -289,32 +289,27 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 70% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.7) &&
                     (visualizationData[0.7] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.7_total_indemnity"])}</li>
                         <li>
-                          The sum of total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.7_total_indemnity"])}.
+                          Average: {currencyFormatter(visualizationData["0.7_avg_indemnity"])}
                         </li>
                         <li>
-                          The average total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.7_avg_indemnity"])}.
-                        </li>
-                        <li>
-                          The maximum total indemnity is{" "}
-                          {currencyFormatter(visualizationData["0.7_max_indemnity"].value)}
+                          Max: {currencyFormatter(visualizationData["0.7_max_indemnity"].value)}
                           {visualizationData["0.7_max_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.7_max_indemnity"].year}.`}
+                            ` in ${visualizationData["0.7_max_indemnity"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total indemnity is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.7_min_indemnity"].value)}
                           {visualizationData["0.7_min_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.7_min_indemnity"].year}.`}
+                            ` in ${visualizationData["0.7_min_indemnity"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -322,32 +317,27 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 75% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.75) &&
                     (visualizationData[0.75] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.75_total_indemnity"])}</li>
                         <li>
-                          The sum of total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.75_total_indemnity"])}.
+                          Average: {currencyFormatter(visualizationData["0.75_avg_indemnity"])}
                         </li>
                         <li>
-                          The average total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.75_avg_indemnity"])}.
-                        </li>
-                        <li>
-                          The maximum total indemnity is{" "}
-                          {currencyFormatter(visualizationData["0.75_max_indemnity"].value)}
+                          Max: {currencyFormatter(visualizationData["0.75_max_indemnity"].value)}
                           {visualizationData["0.75_max_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.75_max_indemnity"].year}.`}
+                            ` in ${visualizationData["0.75_max_indemnity"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total indemnity is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.75_min_indemnity"].value)}{" "}
                           {visualizationData["0.75_min_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.75_min_indemnity"].year}.`}
+                            ` in ${visualizationData["0.75_min_indemnity"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -355,32 +345,27 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 80% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.8) &&
                     (visualizationData[0.8] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.8_total_indemnity"])}</li>
                         <li>
-                          The sum of total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.8_total_indemnity"])}.
+                          Average: {currencyFormatter(visualizationData["0.8_avg_indemnity"])}
                         </li>
                         <li>
-                          The average total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.8_avg_indemnity"])}.
-                        </li>
-                        <li>
-                          The maximum total indemnity is{" "}
-                          {currencyFormatter(visualizationData["0.8_max_indemnity"].value)}
+                          Max: {currencyFormatter(visualizationData["0.8_max_indemnity"].value)}
                           {visualizationData["0.8_max_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.8_max_indemnity"].year}.`}
+                            ` in ${visualizationData["0.8_max_indemnity"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total indemnity is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.8_min_indemnity"].value)}
                           {visualizationData["0.8_min_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.8_min_indemnity"].year}.`}
+                            ` in ${visualizationData["0.8_min_indemnity"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -388,32 +373,27 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 85% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.85) &&
                     (visualizationData[0.85] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.85_total_indemnity"])}</li>
                         <li>
-                          The sum of total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.85_total_indemnity"])}.
+                          Average: {currencyFormatter(visualizationData["0.85_avg_indemnity"])}
                         </li>
                         <li>
-                          The average total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.85_avg_indemnity"])}.
-                        </li>
-                        <li>
-                          The maximum total indemnity is{" "}
-                          {currencyFormatter(visualizationData["0.85_max_indemnity"].value)}
+                          Max: {currencyFormatter(visualizationData["0.85_max_indemnity"].value)}
                           {visualizationData["0.85_max_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.85_max_indemnity"].year}.`}
+                            ` in ${visualizationData["0.85_max_indemnity"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total indemnity is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.85_min_indemnity"].value)}
                           {visualizationData["0.85_min_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.85_min_indemnity"].year}.`}
+                            ` in ${visualizationData["0.85_min_indemnity"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -421,32 +401,27 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 90% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.9) &&
                     (visualizationData[0.9] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.9_total_indemnity"])}</li>
                         <li>
-                          The sum of total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.9_total_indemnity"])}.
+                          Average: {currencyFormatter(visualizationData["0.9_avg_indemnity"])}
                         </li>
                         <li>
-                          The average total indemnity payments is{" "}
-                          {currencyFormatter(visualizationData["0.9_avg_indemnity"])}.
-                        </li>
-                        <li>
-                          The maximum total indemnity is{" "}
-                          {currencyFormatter(visualizationData["0.9_max_indemnity"].value)}
+                          Max: {currencyFormatter(visualizationData["0.9_max_indemnity"].value)}
                           {visualizationData["0.9_max_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.9_max_indemnity"].year}.`}
+                            ` in ${visualizationData["0.9_max_indemnity"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total indemnity is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.9_min_indemnity"].value)}
                           {visualizationData["0.9_min_indemnity"].year &&
-                            `, paid out in ${visualizationData["0.9_min_indemnity"].year}.`}
+                            ` in ${visualizationData["0.9_min_indemnity"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -460,7 +435,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
         {metric === "premium" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total premium from 2007 to{" "}
+              The above graph visualizes the total premium for each coverage level from 2007 to{" "}
               {new Date().getFullYear() - 1} in {county}, {state}.
             </p>
             <p>
@@ -485,7 +460,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total premium for 70% coverage level.
+                represents the 70% coverage level.
               </li>
               <li>
                 {" "}
@@ -499,7 +474,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total premium for 75% coverage level.
+                represents the 75% coverage level.
               </li>
               <li>
                 {" "}
@@ -513,7 +488,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total premium for 80% coverage level.
+                represents the 80% coverage level.
               </li>
               <li>
                 {" "}
@@ -527,7 +502,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total premium for 85% coverage level.
+                represents the 85% coverage level.
               </li>
               <li>
                 {" "}
@@ -541,7 +516,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total premium for 90% coverage level.
+                represents the 90% coverage level.
               </li>
             </ol>
             <p>The points on each line correspond to the amount of total premium in that year.</p>
@@ -551,33 +526,26 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 70% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.7) &&
                     (visualizationData[0.7] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.7_total_premium"])}</li>
+                        <li>Average: {currencyFormatter(visualizationData["0.7_avg_premium"])}</li>
                         <li>
-                          The sum of total premiums is{" "}
-                          {currencyFormatter(visualizationData["0.7_total_premium"])}.
-                        </li>
-                        <li>
-                          The average total premium is{" "}
-                          {currencyFormatter(visualizationData["0.7_avg_premium"])}.
-                        </li>
-                        <li>
-                          The maximum total premium is{" "}
-                          {currencyFormatter(visualizationData["0.7_max_premium"].value)}
+                          Max: {currencyFormatter(visualizationData["0.7_max_premium"].value)}
                           {visualizationData["0.7_max_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_max_premium"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total premium is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.7_min_premium"].value)}
                           {visualizationData["0.7_min_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_min_premium"].year}.`}
                         </li>
                       </ul>
@@ -586,33 +554,26 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 75% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.75) &&
                     (visualizationData[0.75] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.75_total_premium"])}</li>
+                        <li>Average: {currencyFormatter(visualizationData["0.75_avg_premium"])}</li>
                         <li>
-                          The sum of total premiums is{" "}
-                          {currencyFormatter(visualizationData["0.75_total_premium"])}.
-                        </li>
-                        <li>
-                          The average total premium is{" "}
-                          {currencyFormatter(visualizationData["0.75_avg_premium"])}.
-                        </li>
-                        <li>
-                          The maximum total premium is{" "}
-                          {currencyFormatter(visualizationData["0.75_max_premium"].value)}
+                          Max: {currencyFormatter(visualizationData["0.75_max_premium"].value)}
                           {visualizationData["0.75_max_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_max_premium"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total premium is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.75_min_premium"].value)}
                           {visualizationData["0.75_min_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_min_premium"].year}.`}
                         </li>
                       </ul>
@@ -621,33 +582,26 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 80% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.8) &&
                     (visualizationData[0.8] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.8_total_premium"])}</li>
+                        <li>Average: {currencyFormatter(visualizationData["0.8_avg_premium"])}</li>
                         <li>
-                          The sum of total premiums is{" "}
-                          {currencyFormatter(visualizationData["0.8_total_premium"])}.
-                        </li>
-                        <li>
-                          The average total premium is{" "}
-                          {currencyFormatter(visualizationData["0.8_avg_premium"])}.
-                        </li>
-                        <li>
-                          The maximum total premium is{" "}
-                          {currencyFormatter(visualizationData["0.8_max_premium"].value)}
+                          Max: {currencyFormatter(visualizationData["0.8_max_premium"].value)}
                           {visualizationData["0.8_max_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_max_premium"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total premium is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.8_min_premium"].value)}{" "}
                           {visualizationData["0.8_min_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_min_premium"].year}.`}
                         </li>
                       </ul>
@@ -656,33 +610,26 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 85% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.85) &&
                     (visualizationData[0.85] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.85_total_premium"])}</li>
+                        <li>Average: {currencyFormatter(visualizationData["0.85_avg_premium"])}</li>
                         <li>
-                          The sum of total premiums is{" "}
-                          {currencyFormatter(visualizationData["0.85_total_premium"])}.
-                        </li>
-                        <li>
-                          The average total premium is{" "}
-                          {currencyFormatter(visualizationData["0.85_avg_premium"])}.
-                        </li>
-                        <li>
-                          The maximum total premium is{" "}
-                          {currencyFormatter(visualizationData["0.85_max_premium"].value)}
+                          Max: {currencyFormatter(visualizationData["0.85_max_premium"].value)}
                           {visualizationData["0.85_max_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_max_premium"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total premium is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.85_min_premium"].value)}
                           {visualizationData["0.85_min_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_min_premium"].year}.`}
                         </li>
                       </ul>
@@ -691,33 +638,26 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 90% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.9) &&
                     (visualizationData[0.9] ? (
                       <ul>
+                        <li>Sum: {currencyFormatter(visualizationData["0.9_total_premium"])}</li>
+                        <li>Average: {currencyFormatter(visualizationData["0.9_avg_premium"])}</li>
                         <li>
-                          The sum of total premiums is{" "}
-                          {currencyFormatter(visualizationData["0.9_total_premium"])}.
-                        </li>
-                        <li>
-                          The average total premium is{" "}
-                          {currencyFormatter(visualizationData["0.9_avg_premium"])}.
-                        </li>
-                        <li>
-                          The maximum total premium is{" "}
-                          {currencyFormatter(visualizationData["0.9_max_premium"].value)}
+                          Max: {currencyFormatter(visualizationData["0.9_max_premium"].value)}
                           {visualizationData["0.9_max_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_max_premium"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total premium is{" "}
+                          Min (non-zero):{" "}
                           {currencyFormatter(visualizationData["0.9_min_premium"].value)}
                           {visualizationData["0.9_min_premium"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_min_premium"].year}.`}
                         </li>
                       </ul>
@@ -732,8 +672,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
         {metric === "acres" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total acres insured from 2007 to{" "}
-              {new Date().getFullYear() - 1} in {county}, {state}.
+              The above graph visualizes the total acres insured for each coverage level from 2007
+              to {new Date().getFullYear() - 1} in {county}, {state}.
             </p>
             <p>
               The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
@@ -756,7 +696,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total acres insured for 70% coverage level.
+                represents the 70% coverage level.
               </li>
               <li>
                 {" "}
@@ -770,7 +710,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total acres insured for 75% coverage level.
+                represents the 75% coverage level.
               </li>
               <li>
                 {" "}
@@ -784,7 +724,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total acres insured for 80% coverage level.
+                represents the 80% coverage level.
               </li>
               <li>
                 {" "}
@@ -798,7 +738,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total acres insured for 85% coverage level.
+                represents the 85% coverage level.
               </li>
               <li>
                 {" "}
@@ -812,7 +752,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total acres insured for 90% coverage level.
+                represents the 90% coverage level.
               </li>
             </ol>
             <p>
@@ -824,33 +764,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 70% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.7) &&
                     (visualizationData[0.7] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.7_total_acres"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total acres insured is{" "}
-                          {visualizationData["0.7_total_acres"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.7_avg_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total acres insured is{" "}
-                          {visualizationData["0.7_avg_acres"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total acres insured is{" "}
-                          {visualizationData["0.7_max_acres"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.7_max_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_max_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_max_acres"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total acres insured is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.7_min_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_min_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_min_acres"].year}.`}
                         </li>
                       </ul>
@@ -859,7 +794,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 75% coverage level:</strong>
                   <br />
@@ -867,25 +802,22 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.75] ? (
                       <ul>
                         <li>
-                          The sum of total acres insured is{" "}
-                          {visualizationData["0.75_total_acres"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.75_total_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total acres insured is{" "}
-                          {visualizationData["0.75_avg_acres"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.75_avg_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total acres insured is{" "}
-                          {visualizationData["0.75_max_acres"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.75_max_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.75_max_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_max_acres"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total acres insured is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.75_min_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.75_min_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_min_acres"].year}.`}
                         </li>
                       </ul>
@@ -894,33 +826,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 80% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.8) &&
                     (visualizationData[0.8] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.8_total_acres"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total acres insured is{" "}
-                          {visualizationData["0.8_total_acres"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.8_avg_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total acres insured is{" "}
-                          {visualizationData["0.8_avg_acres"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total acres insured is{" "}
-                          {visualizationData["0.8_max_acres"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.8_max_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_max_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_max_acres"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total acres insured is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.8_min_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_min_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_min_acres"].year}.`}
                         </li>
                       </ul>
@@ -929,7 +856,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 85% coverage level:</strong>
                   <br />
@@ -937,25 +864,22 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.85] ? (
                       <ul>
                         <li>
-                          The sum of total acres insured is{" "}
-                          {visualizationData["0.85_total_acres"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.85_total_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total acres insured is{" "}
-                          {visualizationData["0.85_avg_acres"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.85_avg_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total acres insured is{" "}
-                          {visualizationData["0.85_max_acres"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.85_max_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_max_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_max_acres"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total acres insured is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.85_min_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_min_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_min_acres"].year}.`}
                         </li>
                       </ul>
@@ -964,33 +888,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 90% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.9) &&
                     (visualizationData[0.9] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.9_total_acres"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total acres insured is{" "}
-                          {visualizationData["0.9_total_acres"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.9_avg_acres"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total acres insured is{" "}
-                          {visualizationData["0.9_avg_acres"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total acres insured is{" "}
-                          {visualizationData["0.9_max_acres"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.9_max_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_max_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_max_acres"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total acres insured is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.9_min_acres"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_min_acres"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_min_acres"].year}.`}
                         </li>
                       </ul>
@@ -1005,8 +924,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
         {metric === "policies_sold" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total policies sold from 2007 to{" "}
-              {new Date().getFullYear() - 1} in {county}, {state}.
+              The above graph visualizes the total policies sold for each coverage level from 2007
+              to {new Date().getFullYear() - 1} in {county}, {state}.
             </p>
             <p>
               The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
@@ -1029,7 +948,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies sold for 70% coverage level.
+                represents the 70% coverage level.
               </li>
               <li>
                 {" "}
@@ -1043,7 +962,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies sold for 75% coverage level.
+                represents the 75% coverage level.
               </li>
               <li>
                 {" "}
@@ -1057,7 +976,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies sold for 80% coverage level.
+                represents the 80% coverage level.
               </li>
               <li>
                 {" "}
@@ -1071,7 +990,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies sold for 85% coverage level.
+                represents the 85% coverage level.
               </li>
               <li>
                 {" "}
@@ -1085,7 +1004,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies sold for 90% coverage level.
+                represents the 90% coverage level.
               </li>
             </ol>
             <p>
@@ -1097,33 +1016,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 70% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.7) &&
                     (visualizationData[0.7] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.7_total_sold"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total policies sold is{" "}
-                          {visualizationData["0.7_total_sold"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.7_avg_sold"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies sold is{" "}
-                          {visualizationData["0.7_avg_sold"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total policies sold is{" "}
-                          {visualizationData["0.7_max_sold"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.7_max_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_max_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_max_sold"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies sold is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.7_min_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_min_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_min_sold"].year}.`}
                         </li>
                       </ul>
@@ -1132,32 +1046,29 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 75% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.75) &&
                     (visualizationData[0.75] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.75_total_sold"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total policies sold is{" "}
-                          {visualizationData["0.75_total_sold"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.75_avg_sold"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies sold is{" "}
-                          {visualizationData["0.75_avg_sold"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total policies sold is{" "}
-                          {visualizationData["0.75_max_sold"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.75_max_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.75_max_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_max_sold"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies sold is{" "}
-                          {visualizationData["0.75_min_sold"].value.toLocaleString("en-US")}, in{" "}
-                          {visualizationData["0.75_min_sold"].year}.
+                          Min (non-zero):{" "}
+                          {visualizationData["0.75_min_sold"].value.toLocaleString("en-US")}
+                          {visualizationData["0.75_min_sold"].year &&
+                            ` in
+                      ${visualizationData["0.75_min_sold"].year}.`}
                         </li>
                       </ul>
                     ) : (
@@ -1165,33 +1076,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 80% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.8) &&
                     (visualizationData[0.8] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.8_total_sold"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total policies sold is{" "}
-                          {visualizationData["0.8_total_sold"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.8_avg_sold"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies sold is{" "}
-                          {visualizationData["0.8_avg_sold"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total policies sold is{" "}
-                          {visualizationData["0.8_max_sold"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.8_max_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_max_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_max_sold"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies sold is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.8_min_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_min_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_min_sold"].year}.`}
                         </li>
                       </ul>
@@ -1200,33 +1106,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 85% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.85) &&
                     (visualizationData[0.85] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.85_total_sold"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total policies sold is{" "}
-                          {visualizationData["0.85_total_sold"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.85_avg_sold"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies sold is{" "}
-                          {visualizationData["0.85_avg_sold"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total policies sold is{" "}
-                          {visualizationData["0.85_max_sold"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.85_max_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_max_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_max_sold"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies sold is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.85_min_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_min_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_min_sold"].year}.`}
                         </li>
                       </ul>
@@ -1235,33 +1136,28 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 90% coverage level:</strong>
                   <br />
                   {coverageLevels.includes(0.9) &&
                     (visualizationData[0.9] ? (
                       <ul>
+                        <li>Sum: {visualizationData["0.9_total_sold"].toLocaleString("en-US")}</li>
                         <li>
-                          The sum of total policies sold is{" "}
-                          {visualizationData["0.9_total_sold"].toLocaleString("en-US")}.
+                          Average: {visualizationData["0.9_avg_sold"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies sold is{" "}
-                          {visualizationData["0.9_avg_sold"].toLocaleString("en-US")}.
-                        </li>
-                        <li>
-                          The maximum total policies sold is{" "}
-                          {visualizationData["0.9_max_sold"].value.toLocaleString("en-US")}
+                          Max: {visualizationData["0.9_max_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_max_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_max_sold"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies sold is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.9_min_sold"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_min_sold"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_min_sold"].year}.`}
                         </li>
                       </ul>
@@ -1276,8 +1172,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
         {metric === "policies_indemnified" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total policies indemnified from 2007 to{" "}
-              {new Date().getFullYear() - 1} in {county}, {state}.
+              The above graph visualizes the total policies indemnified for each coverage level from
+              2007 to {new Date().getFullYear() - 1} in {county}, {state}.
             </p>
             <p>
               The data is categorized into five coverage level categories: 70%, 75%, 80%, 85%, 90%.
@@ -1300,7 +1196,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies indemnified for 70% coverage level.
+                represents the 70% coverage level.
               </li>
               <li>
                 {" "}
@@ -1314,7 +1210,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies indemnified for 75% coverage level.
+                represents the 75% coverage level.
               </li>
               <li>
                 {" "}
@@ -1328,7 +1224,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies indemnified for 80% coverage level.
+                represents the 80% coverage level.
               </li>
               <li>
                 {" "}
@@ -1342,7 +1238,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies indemnified for 85% coverage level.
+                represents the 85% coverage level.
               </li>
               <li>
                 {" "}
@@ -1356,7 +1252,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     verticalAlign: "middle",
                   }}
                 ></span>{" "}
-                represents total policies indemnified for 90% coverage level.
+                represents the 90% coverage level.
               </li>
             </ol>
             <p>
@@ -1369,7 +1265,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 70% coverage level:</strong>
                   <br />
@@ -1377,25 +1273,24 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.7] ? (
                       <ul>
                         <li>
-                          The sum of total policies indemnified is{" "}
-                          {visualizationData["0.7_total_indemnified"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.7_total_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies indemnified is{" "}
-                          {visualizationData["0.7_avg_indemnified"].toLocaleString("en-US")}.
+                          Average:{" "}
+                          {visualizationData["0.7_avg_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total policies indemnified is{" "}
+                          Max:{" "}
                           {visualizationData["0.7_max_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_max_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_max_indemnified"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies indemnified is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.7_min_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.7_min_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.7_min_indemnified"].year}.`}
                         </li>
                       </ul>
@@ -1404,7 +1299,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 75% coverage level:</strong>
                   <br />
@@ -1412,25 +1307,24 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.75] ? (
                       <ul>
                         <li>
-                          The sum of total policies indemnified is{" "}
-                          {visualizationData["0.75_total_indemnified"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.75_total_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies indemnified is{" "}
-                          {visualizationData["0.75_avg_indemnified"].toLocaleString("en-US")}.
+                          Average:{" "}
+                          {visualizationData["0.75_avg_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total policies indemnified is{" "}
+                          Max:{" "}
                           {visualizationData["0.75_max_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.75_max_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_max_indemnified"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies indemnified is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.75_min_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.75_min_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.75_min_indemnified"].year}.`}
                         </li>
                       </ul>
@@ -1439,7 +1333,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 80% coverage level:</strong>
                   <br />
@@ -1447,25 +1341,24 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.8] ? (
                       <ul>
                         <li>
-                          The sum of total policies indemnified is{" "}
-                          {visualizationData["0.8_total_indemnified"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.8_total_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies indemnified is{" "}
-                          {visualizationData["0.8_avg_indemnified"].toLocaleString("en-US")}.
+                          Average:{" "}
+                          {visualizationData["0.8_avg_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total policies indemnified is{" "}
+                          Max:{" "}
                           {visualizationData["0.8_max_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_max_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_max_indemnified"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies indemnified is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.8_min_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.8_min_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.8_min_indemnified"].year}.`}
                         </li>
                       </ul>
@@ -1474,7 +1367,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 85% coverage level:</strong>
                   <br />
@@ -1482,25 +1375,24 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.85] ? (
                       <ul>
                         <li>
-                          The sum of total policies indemnified is{" "}
-                          {visualizationData["0.85_total_indemnified"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.85_total_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies indemnified is{" "}
-                          {visualizationData["0.85_avg_indemnified"].toLocaleString("en-US")}.
+                          Average:{" "}
+                          {visualizationData["0.85_avg_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total policies indemnified is{" "}
+                          Max:{" "}
                           {visualizationData["0.85_max_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_max_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_max_indemnified"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies indemnified is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.85_min_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.85_min_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.85_min_indemnified"].year}.`}
                         </li>
                       </ul>
@@ -1509,7 +1401,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     ))}
                 </p>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <p>
                   <strong>For 90% coverage level:</strong>
                   <br />
@@ -1517,25 +1409,24 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                     (visualizationData[0.9] ? (
                       <ul>
                         <li>
-                          The sum of total policies indemnified is{" "}
-                          {visualizationData["0.9_total_indemnified"].toLocaleString("en-US")}.
+                          Sum: {visualizationData["0.9_total_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The average total policies indemnified is{" "}
-                          {visualizationData["0.9_avg_indemnified"].toLocaleString("en-US")}.
+                          Average:{" "}
+                          {visualizationData["0.9_avg_indemnified"].toLocaleString("en-US")}
                         </li>
                         <li>
-                          The maximum total policies indemnified is{" "}
+                          Max:{" "}
                           {visualizationData["0.9_max_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_max_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_max_indemnified"].year}.`}
                         </li>
                         <li>
-                          The minimum non-zero total policies indemnified is{" "}
+                          Min (non-zero):{" "}
                           {visualizationData["0.9_min_indemnified"].value.toLocaleString("en-US")}
                           {visualizationData["0.9_min_indemnified"].year &&
-                            `, in
+                            ` in
                       ${visualizationData["0.9_min_indemnified"].year}.`}
                         </li>
                       </ul>

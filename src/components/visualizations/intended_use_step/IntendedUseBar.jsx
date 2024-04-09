@@ -134,8 +134,8 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
         {metric === "indemnity" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total indemnity payments received from 2007 to{" "}
-              {new Date().getFullYear() - 1} in {county}, {state}.
+              The above graph visualizes the total indemnity payments received for each intended use
+              from 2007 to {new Date().getFullYear() - 1} in {county}, {state}.
               <br />
               The data is categorized into two intended use categories: Grazing and Haying.
             </p>
@@ -156,7 +156,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total indemnity payments for Grazing.
+                represents the {`"Grazing"`} intended use.
               </li>
               <li>
                 <span
@@ -168,7 +168,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total indemnity payments for Haying.
+                represents the {`"Haying"`} intended use.
               </li>
             </ol>
             <p>
@@ -188,25 +188,18 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["grazing"] ? (
                     <ul>
+                      <li>Sum: {currencyFormatter(visualizationData.grazing_total_indemnity)}</li>
+                      <li>Average: {currencyFormatter(visualizationData.grazing_avg_indemnity)}</li>
                       <li>
-                        The sum of total indemnity payments is{" "}
-                        {currencyFormatter(visualizationData.grazing_total_indemnity)}.
-                      </li>
-                      <li>
-                        The average total indemnity payments is{" "}
-                        {currencyFormatter(visualizationData.grazing_avg_indemnity)}.
-                      </li>
-                      <li>
-                        The maximum total indemnity is{" "}
-                        {currencyFormatter(visualizationData.grazing_max_indemnity.value)}
+                        Max: {currencyFormatter(visualizationData.grazing_max_indemnity.value)}
                         {visualizationData.grazing_max_indemnity.year &&
-                          `, paid out in ${visualizationData.grazing_max_indemnity.year}.`}
+                          ` in ${visualizationData.grazing_max_indemnity.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total indemnity is{" "}
+                        Min (non-zero):{" "}
                         {currencyFormatter(visualizationData.grazing_min_indemnity.value)}
                         {visualizationData.grazing_min_indemnity.year &&
-                          `, paid out in ${visualizationData.grazing_min_indemnity.year}.`}
+                          ` in ${visualizationData.grazing_min_indemnity.year}.`}
                       </li>
                     </ul>
                   ) : (
@@ -220,25 +213,18 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["haying"] ? (
                     <ul>
+                      <li>Sum: {currencyFormatter(visualizationData.haying_total_indemnity)}</li>
+                      <li>Average: {currencyFormatter(visualizationData.haying_avg_indemnity)}</li>
                       <li>
-                        The sum of total indemnity payments is{" "}
-                        {currencyFormatter(visualizationData.haying_total_indemnity)}.
-                      </li>
-                      <li>
-                        The average total indemnity payments is{" "}
-                        {currencyFormatter(visualizationData.haying_avg_indemnity)}.
-                      </li>
-                      <li>
-                        The maximum total indemnity is{" "}
-                        {currencyFormatter(visualizationData.haying_max_indemnity.value)}
+                        Max: {currencyFormatter(visualizationData.haying_max_indemnity.value)}
                         {visualizationData.haying_max_indemnity.year &&
-                          `, paid out in ${visualizationData.haying_max_indemnity.year}.`}
+                          ` in ${visualizationData.haying_max_indemnity.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total indemnity is{" "}
+                        Min (non-zero):{" "}
                         {currencyFormatter(visualizationData.haying_min_indemnity.value)}
                         {visualizationData.haying_min_indemnity.year &&
-                          `, paid out in ${visualizationData.haying_min_indemnity.year}.`}
+                          ` in ${visualizationData.haying_min_indemnity.year}.`}
                       </li>
                     </ul>
                   ) : (
@@ -252,7 +238,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
         {metric === "premium" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total premium from 2007 to{" "}
+              The above graph visualizes the total premium for each intended use from 2007 to{" "}
               {new Date().getFullYear() - 1} in {county}, {state}.
               <br />
               The data is categorized into two intended use categories: Grazing and Haying.
@@ -274,7 +260,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total premium for Grazing.
+                represents the {`"Grazing"`} intended use.
               </li>
               <li>
                 <span
@@ -286,7 +272,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total premium for Haying.
+                represents the {`"Haying"`} intended use.
               </li>
             </ol>
             <p>The height of each bar corresponds to the amount of total premium for that year.</p>
@@ -303,26 +289,19 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["grazing"] ? (
                     <ul>
+                      <li>Sum: {currencyFormatter(visualizationData.grazing_total_premium)}</li>
+                      <li>Average: {currencyFormatter(visualizationData.grazing_avg_premium)}</li>
                       <li>
-                        The sum of total premiums is{" "}
-                        {currencyFormatter(visualizationData.grazing_total_premium)}.
-                      </li>
-                      <li>
-                        The average total premium is{" "}
-                        {currencyFormatter(visualizationData.grazing_avg_premium)}.
-                      </li>
-                      <li>
-                        The maximum total premium is{" "}
-                        {currencyFormatter(visualizationData.grazing_max_premium.value)}
+                        Max: {currencyFormatter(visualizationData.grazing_max_premium.value)}
                         {visualizationData.grazing_max_premium.year &&
-                          `, in
+                          ` in
                     ${visualizationData.grazing_max_premium.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total premium is{" "}
+                        Min (non-zero):{" "}
                         {currencyFormatter(visualizationData.grazing_min_premium.value)}
                         {visualizationData.grazing_max_premium.year &&
-                          `, in
+                          ` in
                     ${visualizationData.grazing_max_premium.year}.`}
                       </li>
                     </ul>
@@ -337,26 +316,19 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["haying"] ? (
                     <ul>
+                      <li>Sum: {currencyFormatter(visualizationData.haying_total_premium)}</li>
+                      <li>Average: {currencyFormatter(visualizationData.haying_avg_premium)}</li>
                       <li>
-                        The sum of total premiums is{" "}
-                        {currencyFormatter(visualizationData.haying_total_premium)}.
-                      </li>
-                      <li>
-                        The average total premium payments is{" "}
-                        {currencyFormatter(visualizationData.haying_avg_premium)}.
-                      </li>
-                      <li>
-                        The maximum total premium is{" "}
-                        {currencyFormatter(visualizationData.haying_max_premium.value)}
+                        Max: {currencyFormatter(visualizationData.haying_max_premium.value)}
                         {visualizationData.haying_max_premium.year &&
-                          `, in
+                          ` in
                     ${visualizationData.haying_max_premium.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total premium is{" "}
+                        Min (non-zero):{" "}
                         {currencyFormatter(visualizationData.haying_min_premium.value)}
                         {visualizationData.haying_min_premium.year &&
-                          `, in
+                          ` in
                     ${visualizationData.haying_min_premium.year}.`}
                       </li>
                     </ul>
@@ -371,7 +343,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
         {metric === "acres" && (
           <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
             <p>
-              The above graph visualizes the total acres insured from 2007 to{" "}
+              The above graph visualizes the total acres insured for each intended use from 2007 to{" "}
               {new Date().getFullYear() - 1} in {county}, {state}.
               <br />
               The data is categorized into two intended use categories: Grazing and Haying.
@@ -393,7 +365,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total acres insured for Grazing.
+                represents the {`"Grazing"`} intended use.
               </li>
               <li>
                 <span
@@ -405,7 +377,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                     marginRight: "5px",
                   }}
                 ></span>{" "}
-                represent total acres insured for Haying.
+                represents the {`"Haying"`} intended use.
               </li>
             </ol>
             <p>
@@ -423,26 +395,21 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["grazing"] ? (
                     <ul>
+                      <li>Sum: {visualizationData.grazing_total_acres.toLocaleString("en-US")}</li>
                       <li>
-                        The sum of total acres insured is{" "}
-                        {visualizationData.grazing_total_acres.toLocaleString("en-US")}.
+                        Average: {visualizationData.grazing_avg_acres.toLocaleString("en-US")}
                       </li>
                       <li>
-                        The average total acres insured is{" "}
-                        {visualizationData.grazing_avg_acres.toLocaleString("en-US")}.
-                      </li>
-                      <li>
-                        The maximum total acres insured is{" "}
-                        {visualizationData.grazing_max_acres.value.toLocaleString("en-US")}
+                        Max: {visualizationData.grazing_max_acres.value.toLocaleString("en-US")}
                         {visualizationData.grazing_max_acres.year &&
-                          `, in
+                          ` in
                     ${visualizationData.grazing_max_acres.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total acres insured is{" "}
+                        Min (non-zero):{" "}
                         {visualizationData.grazing_min_acres.value.toLocaleString("en-US")}
                         {visualizationData.grazing_min_acres.year &&
-                          `, in
+                          ` in
                     ${visualizationData.grazing_min_acres.year}.`}
                       </li>
                     </ul>
@@ -457,26 +424,19 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
                   <br />
                   {visualizationData["haying"] ? (
                     <ul>
+                      <li>Sum: {visualizationData.haying_total_acres.toLocaleString("en-US")}</li>
+                      <li>Average: {visualizationData.haying_avg_acres.toLocaleString("en-US")}</li>
                       <li>
-                        The sum of total acres insured is{" "}
-                        {visualizationData.haying_total_acres.toLocaleString("en-US")}.
-                      </li>
-                      <li>
-                        The average total acres insured is{" "}
-                        {visualizationData.haying_avg_acres.toLocaleString("en-US")}.
-                      </li>
-                      <li>
-                        The maximum total acres insured is{" "}
-                        {visualizationData.haying_max_acres.value.toLocaleString("en-US")}
+                        Max: {visualizationData.haying_max_acres.value.toLocaleString("en-US")}
                         {visualizationData.haying_max_acres.year &&
-                          `, in
+                          ` in
                     ${visualizationData.haying_max_acres.year}.`}
                       </li>
                       <li>
-                        The minimum non-zero total acres insured is{" "}
+                        Min (non-zero):{" "}
                         {visualizationData.haying_min_acres.value.toLocaleString("en-US")}
                         {visualizationData.haying_min_acres.year &&
-                          `, in
+                          ` in
                     ${visualizationData.haying_min_acres.year}.`}
                       </li>
                     </ul>
