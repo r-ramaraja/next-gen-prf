@@ -264,30 +264,13 @@ export default function DecisionSupportTableViz({ visualizationData, tabState })
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {rows.map((row, index) => (
-                <TableRow
-                  key={row.interval}
-                  sx={{
-                    borderBottom: index === rows.length - 1 ? "2px solid" : "",
-                  }}
-                >
-                  <TableCell>{row.interval}</TableCell>
-                  <TableCell>{row.percent_value}</TableCell>
-                  <TableCell>{row.policy_protection}</TableCell>
-                  <TableCell>{row.premium_rate}</TableCell>
-                  <TableCell>{row.actual_premium}</TableCell>
-                  <TableCell>{row.index}</TableCell>
-                  <TableCell sx={{ backgroundColor: row.indemnity_color }}>
-                    {row.indemnity}
-                  </TableCell>
-                </TableRow>
-              ))} */}
               {rows.map((row, index) => (
                 <Row key={row.interval} rows={rows} index={index} />
               ))}
-
               <TableRow>
-                <TableCell>Per Acre</TableCell>
+                <TableCell>
+                  <strong>Per Acre</strong>
+                </TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
@@ -312,7 +295,9 @@ export default function DecisionSupportTableViz({ visualizationData, tabState })
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Total</TableCell>
+                <TableCell>
+                  <strong>Total</strong>
+                </TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{Math.round(visualizationData.sum_percent_value)}</TableCell>
                 <TableCell>
