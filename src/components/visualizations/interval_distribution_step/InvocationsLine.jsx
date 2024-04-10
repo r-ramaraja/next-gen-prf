@@ -145,8 +145,7 @@ export default function InvocationsLine({ visualizationData, isOverviewView, gri
         <Typography variant="subtitle" sx={{ marginTop: "2rem" }}>
           <p>
             The above graph visualizes the total triggers for each coverage level from 2007 to{" "}
-            {new Date().getFullYear() - 1}
-            in CPC Grid Code {gridcode}.
+            {new Date().getFullYear() - 1} in CPC Grid Code {gridcode}.
             <br />A trigger is when the rainfall index falls below the coverage level threshold. For
             example, if the rainfall index is 0.88, that will be counted as one trigger for the 90%
             coverage level.

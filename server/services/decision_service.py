@@ -47,7 +47,7 @@ def compute_decision(data):
     coverage_level = data["coverage_level"]
     productivity_factor = data["productivity_factor"]
     insurable_interest = data["insurable_interest"]
-    insured_acres = data["insured_acres"]
+    insured_acres = int(data["insured_acres"])
     interval_distribution = data["interval_distribution"]
 
     try:
