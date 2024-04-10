@@ -291,8 +291,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
               year.
             </p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -531,8 +531,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </ol>
             <p>The points on each line correspond to the amount of total premium in that year.</p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -772,8 +772,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
               The points on each line correspond to the amount of total acres insured in that year.
             </p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -1013,8 +1013,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
               The points on each line correspond to the amount of total policies sold in that year.
             </p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -1255,8 +1255,8 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
               year.
             </p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>

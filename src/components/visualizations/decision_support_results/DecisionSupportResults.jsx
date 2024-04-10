@@ -11,7 +11,7 @@ import PolicyProtectionPie from "./PolicyProtectionPie";
 export default function DecisionSupportResults({ visualizationData, tabState }) {
   const { year, coverageLevel, productivityFactor } = tabState;
   const yearString = year.format("YYYY");
-  const currentYearData = visualizationData[yearString];
+  const currentYearData = visualizationData.trend[yearString];
   if (!currentYearData) return <Box sx={{ margin: "5rem" }}>Data not available yet.</Box>;
 
   const countyBaseValue = currentYearData.county_base;

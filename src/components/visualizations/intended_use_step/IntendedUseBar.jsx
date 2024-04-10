@@ -184,8 +184,8 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
 
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -312,8 +312,8 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             <p>The height of each bar corresponds to the amount of total premium for that year.</p>
 
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
@@ -441,8 +441,8 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
               The height of each bar corresponds to the amount of total acres insured in that year.
             </p>
             <p>
-              The brush tool at the bottom of the graph can be used to zoom in on a specific range
-              of years.
+              The slider at the bottom of the graph can be used to zoom in on a specific range of
+              years.
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>

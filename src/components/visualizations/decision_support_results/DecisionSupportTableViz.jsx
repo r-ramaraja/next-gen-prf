@@ -25,7 +25,7 @@ const StyledTableHeader = styled(TableCell)(({ theme }) => ({
 }));
 
 export default function DecisionSupportTableViz({ visualizationData, tabState }) {
-  const { coverageLevel, productivityFactor, interest, acres, monthlyValues } = tabState;
+  const { coverageLevel, productivityFactor, interest, acres } = tabState;
   const countyBaseValue = visualizationData.county_base;
   const subsidyValue = visualizationData.subsidy;
   const dollarAmountProtection = parseFloat(

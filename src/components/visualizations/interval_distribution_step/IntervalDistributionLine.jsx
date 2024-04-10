@@ -373,7 +373,7 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
             The points on each line correspond to the {labels[metric].toLowerCase()} in that year.
           </p>
           <p>
-            The brush tool at the bottom of the graph can be used to zoom in on a specific range of
+            The slider at the bottom of the graph can be used to zoom in on a specific range of
             years.
           </p>
           <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>

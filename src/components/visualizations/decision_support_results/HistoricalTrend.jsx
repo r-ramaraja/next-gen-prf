@@ -16,11 +16,12 @@ import _ from "lodash";
 import { currencyFormatter } from "../../../constants";
 
 export default function HistoricalTrend({ visualizationData }) {
+  const { trend } = visualizationData;
   const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(Object.keys(visualizationData).length - 1);
-  const sum_actual_premium = Object.values(visualizationData)[0].sum_actual_premium;
+  const [end, setEnd] = useState(Object.keys(trend).length - 1);
+  const sum_actual_premium = Object.values(trend)[0].sum_actual_premium;
   const data = [];
-  for (const [year, value] of Object.entries(visualizationData)) {
+  for (const [year, value] of Object.entries(trend)) {
     data.push({ year, indemnity: value.sum_indemnity });
   }
 
@@ -111,6 +112,51 @@ export default function HistoricalTrend({ visualizationData }) {
             </LineChart>
           </ResponsiveContainer>
         </Box>
+      </Grid>
+      <Grid item xs={12} sx={{ marginTop: "3.5rem" }}>
+        <Typography variant="subtitle">
+          <p>
+            The above graph visualizes the total indemnity, based on the current policy, from 2007
+            to {new Date().getFullYear() - 1}.
+          </p>
+          <p>
+            The X-axis represents the timeline from the year 2007 to {new Date().getFullYear() - 1}.
+            The Y-axis represents represents the total indemnity.
+          </p>
+          <p>
+            The line represents the trend of total indemnity over the years. The dots on the line
+            represent the total indemnity in that year.
+          </p>
+
+          <p>
+            The slider at the bottom of the graph can be used to zoom in on a specific range of
+            years.
+          </p>
+          <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
+
+          <p>
+            <ul>
+              <li>
+                <strong>Sum:</strong> {currencyFormatter(visualizationData["total_indemnity"])}
+              </li>
+              <li>
+                <strong>Average:</strong> {currencyFormatter(visualizationData["avg_indemnity"])}
+              </li>
+              <li>
+                <strong>Max:</strong> {currencyFormatter(visualizationData["max_indemnity"].value)}
+                {visualizationData["max_indemnity"].year &&
+                  ` in
+                      ${visualizationData["max_indemnity"].year}`}
+              </li>
+              <li>
+                <strong>Min:</strong> {currencyFormatter(visualizationData["min_indemnity"].value)}
+                {visualizationData["min_indemnity"].year &&
+                  ` in
+                      ${visualizationData["min_indemnity"].year}`}
+              </li>
+            </ul>
+          </p>
+        </Typography>
       </Grid>
     </Grid>
   );

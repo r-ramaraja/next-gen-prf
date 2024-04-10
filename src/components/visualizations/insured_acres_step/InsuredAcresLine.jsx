@@ -86,7 +86,7 @@ export default function InsuredAcresLine({ visualizationData, state, county }) {
           </p>
 
           <p>
-            The brush tool at the bottom of the graph can be used to zoom in on a specific range of
+            The slider at the bottom of the graph can be used to zoom in on a specific range of
             years.
           </p>
           <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>

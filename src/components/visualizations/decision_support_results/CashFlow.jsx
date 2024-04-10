@@ -29,13 +29,12 @@ export default function CashFlow({ visualizationData }) {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="h6" sx={{ marginLeft: "3rem", marginTop: "8rem" }} align="center">
+        <Typography variant="h6" sx={{ marginLeft: "3rem" }} align="center">
           Cashflow for Current Policy
         </Typography>
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ height: 300 }}>
-          <Download />
           <ResponsiveContainer>
             <BarChart
               data={data}

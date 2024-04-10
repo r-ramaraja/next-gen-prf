@@ -1215,11 +1215,37 @@ def fetch_interval_data(data):
 
 
 def fetch_historical_trend(data):
-    response = {}
+    response = {"trend": {}}
     for year in range(2007, int(data["year"]) + 1):
         year_data = data.copy()
         year_data["year"] = year
         result = compute_decision(year_data)
-        response[year] = result
+        response["trend"][year] = result
+
+    current_year = datetime.now().year
+    count = current_year - 1 - 2007
+    max_indemnity = {"year": "", "value": 0}
+    min_indemnity = {"year": "", "value": float("inf")}
+    total_indemnity = 0
+    for year, values in response["trend"].items():
+        if values:
+            indemnity = values.get("sum_indemnity", 0)
+
+            if indemnity > max_indemnity["value"]:
+                max_indemnity = {"year": year, "value": indemnity}
+            if indemnity < min_indemnity["value"] and indemnity != 0:
+                min_indemnity = {"year": year, "value": indemnity}
+
+            total_indemnity += indemnity
+
+    average_indemnity = total_indemnity / count
+
+    response["max_indemnity"] = max_indemnity
+    if min_indemnity["value"] != float("inf"):
+        response["min_indemnity"] = min_indemnity
+    else:
+        response["min_indemnity"] = {"year": "", "value": 0}
+    response["avg_indemnity"] = round(average_indemnity, 2)
+    response["total_indemnity"] = total_indemnity
 
     return response
