@@ -93,16 +93,20 @@ export default function InsuredAcresLine({ visualizationData, state, county }) {
 
           <p>
             <ul>
-              <li>Sum: {visualizationData["total_acres"].toLocaleString("en-US")}</li>
-              <li>Average: {visualizationData["avg_acres"].toLocaleString("en-US")}</li>
               <li>
-                Max: {visualizationData["max_acres"].value.toLocaleString("en-US")}
+                <strong>Sum:</strong> {visualizationData["total_acres"].toLocaleString("en-US")}
+              </li>
+              <li>
+                <strong>Average:</strong> {visualizationData["avg_acres"].toLocaleString("en-US")}
+              </li>
+              <li>
+                <strong>Max:</strong> {visualizationData["max_acres"].value.toLocaleString("en-US")}
                 {visualizationData["max_acres"].year &&
                   ` in
                       ${visualizationData["max_acres"].year}`}
               </li>
               <li>
-                Min: {visualizationData["min_acres"].value.toLocaleString("en-US")}
+                <strong>Min:</strong> {visualizationData["min_acres"].value.toLocaleString("en-US")}
                 {visualizationData["min_acres"].year &&
                   ` in
                       ${visualizationData["min_acres"].year}`}

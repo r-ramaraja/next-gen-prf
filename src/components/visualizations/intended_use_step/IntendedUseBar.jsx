@@ -189,7 +189,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={6} lg={4}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -317,7 +317,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={6} lg={4}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -446,7 +446,7 @@ export default function IntendedUseBar({ visualizationData, isOverviewView, stat
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={6} lg={4}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>

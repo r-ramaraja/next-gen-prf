@@ -234,7 +234,7 @@ export default function InvocationsLine({ visualizationData, isOverviewView, gri
           <p>The points on each line correspond to the total triggers in that year.</p>
           <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
           <Grid container>
-            <Grid item xs={10}>
+            <Grid item xs={12} lg={10}>
               <TableContainer component={Paper}>
                 <Table size="small">
                   <TableHead>

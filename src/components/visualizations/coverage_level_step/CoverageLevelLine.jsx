@@ -296,7 +296,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -536,7 +536,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -777,7 +777,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -1018,7 +1018,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>
@@ -1260,7 +1260,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
             </p>
             <p>The summary for the years 2007 - {new Date().getFullYear() - 1} is as follows:</p>
             <Grid container>
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <TableContainer component={Paper}>
                   <Table size="small">
                     <TableHead>

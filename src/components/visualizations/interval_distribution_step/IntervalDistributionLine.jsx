@@ -380,7 +380,7 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
 
           {metric === "index" && (
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={8} lg={4}>
                 <TableContainer component={Paper}>
                   <Table aria-label="simple table">
                     <TableHead>
@@ -478,7 +478,7 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
 
           {metric === "totalRainfall" && (
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={8} lg={4}>
                 <TableContainer component={Paper}>
                   <Table aria-label="simple table">
                     <TableHead>
