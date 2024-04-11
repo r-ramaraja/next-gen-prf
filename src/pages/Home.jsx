@@ -8,10 +8,6 @@ import Header from "../components/Header.jsx";
 export default function Home() {
   const navigate = useNavigate();
 
-  const handleLaunchClick = () => {
-    navigate("/tool");
-  };
-
   return (
     <Box
       style={{
@@ -77,15 +73,24 @@ export default function Home() {
           </Grid>
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
-              <Button variant="contained" color="primary" startIcon={<HelpIcon />}>
-                Tutorial
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<HelpIcon />}
+                onClick={() => {
+                  navigate("/guide");
+                }}
+              >
+                User Guide
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<RocketLaunchIcon />}
                 sx={{ marginLeft: "1rem" }}
-                onClick={handleLaunchClick}
+                onClick={() => {
+                  navigate("/tool");
+                }}
               >
                 Launch Tool
               </Button>
