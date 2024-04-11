@@ -151,7 +151,6 @@ export default function DecisionSupport({
           <CircularProgress variant="indeterminate" size={60} thickness={4} />
         </Box>
       )}
-      {/* <DecisionSupportViz visualizationData={visualizationData} /> */}
       {visualizationData && (
         <DecisionSupportResults visualizationData={visualizationData} tabState={tabState} />
       )}

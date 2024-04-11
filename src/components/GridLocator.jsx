@@ -107,30 +107,25 @@ export default function GridLocator({
       };
 
       const gridOnEachFeature = (feature, layer) => {
-        // Create a label for the feature
         var label = L.marker(layer.getBounds().getCenter(), {
           icon: L.divIcon({
-            className: "label", // Use the 'label' class from your CSS
+            className: "label",
             html: feature.properties.GRIDCODE,
-            iconSize: null, // Let CSS handle the size
+            iconSize: null,
           }),
         });
 
-        // Function to add or remove the label based on zoom level
         function updateLabel() {
           var zoom = mapInstance.current.getZoom();
           if (zoom > 9 && mapInstance.current.getBounds().intersects(layer.getBounds())) {
-            // Adjust zoom level as needed
             label.addTo(mapInstance.current);
           } else {
             label.remove();
           }
         }
 
-        // Update label on map events
         mapInstance.current.on("zoomend moveend", updateLabel);
 
-        // Initially update the label
         updateLabel();
       };
 
@@ -160,34 +155,28 @@ export default function GridLocator({
 
       mapInstance.current.on("zoomend", updateCpcGridsVisibility);
 
-      // Initially call the function to set the correct visibility
       updateCpcGridsVisibility();
 
       const countyOnEachFeature = (feature, layer) => {
-        // Create a label for the feature
         var label = L.marker(layer.getBounds().getCenter(), {
           icon: L.divIcon({
-            className: "county-label", // Use the 'label' class from your CSS
+            className: "county-label",
             html: feature.properties.NAME,
-            iconSize: null, // Let CSS handle the size
+            iconSize: null,
           }),
         });
 
-        // Function to add or remove the label based on zoom level
         function updateLabel() {
           var zoom = mapInstance.current.getZoom();
           if (zoom > 8 && mapInstance.current.getBounds().intersects(layer.getBounds())) {
-            // Adjust zoom level as needed
             label.addTo(mapInstance.current);
           } else {
             label.remove();
           }
         }
 
-        // Update label on map events
         mapInstance.current.on("zoomend moveend", updateLabel);
 
-        // Initially update the label
         updateLabel();
       };
 
@@ -217,7 +206,6 @@ export default function GridLocator({
 
       mapInstance.current.on("zoomend", updateCountiesVisibility);
 
-      // Initially call the function to set the correct visibility
       updateCountiesVisibility();
 
       mapInstance.current.on("click", function (e) {
@@ -225,21 +213,17 @@ export default function GridLocator({
         var lat = coord.lat;
         var lng = coord.lng;
 
-        // Creating a GeoJSON Point for the clicked location
         var point = turf.point([lng, lat]);
 
-        // Check each feature in your GeoJSON layer
         var gridcode = null;
         var state = null;
         var county = null;
         cpc_grids.eachLayer(function (layer) {
-          // Check if the point is inside the polygon
           if (turf.inside(point, layer.toGeoJSON())) {
             gridcode = layer.feature.properties.GRIDCODE;
           }
         });
         usa_counties.eachLayer(function (layer) {
-          // Check if the point is inside the polygon
           if (turf.inside(point, layer.toGeoJSON())) {
             county = layer.feature.properties.NAME;
             state = states[layer.feature.properties.STATEFP].name;
@@ -271,21 +255,17 @@ export default function GridLocator({
         var bbox = e.geocode.bbox;
         var { lng, lat } = e.geocode.center;
 
-        // Creating a GeoJSON Point for the searched location
         var point = turf.point([lng, lat]);
 
-        // Check each feature in your GeoJSON layer
         var gridcode = null;
         var state = null;
         var county = null;
         cpc_grids.eachLayer(function (layer) {
-          // Check if the point is inside the polygon
           if (turf.inside(point, layer.toGeoJSON())) {
             gridcode = layer.feature.properties.GRIDCODE;
           }
         });
         usa_counties.eachLayer(function (layer) {
-          // Check if the point is inside the polygon
           if (turf.inside(point, layer.toGeoJSON())) {
             county = layer.feature.properties.NAME;
             state = states[layer.feature.properties.STATEFP].name;
@@ -299,7 +279,6 @@ export default function GridLocator({
     }
 
     return () => {
-      //Clean up the map
       if (mapInstance.current) {
         mapInstance.current.remove();
         mapInstance.current = null;

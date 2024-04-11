@@ -1,215 +1,98 @@
-import React, { useRef, useEffect, useState } from "react";
-import "leaflet-control-geocoder";
-import MarkerSidebar from "../components/MarkerList.jsx";
-import MarkerDetail from "./MarkerDetail.jsx";
-import { Tabs, Tab, Box, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import GridLocator from "../components/GridLocator.jsx";
-import Header from "../components/Header";
-import { counties } from "../counties.js";
-import { states } from "../states.js";
-import { grids } from "../grids.js";
-import dayjs from "dayjs";
+import React from "react";
+import { Box, Typography, Grid, Button } from "@mui/material";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import HelpIcon from "@mui/icons-material/Help";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header.jsx";
 
-function Map() {
-  const mapInstance = useRef(null); // Holds the Leaflet map instance
-  const [tabStates, setTabStates] = useState({});
-  const [markers, setMarkers] = React.useState([]);
-  const [selectedTab, setSelectedTab] = React.useState(0);
-  const [view, setView] = React.useState({
-    center: [39.8333, -94.5833],
-    zoom: 4,
-  });
-  const [tabs, setTabs] = React.useState([
-    {
-      label: "Grid Locator",
-    },
-  ]);
+export default function Home() {
+  const navigate = useNavigate();
 
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
-
-  const addTab = (marker, id) => {
-    for (const tab of tabs) {
-      if (tab.marker) {
-        if (marker.lat === tab.marker.lat && marker.lng === tab.marker.lng) {
-          setSelectedTab(tabs.indexOf(tab));
-          return;
-        }
-      }
-    }
-
-    const newTabIndex = tabs.length;
-    const newTab = {
-      label: `Marker ${id + 1}`,
-      id: id,
-      marker,
-    };
-
-    const values = Array(11).fill("");
-    values[0] = 50;
-    values[2] = 50;
-    setTabs([...tabs, newTab]);
-    setSelectedTab(newTabIndex);
-    setTabStates({
-      ...tabStates,
-      [id]: {
-        markerDetailTabId: 0,
-        activeStep: 0,
-        intendedUse: "grazing",
-        irrigationPractice: "irrigated",
-        organicPractice: "non-organic",
-        coverageLevel: 90,
-        productivityFactor: 100,
-        acres: 100,
-        acresError: { hasError: false, message: "" },
-        interest: 100,
-        interestError: { hasError: false, message: "" },
-        year: dayjs().subtract(1, "year"),
-        monthlyValues: values,
-        monthlyErrors: Array(11).fill({ hasError: false, errorMessage: "" }),
-        isGuided: true,
-        intervalDistributionMode: "custom",
-        seenGuidedIntro: false,
-      },
-    });
-  };
-
-  const deleteTab = (id) => {
-    const tabIndex = tabs.findIndex((tab) => tab.id === id);
-    const newTabs = tabs.filter((_, index) => index !== tabIndex);
-    setTabs(newTabs);
-    setTabStates((prev) => {
-      const newState = { ...prev };
-      delete newState[tabIndex];
-      return newState;
-    });
-
-    // Adjust the selected tab if necessary
-    if (selectedTab >= tabIndex) {
-      setSelectedTab((prev) => Math.max(prev - 1, 0));
-    }
-  };
-
-  const deleteMarker = (markerToDelete, id) => {
-    markerToDelete.marker.remove(); // Remove from Leaflet map
-    deleteTab(id);
-    setMarkers((prevMarkers) =>
-      prevMarkers.filter((marker) => marker.marker !== markerToDelete.marker)
-    );
-  };
-
-  const focusOnMarker = (lat, lng) => {
-    if (mapInstance.current) {
-      mapInstance.current.setView([lat, lng], 10);
-    }
-    setSelectedTab(0);
-    setView({ center: [lat, lng], zoom: 10 });
-  };
-
-  useEffect(() => {
-    // Invalidate the map size when switching back to the "Grid Locator" tab
-    if (selectedTab === 0) {
-      setTimeout(() => {
-        mapInstance.current?.invalidateSize();
-      }, 0);
-    }
-  }, [selectedTab]);
-
-  const renderSelectedTab = (selectedTab) => {
-    if (selectedTab === 0) {
-      return (
-        <GridLocator
-          setMarkers={setMarkers}
-          markers={markers}
-          mapInstance={mapInstance}
-          counties={counties}
-          grids={grids}
-          states={states}
-          view={view}
-        />
-      );
-    } else {
-      return (
-        <MarkerDetail
-          marker={tabs[selectedTab].marker}
-          tabState={tabStates[tabs[selectedTab].id]}
-          setTabState={(newState, id) => setTabStates({ ...tabStates, [id]: newState })}
-        />
-      );
-    }
+  const handleLaunchClick = () => {
+    navigate("/tool");
   };
 
   return (
-    <Box sx={{ display: "flex", flexFlow: "column", height: "100vh" }}>
+    <Box
+      style={{
+        backgroundImage: "url(/background.webp)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+        width: "100%",
+        minHeight: "100vh",
+      }}
+    >
       <Header />
       <Box
         sx={{
-          flex: "1",
-          display: "flex",
-          flexFlow: "row wrap",
-          gap: "1rem",
-          margin: "0 1rem 1rem 1rem",
+          padding: "2rem",
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+          textAlign: "center",
+          maxWidth: "960px",
+          margin: "0 auto",
         }}
       >
-        <Box
-          id="sidebar"
-          sx={{
-            maxHeight: "90vh",
-            overflowY: "auto",
-            minWidth: "275px",
-          }}
-        >
-          <MarkerSidebar
-            markers={markers}
-            deleteMarker={deleteMarker}
-            onMarkerSelect={focusOnMarker}
-            onAddTab={addTab}
-          />
-        </Box>
-        <Box
-          sx={{
-            flex: "1",
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-          }}
-        >
-          <Tabs
-            value={selectedTab}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons
-            allowScrollButtonsMobile
-          >
-            {tabs.map((tab, index) => (
-              <Tab
-                key={index}
-                label={
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    {tab.label}
-                    {index != 0 && (
-                      <IconButton
-                        size="small"
-                        onClick={(event) => {
-                          event.stopPropagation(); // Prevent tab selection
-                          deleteTab(tab.id);
-                        }}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
-                    )}
-                  </Box>
-                }
-              />
-            ))}
-          </Tabs>
-          <Box sx={{ flexGrow: 1 }}>{renderSelectedTab(selectedTab)}</Box>
-        </Box>
+        <Grid container>
+          <Grid item xs={12} style={{ textAlign: "center" }}>
+            <Typography variant="body1" align="left" sx={{ marginTop: "1rem", color: "#FFF" }}>
+              <p>
+                Pasture, rangeland, and forage areas constitute over half of the total land area in
+                the United States.
+                <br />
+                Since the USDA PRF-RI (Pasture, Rangeland, Forage Area - Rainfall Index) insurance
+                program started in 2007, it has been a significant source of financial relief for
+                agricultural producers against low rainfall conditions.
+                <br />
+                Our Next-Gen PRF Tool is a robust, user-centric platform designed to streamline
+                decision-making when enrolling for the USDA PRF-RI insurance program.
+              </p>
+              <p>
+                <strong>Effortless Navigation, Instant Insights:</strong>
+                <br />
+                Navigate the complexities of insurance with an easy-to-use tool. With just a few
+                clicks, the intuitive interface provides access to detailed visualizations of
+                pasture, rangeland, and forage areas.
+              </p>
+              <p>
+                <strong>Data-Driven Decisions Made Simple:</strong>
+                <br />
+                Harness the power of advanced analytics without being a data scientist. The tool
+                brings together various datasets, such as past rainfall indexes and enrollment
+                trends, to provide precise insights. These insights help you understand historical
+                trends with clear, concise, and relevant data that will help you be better informed
+                when choosing enrollment parameters.
+              </p>
+              <p>
+                <strong>Customized to Your Needs:</strong>
+                <br />
+                Every farm is unique, and so are your insurance needs. The tool offers customizable
+                insurance scenarios that let you adjust the parameters and explore different risk
+                management strategies. Experiment with{'"what-if"'} simulations to see how various
+                coverage options could impact your indemnity, ensuring you make an informed choice
+                tailored specifically to your operations.
+              </p>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Box sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+              <Button variant="contained" color="primary" startIcon={<HelpIcon />}>
+                Tutorial
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<RocketLaunchIcon />}
+                sx={{ marginLeft: "1rem" }}
+                onClick={handleLaunchClick}
+              >
+                Launch Tool
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
 }
-
-export default Map;
