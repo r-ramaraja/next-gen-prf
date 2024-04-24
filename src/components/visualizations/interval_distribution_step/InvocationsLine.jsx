@@ -41,12 +41,14 @@ const MenuProps = {
 
 const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
 
-export default function InvocationsLine({ visualizationData, isOverviewView, gridcode }) {
-  console.log("🚀 ~ InvocationsLine ~ visualizationData:", visualizationData);
-  const { invocations } = visualizationData;
+const colourMap = {};
+for (let i = 0; i < coverageLevelValues.length; i++) {
+  colourMap[coverageLevelValues[i]] = colours[i];
+}
 
-  const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues);
-  console.log("🚀 ~ InvocationsLine ~ coverageLevels:", coverageLevels);
+export default function InvocationsLine({ visualizationData, isOverviewView, gridcode }) {
+  const { invocations } = visualizationData;
+  const [coverageLevels, setCoverageLevels] = useState(coverageLevelValues.sort());
 
   const data = [];
   for (const interval of monthRanges) {
@@ -63,7 +65,9 @@ export default function InvocationsLine({ visualizationData, isOverviewView, gri
     const {
       target: { value },
     } = event;
-    setCoverageLevels(typeof value === "string" ? value.split(",") : value);
+    setCoverageLevels(
+      typeof value === "string" ? value.split(",") : Array.isArray(value) ? value.sort() : value
+    );
   };
 
   return (
@@ -133,7 +137,7 @@ export default function InvocationsLine({ visualizationData, isOverviewView, gri
                   key={`${coverageLevel}-${index}`}
                   dataKey={`${coverageLevel}-invocations`}
                   activeDot={{ r: 8 }}
-                  stroke={colours[index]}
+                  stroke={colourMap[coverageLevel]}
                   name={`${coverageLevel * 100}%`}
                 />
               ))}

@@ -60,6 +60,11 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
     "#393B79",
   ];
 
+  const colourMap = {};
+  for (let i = 0; i < monthRanges.length; i++) {
+    colourMap[monthRanges[i]] = colours[i];
+  }
+
   const data = [];
   const years = Object.keys(metrics);
 
@@ -189,9 +194,9 @@ export default function IntervalDistributionLine({ visualizationData, isOverview
                   key={`${intervalMap[interval]}-${metric}-${index}`}
                   type="monotone"
                   dataKey={`${intervalMap[interval]}-${metric}`}
-                  stroke={colours[index]}
+                  stroke={colourMap[interval]}
                   activeDot={{ r: 8 }}
-                  name={monthRanges[index]}
+                  name={interval}
                 />
               ))}
             </LineChart>

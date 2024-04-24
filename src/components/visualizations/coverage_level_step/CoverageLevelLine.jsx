@@ -41,6 +41,10 @@ const MenuProps = {
 };
 
 const colours = ["#FF6B6B", "#F0C808", "#4CAF50", "#4DCBFF", "#AD51F6", "#FF926B"];
+const colourMap = {};
+for (let i = 0; i < coverageLevelValues.length; i++) {
+  colourMap[coverageLevelValues[i]] = colours[i];
+}
 
 export default function CoverageLevelLine({ visualizationData, isOverviewView, state, county }) {
   const [metric, setMetric] = useState("indemnity");
@@ -79,7 +83,9 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
     const {
       target: { value },
     } = event;
-    setCoverageLevels(typeof value === "string" ? value.split(",") : value);
+    setCoverageLevels(
+      typeof value === "string" ? value.split(",") : Array.isArray(value) ? value.sort() : value
+    );
   };
 
   const labels = {
@@ -189,7 +195,7 @@ export default function CoverageLevelLine({ visualizationData, isOverviewView, s
                   key={`${coverageLevel}-${metric}-${index}`}
                   dataKey={`${coverageLevel}-${metric}`}
                   activeDot={{ r: 8 }}
-                  stroke={colours[index]}
+                  stroke={colourMap[coverageLevel]}
                   name={`${coverageLevel * 100}%`}
                 />
               ))}
